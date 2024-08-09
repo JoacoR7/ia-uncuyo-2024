@@ -1,3 +1,9 @@
+1) 
+
+## Inteligencia artificial débil
+
+3) 
+
 La inteligencia artificial generativa utiliza técnicas de machine learning para aprender y crear nuevos datos. Esta tecnología es capaz de generar texto, imágenes, música, videos y otros medios en respuesta a comandos específicos. Tiene una gran capacidad para imitar patrones y estructuras del contenido con el que se entrena.
 
 Desventajas según Emily M. Bender
