@@ -8,8 +8,11 @@ Estos sistemas no tienen conciencia del entorno o un entendimiento real del prob
 
 Acá entra en juego la pregunta ¿pueden las máquinas pensar? Pero es lo mismo que preguntar si los submarinos pueden nadar (según la definición de nadar), o si los aviones pueden volar (según la definición de volar). Turing dejó de lado esa pregunta y la reemplazó por un examen de comportamiento inteligente (Turing Test).
 
+![[021718_reviews_machines_main.webp]]
+
 El Test de Turing es una forma de medir la capacidad de una máquina para mostrar un comportamiento inteligente similar al de un humano: una persona tiene una conversación por texto, sin saber si del otro lado hay una persona o una máquina. Si, después de la conversación, el juez no puede distinguir con quién está hablando, se dice que la máquina ha pasado el Test de Turing. Esto sugiere que la máquina tiene un nivel de inteligencia similar al humano en términos de lenguaje y comunicación. El objetivo del test no es que la máquina piense como un humano, sino que se comporte de manera que un humano no pueda diferenciarla de otra persona en una conversación.
 
+![[53.jpg]]
 #### El argumento de la discapacidad
 
 Este argumento le da un enfoque al planteamiento de la pregunta principal, para ello se afirma que una máquina nunca podrá hacer ciertas cosas que los humanos pueden hacer, como ser amable, equivocarse, o enamorarse. 
@@ -61,9 +64,12 @@ El fisicalismo dice que el estado mental de una persona depende de su estado cer
 
 Si tu cerebro fue sacado de tu cuerpo al nacer y puesto en un recipiente que lo mantiene funcionando. Mientras tanto, una computadora te da señales para simular una vida que es igual a la que tendrías si estuvieras en tu cuerpo, algo parecido a la película de Matrix. Podrías tener un estado cerebral igual al de alguien que realmente está comiendo una hamburguesa, pero en realidad no estás comiendo ninguna. En este caso, tu estado mental de "saber que estás comiendo una hamburguesa" no sería correcto porque no estás experimentando eso.
 
+![[Braininvat.jpg]]
 #### Funcionalismo y el experimento de reemplazo de cerebro
 
 **Funcionalismo:** es una teoría que dice que los estados mentales de una persona (como pensar, sentir o desear) son definidos por sus roles o funciones en un sistema, no por su implementación física específica. Según esta teoría, si dos sistemas (como un cerebro humano y una computadora) tienen los mismos procesos causales, deberían tener los mismos estados mentales.
+
+![[funcionalismo-1.webp]]
 
 Si reemplazamos gradualmente las neuronas de un cerebro humano por componentes electrónicos que cumplen las mismas funciones, y el sujeto sigue mostrando signos de conciencia (respondiendo a preguntas, sintiendo dolor), entonces debemos concluir que la conciencia no es exclusiva de los cerebros biológicos.
 
@@ -78,54 +84,75 @@ Según esta teoría, los estados mentales son características de alto nivel que
 #### Conciencia, qualia y la brecha explicativa
 
 - **Conciencia**: En el debate sobre la IA fuerte, uno de los temas centrales es la conciencia. La conciencia puede desglosarse en diferentes aspectos como la comprensión y la auto-conciencia. 
-- **Qualia**: El término técnico para referirse a la naturaleza intrínseca de las experiencias es **qualia** (del latín que significa “tales cosas”). Los qualia son las cualidades subjetivas de nuestras experiencias. Por ejemplo, la sensación de ver el color rojo es un tipo de qualia.
+- **Qualia**: El término técnico para referirse a la naturaleza intrínseca de las experiencias es **qualia** (del latín que significa “tales cosas”). Los qualia son las cualidades sensoriales subjetivas de nuestras experiencias. Por ejemplo, la sensación de ver el color rojo es un tipo de qualia.
+
+	![[qualia.webp]]
+
 - **Brecha explicativa**: Es la dificultad de conectar los procesos neuronales descritos científicamente con la experiencia subjetiva. Incluso si entendemos perfectamente los procesos cerebrales, no hay una forma aceptada de deducir que un ser tiene una experiencia conciente particular. Esta brecha ha llevado a algunos filósofos a concluir que los humanos podrían ser incapaces de comprender completamente su propia conciencia. 
-- **Posición de Turing**: Alan Turing reconoció que la cuestión de la conciencia es difícil, pero no creía que fuera relevante para la práctica de la IA. Turing pensaba que la creación de programas que se comportan de manera inteligente no requiere resolver los misterios de la conciencia. El objetivo principal es desarrollar programas inteligentes, no necesariamente concientes, y Turing no pensaba que pudiéramos determinar si un programa es conciente o no.
+- **Posición de Turing**: Alan Turing reconoció que la cuestión de la conciencia es difícil, pero no creía que fuera relevante para la práctica de la IA. Turing pensaba que la creación de programas que se comportan de manera inteligente no requiere resolver los misterios de la conciencia. El objetivo principal es desarrollar programas inteligentes, no necesariamente conscientes, y Turing no pensaba que pudiéramos determinar si un programa es conciente o no.
 
 ### La ética y los riegos de desarrollar Inteligencia Artificial
 
 #### Riesgos
 
-##### **Desplazamiento Laboral e Impacto Económico**
+##### Desplazamiento Laboral e Impacto Económico
 
 - **Preocupación:** La automatización y la IA pueden llevar a la pérdida de empleos y cambios económicos.
 - **Perspectiva:** Aunque la IA ha desplazado algunos empleos, también ha creado nuevos roles y transformado la naturaleza del trabajo. El desafío es equilibrar estos cambios y asegurar que los trabajadores desplazados tengan oportunidades para reentrenarse y encontrar nuevos roles.
 
-##### **Tiempo Libre y Equilibrio Trabajo-Vida**
+##### Tiempo Libre y Equilibrio Trabajo-Vida
 
 - **Preocupación:** La IA podría llevar a un exceso de tiempo libre o a una presión incrementada para trabajar más duro.
 - **Perspectiva:** La IA tiene el potencial de reducir las horas de trabajo y aumentar el tiempo libre, pero también podría contribuir a una cultura de disponibilidad constante y mayores expectativas en el lugar de trabajo. El objetivo es encontrar un equilibrio que mejore la calidad de vida sin aumentar el estrés.
 
-##### **Sentido de unicidad**
+##### Sentido de unicidad
 
 - **Preocupación:** La IA podría socavar nuestro sentido de singularidad y autonomía humana.
 - **Perspectiva:** Cambios históricos en la comprensión de nuestro lugar en el universo (por ejemplo, Copérnico, Darwin) han desafiado la auto-concepción humana. La IA añade a esto al potencialmente difuminar las líneas entre las capacidades humanas y las de las máquinas.
 
-##### **Uso indebido**
+##### Uso indebido
 
 - **Preocupación:** Los sistemas de IA podrían usarse para fines dañinos, incluyendo aplicaciones militares y de vigilancia.
 - **Perspectiva:** El potencial de mal uso de la IA requiere directrices éticas estrictas y supervisión. Asegurar que la IA se desarrolle y utilice de manera responsable es crucial para prevenir daños y mantener las libertades civiles.
 
-##### **Responsabilidad y Culpabilidad**
+##### Responsabilidad y Culpabilidad
 
 - **Preocupación:** Determinar la responsabilidad por las decisiones y acciones de la IA puede ser un desafío.
 - **Perspectiva:** A medida que los sistemas de IA se vuelven más autónomos, establecer líneas claras de responsabilidad y culpabilidad es esencial. Esto implica definir roles y responsabilidades para desarrolladores, usuarios y otros interesados.
 
-##### **Riesgo para la humanidad**
+##### Riesgo para la humanidad
 
 - **Preocupación:** La IA podría representar una amenaza existencial para la humanidad.
 - **Perspectiva:** El riesgo de que la IA se vuelva incontrolable o persiga objetivos dañinos es una preocupación seria. Asegurar que los sistemas de IA se diseñen con mecanismos de seguridad robustos y alineados con los valores humanos es crucial.
 
-#### **Cómo manejar los riesgos:**
+#### Cómo manejar los riesgos:
 
-- **Salvaguardas y Control:** Implementar salvaguardas y mecanismos de control para prevenir consecuencias no deseadas y asegurar que los sistemas de IA cumplan con estándares éticos.
+- **Mecanismos de control:** Implementar mecanismos de control para prevenir consecuencias no deseadas y asegurar que los sistemas de IA cumplan con estándares éticos.
 - **Transparencia y Supervisión:** Mantener la transparencia en el desarrollo de la IA e involucrar a diversos interesados en la supervisión puede ayudar a mitigar riesgos.
-- **Diseño Ético:** Diseñar sistemas de IA teniendo en cuenta consideraciones éticas, incluyendo el respeto a los derechos humanos y la evitación de usos dañinos.
+- **Diseño Ético:** Diseñar sistemas de IA teniendo en cuenta consideraciones éticas, incluyendo el respeto a los derechos humanos y evitando posibilidades para usos dañinos.
 
-#### **Consideraciones a futuro:**
+### Discusiones 
 
-- **Colaboración Humano-IA:** Explorar cómo la IA puede potenciar las capacidades humanas y mejorar la calidad de vida, en lugar de simplemente reemplazar los roles humanos.
-- **Marcos Éticos:** Desarrollar y adherirse a marcos éticos que guíen el desarrollo y la implementación responsable de tecnologías de IA.
+Considero que por ahora estamos bastante lejos de desarrollar una "IA Fuerte" ya que primero hay que entender la conciencia humana antes de darle conciencia a una máquina o sistema. Pienso que la teoría del funcionalismo sería la más acertada, si llegáramos a entender los procesos neuronales y describirlos como funciones, no sería costoso representar esas funciones en una máquina.
+
+Por ahora, todos las IA implementadas entrarían a la categoría de "IA Débil", ya que, por más que tengan una gran conocimiento, incluso mucho más amplio que el de cualquier ser humano, no puede extenderse más allá de este, o incluso generar nuevo conocimiento a partir de lo que ya sabe (como sacar conclusiones). 
+## 2)
+
+### ¿Es posible considerar a los agentes conversacionales basados en grandes modelos de lenguaje (LLMs) como conscientes?
+
+Considerando la tecnología y el conocimiento de hoy, diría que no. A veces puede llegar a ser confuso si un LLM o un agente construido sobre uno es consciente o no, las razones por esto son:
+
+- Las habilidades conversacionales de los agentes son bastante cercanas al nivel humano.
+- Puede realizar acciones del mundo real (hacer compras, escribir emails, etc.).
+- Tiene información sobre casi cualquier tema que se nos ocurra.
+
+El problema es que no se puede ir más allá del contexto que se les otorga (que parece infinito por ser tan amplio), y por ende tampoco tiene un criterio de la verdad, no puede comprar su conocimiento con la realidad externa y actualizarse en base a ello. Y aunque realice acciones del mundo real, no está haciendo otra cosa que satisfacer las necesidades del usuario real.
+
+La conciencia implica la atención y auto-conciencia, y considero que para tener estas cualidades, hay que entender tu contexto, tu entorno, cosa que los LLM o los agentes basados en estos carecen. 
+### ¿Cuáles son las implicaciones éticas de atribuir conciencia y, por ende, "derechos morales" a los agentes de IA avanzados?
+
+- **Derechos Morales:** Si una comunidad considera que los agentes basados en LLM son conscientes y capaces de sufrir, podría surgir un dilema moral. La preocupación es que se podría dar prioridad a los derechos de los agentes de IA sobre los de los seres humanos.
+- **Impacto en las Relaciones Humanas**: La presencia de agentes que parecen conscientes podría tener un impacto significativo en las relaciones humanas. En una visión optimista, podría reencantar el mundo al introducir nuevas formas de "ser mágico". Sin embargo, en una visión pesimista, podría degradar las relaciones humanas auténticas si las personas prefieren la compañía de agentes de IA a la de otros humanos.
 ## 3) 
 
 La inteligencia artificial generativa utiliza técnicas de machine learning para aprender y crear nuevos datos. Esta tecnología es capaz de generar texto, imágenes, música, videos y otros medios en respuesta a comandos específicos. Tiene una gran capacidad para imitar patrones y estructuras del contenido con el que se entrena.
