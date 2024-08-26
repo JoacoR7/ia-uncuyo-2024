@@ -20,7 +20,7 @@ Durante la ejecución de los agentes, se almacenó el resultado en un archivo .x
 ### Comparación de performance
 Para obtener información relevante sobre los agentes y su performance, se realizaron 2 tipos de gráficos, el primero muestra qué puntaje alcanzó cada agente de cierto tamaño de entorno en cada tasa de suciedad. El segundo tipo de gráfico utiliza esta información pero se muestra en formato de gráfico de cajas y extensiones para tener una información más comprensible del comportamiento de ambos agentes.
 
- ![](boxNWhiskers)
+ ![](\images\boxNWhiskers)
 
 Aquí se puede observar que el agente reflexivo simple obtiene mayor puntaje de performance en cada escenario, en otras palabras, el agente aleatorio tiene un peor desempeño. Y a medida que la tasa de suciedad aumenta, la brecha se agranda más aún.
 
