@@ -1,3 +1,6 @@
+## 2.10
+Consider a modified version of the vacuum environment in Exercise 2.8, in which the
+agent is penalized one point for each movement.
 ### 2.10 (a) ¿Puede un agente reflexivo simple ser perfectamente racional en este entorno? 
 
 En un entorno donde el agente es penalizado por cada movimiento, un agente reflexivo simple (que opera basándose solo en la percepción actual) no podría ser perfectamente racional. Un agente reflexivo simple suele tener reglas fijas que responden a la percepción actual sin considerar el costo de moverse. En este entorno, el costo de moverse debe ser considerado en la estrategia de limpieza. Por ejemplo:
@@ -25,6 +28,10 @@ Con información completa sobre la suciedad en cada cuadrado, el agente reflexiv
 **Para el Agente Reflexivo con Estado**:
 Con información completa sobre el estado de cada cuadrado, el agente reflexivo con estado puede planificar sus movimientos de manera más eficiente, minimizando el costo total de los movimientos. Puede utilizar estrategias de planificación más avanzadas, como el algoritmo de Dijkstra o A*, para optimizar el recorrido y minimizar las penalizaciones, haciendo que el agente sea más racional.
 
+## 2.11
+Consider a modified version of the vacuum environment in Exercise 2.8, in which the
+geography of the environment—its extent, boundaries, and obstacles—is unknown, as is the
+initial dirt configuration. (The agent can go Up and Down as well as Left and Right .)
 ### 2.11 (a) ¿Puede un agente reflexivo simple ser perfectamente racional en este entorno? 
 
 En el entorno modificado, donde la geografía y la configuración inicial de la suciedad son desconocidas, un agente reflexivo simple (que opera basándose en la percepción actual y un conjunto de reglas predefinidas) no será racional. 

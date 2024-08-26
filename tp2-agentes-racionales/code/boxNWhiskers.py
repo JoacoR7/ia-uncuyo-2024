@@ -4,8 +4,9 @@ import seaborn as sns
 import numpy as np
 
 # Cargar el archivo Excel
-file_path = r'C:\Users\joaqu\Desktop\pruebas.xlsx'
-df = pd.read_excel(file_path, sheet_name='16x16', header=None)
+file_path = r'C:\Users\joaqu\Desktop\Análisis agentes racionales.xlsx'
+sheet_name = "16x16"
+df = pd.read_excel(file_path, sheet_name=sheet_name, header=None)
 
 # Extracción de datos
 performance_simple = df.iloc[2, 1:41]
@@ -37,7 +38,7 @@ data = pd.concat([df_simple, df_random], ignore_index=True)
 # Crear el gráfico de cajas y bigotes
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='Tasa de Suciedad', y='Performance', hue='Agente', data=data)
-plt.title('Gráficos de caja y extensiones de performance de agentes reflexivo simple y random: Entorno 16x16')
+plt.title('Gráficos de caja y extensiones de performance de agentes reflexivo simple y random: Entorno ' + sheet_name)
 plt.xlabel('Tasa de Suciedad')
 plt.ylabel('Puntaje de performance')
 plt.show()

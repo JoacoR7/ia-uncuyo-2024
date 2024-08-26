@@ -3,8 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Cargar el archivo Excel
-file_path = r'C:\Users\joaqu\Desktop\pruebas.xlsx'
-df = pd.read_excel(file_path, sheet_name='128x128', header=None)
+file_path = r'C:\Users\joaqu\Desktop\Análisis agentes racionales.xlsx'
+sheet_name = "128x128"
+df = pd.read_excel(file_path, sheet_name=sheet_name, header=None)
 
 # Contar el número de filas en el DataFrame
 row_count = df.shape[0] - 2
@@ -63,7 +64,7 @@ plt.yticks(np.arange(0, 1001, 50))
 # Etiquetas, título y leyenda
 plt.xlabel('Puntos de performance')
 plt.ylabel('Cantidad de acciones')
-plt.title('Comparación de cantidad de acciones tomadas para llegar a cada punto de performance')
+plt.title('Comparación de cantidad de acciones tomadas para llegar a cada punto de performance: Entorno ' + sheet_name)
 plt.legend()
 
 # Mostrar el gráfico

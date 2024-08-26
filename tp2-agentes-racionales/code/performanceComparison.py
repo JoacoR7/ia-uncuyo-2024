@@ -2,8 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Cargar el archivo Excel
-file_path = r'C:\Users\joaqu\Desktop\pruebas.xlsx'
-df = pd.read_excel(file_path, sheet_name='16x16', header=None)
+file_path = r'C:\Users\joaqu\Desktop\Análisis agentes racionales.xlsx'
+sheet_name = "128x128"
+df = pd.read_excel(file_path, sheet_name=sheet_name, header=None)
 
 valores_x = ["0.1", "0.2", "0.4", "0.8"]
 
@@ -29,16 +30,16 @@ plt.figure(figsize=(10, 6))
 
 # Graficar performance simple con marcador circular
 for i in range(4):
-    plt.scatter([unique_x[i]]*10, grouped_simple[i], color='blue', marker='o', label='Performance Simple' if i == 0 else "")
+    plt.scatter([unique_x[i]]*10, grouped_simple[i], color='blue', marker='o', label='Agente reflexivo simple' if i == 0 else "")
 
 # Graficar performance random con marcador "x"
 for i in range(4):
-    plt.scatter([unique_x[i]]*10, grouped_random[i], color='red', marker='x', label='Performance Random' if i == 0 else "")
+    plt.scatter([unique_x[i]]*10, grouped_random[i], color='red', marker='x', label='Agente aleatorio' if i == 0 else "")
 
 # Añadir etiquetas y título
 plt.xlabel('Tasa de suciedad')
 plt.ylabel('Puntaje de performance')
-plt.title('Comparación de performance de agente reflexivo simple y random: Entorno 16x16')
+plt.title('Comparación de performance de agente reflexivo simple y random: Entorno ' + sheet_name)
 
 # Ajustar los límites del eje y para que comiencen en 0 y terminen en el valor máximo + un margen
 plt.ylim(0, max_performance * 1.1)  # Añadir un 10% de margen superior
