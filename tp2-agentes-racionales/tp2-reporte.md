@@ -20,11 +20,11 @@ Durante la ejecución de los agentes, se almacenó el resultado en un archivo .x
 ### Comparación de performance
 Para obtener información relevante sobre los agentes y su performance, se realizaron 2 tipos de gráficos, el primero muestra qué puntaje alcanzó cada agente de cierto tamaño de entorno en cada tasa de suciedad. El segundo tipo de gráfico utiliza esta información pero se muestra en formato de gráfico de cajas y extensiones para tener una información más comprensible del comportamiento de ambos agentes.
 
- ![](\images\boxNWhiskers)
+ ![](images/comparacionPerformance.png)
 
 Aquí se puede observar que el agente reflexivo simple obtiene mayor puntaje de performance en cada escenario, en otras palabras, el agente aleatorio tiene un peor desempeño. Y a medida que la tasa de suciedad aumenta, la brecha se agranda más aún.
 
-![[boxNWhiskers.png]]
+![](images/boxNWhiskers.png)
 
 El gráfico de cajas y extensiones ofrece una visualización clara de la distribución del desempeño de ambos agentes en un entorno de 16x16 con diferentes tasas de suciedad. Se puede observar que la mediana del agente reflexivo simple es mucho más alta en comparación con la del agente aleatorio, esto significa que el agente reflexivo simple tiene un mejor resultado que el aleatorio.
 
@@ -32,7 +32,7 @@ Este gráfico también confirma que, a medida que aumenta la tasa de suciedad, l
 ### Comparación de unidad de tiempo
 No sólo sirve tener información de qué puntaje puede obtener cada agente, sino también cuánto tardará en promedio llegar a dichos puntajes. Para ello se realizó un gráfico de barras en el cual se detalla cuántas acciones tomó llegar a cada punto de performance, desde 1 al performance máximo alcanzado dentro del entorno en las distintas tasas de suciedad.
 
-![[comparacionPerformance.png]]
+![](images/comparacionAcciones.png)
 
 En este caso se grafica la información obtenida para un entorno de tamaño 128x128 con tasa de suciedad de 0.8. Podemos observar que no sólo el agente reflexivo simple obtiene un mayor puntaje, sino que también tarda aproximadamente la mitad que el agente aleatorio en alcanzar ciertos puntos de performance. Se puede observar, por ejemplo, que a un agente  aleatorio le toma, en promedio, alrededor de 800 acciones para obtener 101 puntos de performance, mientras que a un agente reflexivo simple le toma alrededor de 400 acciones.
 
