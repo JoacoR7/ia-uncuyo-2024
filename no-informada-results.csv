@@ -1,0 +1,2 @@
+algorithm_name,env_n,states_n,cost_e1,cost_e2,time,solution_found
+BFS,1,150,10,15,2.5,True

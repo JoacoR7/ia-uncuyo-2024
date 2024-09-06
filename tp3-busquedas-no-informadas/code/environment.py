@@ -3,6 +3,7 @@ from gymnasium.envs.toy_text.frozen_lake import generate_random_map
 from gymnasium import wrappers
 import time
 import random
+import numpy as np
 
 class Environment:
     def __init__(self, size, agent_life, hole_rate=0, is_deterministic=True, scenario=1):
@@ -47,28 +48,6 @@ class Environment:
         self.env.render()
         time.sleep(5)
 
-    def step(self, action):
-        # Tomar la acción y obtener el siguiente estado, recompensa, y si el episodio ha terminado
-        next_state, reward, done, info = self.env.step(action)
-        
-        # Costos asociados a las acciones según el escenario
-        if self.scenario == 1:
-            action_cost = 1  # Cada acción tiene un costo fijo de 1
-        elif self.scenario == 2:
-            action_cost = {
-                0: 0,  # Moverse a la izquierda
-                1: 1,  # Moverse hacia abajo
-                2: 2,  # Moverse a la derecha
-                3: 3   # Moverse hacia arriba
-            }.get(action, 0)
-        
-        # Descontar el costo de la acción del rendimiento
-        self.performance -= action_cost
-
-        self.render()
-        
-        return next_state, reward, done, info
-
     def reset(self):
         self.performance = 0
         return self.env.reset()
@@ -88,24 +67,32 @@ class Environment:
                 if self.space[r][c] == 'G':
                     goal = (r, c)
         return goal
+    
+    def total_cost(self, path, scenario = 1):
+        cost = 0
+        for movement in path:
+            if scenario == 1:
+                cost += 1
+            elif scenario == 2:
+                cost += movement
+        return cost
+
+    def manhattan_distance(self, current_node, goal_node):
+        x_position = current_node[0]
+        y_position = current_node[1]
+        x_distance = np.abs(x_position - goal_node[0])
+        y_distance = np.abs(y_position - goal_node[1])
+        return x_distance + y_distance
+    
+    def euclidean_distance(self, current_node, goal_node):
+        x_position = current_node[0]
+        y_position = current_node[1]
+        x_distance = (x_position - goal_node[0]) ** 2
+        y_distance = (y_position - goal_node[1]) ** 2
+        return np.sqrt(x_distance + y_distance)
 
 
 
-"""space = Environment(100, 5, 0.08)
-env = space.env
 
-state = env.reset()
-print("Posición inicial del agente:", state[0])
-done = truncated = False
-i = 0
-while not (done or truncated):
-    i += 1
-    print(i)
-    time.sleep(1)
-    action = env.action_space.sample() # Acción aleatoria
-    next_state, reward, done, truncated, _ = env.step(action)
-    print(f"Acción: {action}, Nuevo estado: {next_state}, Recompensa: {reward}")
-    print(f"¿Ganó? (encontró el objetivo): {done}")
-    print(f"¿Frenó? (alcanzó el máximo de pasos posible): {truncated}\n")
-    state = next_state"""
+
     
