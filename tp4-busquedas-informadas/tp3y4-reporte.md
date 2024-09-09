@@ -101,22 +101,22 @@ Se puede observar que en ambos escenarios la búsqueda por profundidad es la má
 
 Otra observación que se puede resaltar del gráfico es que en el escenario 2, los algoritmos cuestan el doble o más que en el escenario 1.
 
-![[costGraphBoxNWhiskers.png]]
+![](images/costGraphBoxNWhiskers.png)
 
 Con estos gráficos podemos observar que la búsqueda por profundidad tiene aproximadamente el triple de costo que los otros algoritmos.
 ### Estados explorados
 
-![[statesGraph.png]]
+![](images/statesGraph.png)
 
 Al igual que en el análisis anterior, el algoritmo de búsqueda por profundidad es el menos eficiente: la cantidad de estados que necesita explorar, en promedio, es el doble o más que lo que le toma a los demás algoritmos.
-![[statesExpliredBoxNWhiskers.png]]
+![](images/statesExpliredBoxNWhiskers.png)
 
 ### Tiempo
 
-![[timeGraph.png]]
+![](images/timeGraph.png)
 Aquí también se puede observar que el algoritmo DFS es el que más tiempo le toma llegar a una solución, mientras que los otros son bastante similares.
 
-![[Pasted image 20240909202545.png]]
+![](images/timeGraphBoxNWhiskers.png)
 
 ## Conclusiones
 El análisis comparativo de los algoritmos de búsqueda aplicado al entorno FrozenLake de Gymnasium reveló algunas diferencias en términos de costo, eficiencia y número de estados explorados. A partir de los experimentos realizados, se puede concluir que:
