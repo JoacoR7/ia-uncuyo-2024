@@ -52,7 +52,7 @@ def save_data():
     ]
 
     # Ruta del archivo CSV
-    file_path = r'C:\Users\joaqu\Desktop\no-informada-results.csv'
+    file_path = r'C:\Users\joaqu\OneDrive\Facultad\Tercer año\Sexto semestre\Inteligencia Artificial 1\ia-uncuyo-2024\tp3-busquedas-no-informadas\results.csv'
 
     # Escribir los resultados en el archivo CSV
     with open(file_path, mode='w', newline='') as file:
@@ -67,7 +67,7 @@ def save_data():
                 writer.writerow(solution)
 
 def load_data():
-    file_path = r'C:\Users\joaqu\Desktop\no-informada-results.csv'
+    file_path = r'C:\Users\joaqu\OneDrive\Facultad\Tercer año\Sexto semestre\Inteligencia Artificial 1\ia-uncuyo-2024\tp3-busquedas-no-informadas\results.csv'
     with open(file_path, mode='r') as file:
         reader = csv.DictReader(file)
         
