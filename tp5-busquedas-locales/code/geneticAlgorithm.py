@@ -1,17 +1,24 @@
 import random
 import environment
+import time as t
 
 def fitness_function(solution):
     return 1 / (1 + environment.objective_function(solution))
 
-def generate_population(population_size, environment_size):
+def generate_neighbor(solution):
+    neighbor = solution.copy()
+    N = len(solution)
+    column = random.randint(0, N - 1)
+    row = solution[column]
+    while row == solution[column]: 
+        row = random.randint(0, N - 1)
+    neighbor[column] = row
+    return neighbor
+
+def generate_population(population_size, solution):
     population = []
     for i in range(population_size):
-        solution = []
-        for j in range(environment_size):
-            solution.append(random.randint(0, environment_size-1))
-        population.append(solution)
-        solution = []
+        population.append(generate_neighbor(solution))
     return population
 
 import random
@@ -39,11 +46,12 @@ def random_selection(population):
             
     
 def geneticAlgorithm(solution):
-    actual_population = generate_population(100, len(solution))
+    start = t.time()
+    actual_population = generate_population(100, solution)
     actual_fit = fitness_function(solution)
     actual_solution = solution
-    time = 0
-    while actual_fit != 1 and time < 100:
+    iterations = 1
+    while actual_fit != 1 and iterations < 1000:
         new_population = []
         for i in range(len(actual_population)):
             solution_x = random_selection(actual_population)
@@ -56,7 +64,7 @@ def geneticAlgorithm(solution):
             if(actual_fit < child_fit):
                 actual_solution = child
                 actual_fit = child_fit
-        time += 1
         actual_population = new_population
-    return actual_solution, environment.objective_function(actual_solution)
+        iterations += 1
+    return actual_solution, environment.objective_function(actual_solution), iterations, t.time() - start
                 

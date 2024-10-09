@@ -1,4 +1,5 @@
 import environment
+import time
                 
 def generate_neighbors(solution):
     neighbors = []
@@ -23,10 +24,11 @@ def best_neighbor(solution):
     return best_solution, best_solution_cost
     
 def hill_climbing(solution):
+    start = time.time()
     actual_solution = solution
     actual_cost = environment.objective_function(actual_solution)
-    
-    while True:
+    iterations = 1
+    while True and actual_cost != 0:
         new_solution, new_cost = best_neighbor(actual_solution)
         
         if(new_cost >= actual_cost):
@@ -37,5 +39,6 @@ def hill_climbing(solution):
         
         if(actual_cost == 0):
             break
+        iterations += 1
     
-    return actual_solution, actual_cost
+    return actual_solution, actual_cost, iterations, time.time() - start
