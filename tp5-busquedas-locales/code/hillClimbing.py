@@ -27,9 +27,11 @@ def hill_climbing(solution):
     start = time.time()
     actual_solution = solution
     actual_cost = environment.objective_function(actual_solution)
+    fitness_over_time = [actual_cost]
     iterations = 1
     while True and actual_cost != 0:
         new_solution, new_cost = best_neighbor(actual_solution)
+        fitness_over_time.append(new_cost)
         
         if(new_cost >= actual_cost):
             break
@@ -41,4 +43,4 @@ def hill_climbing(solution):
             break
         iterations += 1
     
-    return actual_solution, actual_cost, iterations, time.time() - start
+    return actual_solution, actual_cost, iterations, time.time() - start, fitness_over_time

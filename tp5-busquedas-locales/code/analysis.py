@@ -45,8 +45,29 @@ env_size = 4  # Cambia el tamaño de entorno si deseas filtrar por uno específi
 # Filtrar los datos
 datos_filtrados = filtrar_datos(algoritmo=None, env_size=None)
 
-plotear_resultados(datos_filtrados, 'Porcentaje Optimo')
-plotear_resultados(datos_filtrados, 'Tiempo Promedio (s)')
-plotear_resultados(datos_filtrados, 'Desviación Tiempo (s)')
-plotear_resultados(datos_filtrados, 'Promedio Iteraciones')
-plotear_resultados(datos_filtrados, 'Desviación Iteraciones')
+#plotear_resultados(datos_filtrados, 'Porcentaje Optimo')
+#plotear_resultados(datos_filtrados, 'Tiempo Promedio (s)')
+#plotear_resultados(datos_filtrados, 'Desviación Tiempo (s)')
+#plotear_resultados(datos_filtrados, 'Promedio Iteraciones')
+#plotear_resultados(datos_filtrados, 'Desviación Iteraciones')
+
+def plotear_iteraciones(objective_function_results):
+    # Nombres de los algoritmos para etiquetar cada gráfico
+    algorithms = ["Hill Climbing", "Simulated Annealing", "Genetic Algorithm"]
+
+    # Crear subplots: 1 fila, 3 columnas
+    fig, axs = plt.subplots(1, 3, figsize=(18, 5))
+
+    # Generar un gráfico independiente para cada algoritmo
+    for i, results in enumerate(objective_function_results):
+        axs[i].plot(results, label=f"{algorithms[i]} Fitness")
+        axs[i].set_xlabel("Iteración")
+        axs[i].set_ylabel("Valor de Fitness")
+        axs[i].set_title(f"{algorithms[i]}")
+        axs[i].legend()
+        axs[i].grid(True)
+
+    # Ajustar el layout
+    plt.suptitle("Comparación de Algoritmos por Valor de Fitness en cada Iteración")
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Ajustar para que el título no se superponga
+    plt.show()

@@ -39,7 +39,7 @@ def genetic_algorithm(initial_solution: List[int],
                      tournament_size: int = 3,
                      mutation_rate: float = 0.05,
                      max_generations: int = 1000,
-                     convergence_generations: int = 15) -> Tuple[List[int], float, int, float]:
+                     convergence_generations: int = 15) -> Tuple[List[int], float, int, float, List[float]]:
     """
     Algoritmo genético optimizado con:
     - Elitismo
@@ -58,6 +58,7 @@ def genetic_algorithm(initial_solution: List[int],
     # Variables para convergencia
     generations_without_improvement = 0
     generation = 0
+    fitness_over_time = []
     
     while (best_fitness != 1 and 
            generation < max_generations and 
@@ -66,6 +67,9 @@ def genetic_algorithm(initial_solution: List[int],
         # Evaluar población actual y mantener élite
         population_with_fitness = [(ind, fitness_function(ind)) for ind in population]
         population_with_fitness.sort(key=lambda x: x[1], reverse=True)
+        
+        # Registrar el mejor fitness de esta generación
+        fitness_over_time.append(population_with_fitness[0][1])
         
         # Mantener el 10% mejor
         elite_size = population_size // 10
@@ -105,4 +109,5 @@ def genetic_algorithm(initial_solution: List[int],
     return (best_solution, 
             environment.objective_function(best_solution), 
             generation, 
-            t.time() - start)
+            t.time() - start,
+            fitness_over_time)

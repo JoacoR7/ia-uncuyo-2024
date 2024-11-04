@@ -24,6 +24,7 @@ def simmulated_annealing(solution, alpha, minimum_temperature):
     start = time.time()
     actual_solution = solution
     actual_solution_cost = environment.objective_function(actual_solution)
+    fitness_over_time = [actual_solution_cost]
     temperature = 100
     iterations = 1
     while temperature > minimum_temperature or actual_solution_cost != 0 and iterations < 1000:
@@ -39,7 +40,8 @@ def simmulated_annealing(solution, alpha, minimum_temperature):
             if(probability >= random_number):
                 actual_solution = new_solution
                 actual_solution_cost = new_solution_cost
+        fitness_over_time.append(actual_solution_cost)
         temperature = geometric_cooling(temperature, alpha)
         iterations += 1
-    return actual_solution, actual_solution_cost, iterations, time.time() - start
+    return actual_solution, actual_solution_cost, iterations, time.time() - start, fitness_over_time
     

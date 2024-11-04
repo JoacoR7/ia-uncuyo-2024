@@ -3,11 +3,12 @@ import hillClimbing
 import simulatedAnnealing
 import geneticAlgorithm
 import data
+import analysis
 
 
 env_sizes = [4, 8, 10, 12, 15]
 algorithm_names = ["hill_climbing", "simulated_annealing", "genetic_algorithm"]
-data.initialize_csv()
+"""data.initialize_csv()
 
 hill_climbing_results = []
 simulated_annealing_results = []
@@ -30,5 +31,11 @@ for i in range(3):
         algorithm = results[i]
         result = algorithm[j]
         data.save_results(algorithm_names[i], len(result[0]), result[1], result[2], result[3], result[0])
-        
-        
+     """   
+
+solucion_inicial = environment.generate_initial_solution(10)
+objective_function_results = []
+objective_function_results.append(hillClimbing.hill_climbing(solucion_inicial)[4])
+objective_function_results.append(simulatedAnnealing.simmulated_annealing(solucion_inicial, 0.99, 0.01)[4])
+objective_function_results.append(geneticAlgorithm.genetic_algorithm(solucion_inicial)[4])
+analysis.plotear_iteraciones(objective_function_results)

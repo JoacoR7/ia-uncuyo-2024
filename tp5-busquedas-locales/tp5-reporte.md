@@ -51,6 +51,8 @@ Los resultados obtenidos de los experimentos se presentan en las siguientes tabl
 ![](images/desviacion_tiempo.png)
 ![](images/iteraciones.png)
 ![](images/desviacion_iteraciones.png)
+![](images/fitness_values.png)
+En este último gráfico, el valor de fitness (fitness function) representa qué tan buena es la solución en cada iteración, en los primeros algoritmos, mientras más bajo sea el valor, mejor es, en el tercer algoritmo, mientras más se acerque a 1, mejor es.
 #### Interpretación
 - **Hill Climbing**: mostró un buen rendimiento en tiempo de ejecución y pocas iteraciones para valores bajos de N. De igual forma muy pocas veces encontró la solución óptima, es decir, cuando ninguna reina se ataca entre sí, y esto empeora a medida que N aumenta.
 - **Simulated Annealing**: presentó una mejora significativa en la tasa de éxito, aunque requiere más tiempo y iteraciones que Hill Climbing. Es el que mejor tasa de éxito presenta en los 5 escenarios.
@@ -62,4 +64,4 @@ En general, Hill Climbing es una opción rápida, pero menos fiable para valores
 ---
 ### **Conclusiones**
 
-Los experimentos muestran que, para el problema de las N-Reinas, el algoritmo de Simulated Annealing es el más eficaz en encontrar soluciones válidas, ya que es el que más rápido, en tiempo, encuentra óptimas soluciones. 
+Los experimentos muestran que, para el problema de las N-Reinas, el algoritmo de Simulated Annealing es el más eficaz en encontrar soluciones válidas, ya que es el que más rápido, en tiempo, encuentra óptimas soluciones. Por motivos de eficiencia, se optimizó y se limitó el algoritmo genético, se experimentó dándole más libertad y encontraba más soluciones, pero a cambio de un tiempo mucho mayor. Si se busca eficiencia, el algoritmo más adecuado, según la implementación lograda, sería simulated annealing.
