@@ -7,3 +7,9 @@
 | Practicar tenis contra una pared     | Tiempo de juego, velocidad, precisión, potencia                                                                 | Cancha de tenis con una pared                                                            | Movimiento, golpes                             | Cámara, sensores de movimiento                           |
 | Realizar un salto de altura          | Velocidad, altura máxima, precisión, aterrizaje, consumo de energía                                             | Pista de atletismo, barra de altura, colchoneta                                          | Saltar, correr, posicionarse para la caída     | Sensores de movimiento, de objetos, de velocidad, fuerza |
 | Pujar por un artículo en una subasta | Precio de compra, presupuesto, tiempo de reacción                                                               | Participantes, reglas de subasta, valor del artículo, pujas de otros usuarios            | Realización de pujas, retiro de subasta        | Detector de subastas, pujas, precios                     |
+- Jugar al CS: Parcialmente observable (no se ve todo el juego), multiagente (múltiples jugadores o bots), dinámico (estados como salud, jugadores, etc. cambian), y continuo (los jugadores se mueven en un espacio tridimensional).
+- Explorar los océanos: Parcialmente observable, multiagente, dinámico y continuo.
+- Comprar y vender tokens crypto: Parcialmente observable, multiagente, dinámico y discreto.
+- Practicar tenis contra una pared: Totalmente observable, un solo agente, estático y continuo.
+- Realizar un salto de altura: Totalmente observable, un solo agente, estático y continuo.
+- Pujar por un artículo en una subasta: Totalmente observable, multiagente, dinámico y discreto.
