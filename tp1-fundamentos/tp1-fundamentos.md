@@ -8,11 +8,11 @@ Estos sistemas no tienen conciencia del entorno o un entendimiento real del prob
 
 Acá entra en juego la pregunta ¿pueden las máquinas pensar? Pero es lo mismo que preguntar si los submarinos pueden nadar (según la definición de nadar), o si los aviones pueden volar (según la definición de volar). Turing dejó de lado esa pregunta y la reemplazó por un examen de comportamiento inteligente (Turing Test).
 
-![[021718_reviews_machines_main.webp]]
+![](images/021718_reviews_machines_main.webp)
 
 El Test de Turing es una forma de medir la capacidad de una máquina para mostrar un comportamiento inteligente similar al de un humano: una persona tiene una conversación por texto, sin saber si del otro lado hay una persona o una máquina. Si, después de la conversación, el juez no puede distinguir con quién está hablando, se dice que la máquina ha pasado el Test de Turing. Esto sugiere que la máquina tiene un nivel de inteligencia similar al humano en términos de lenguaje y comunicación. El objetivo del test no es que la máquina piense como un humano, sino que se comporte de manera que un humano no pueda diferenciarla de otra persona en una conversación.
 
-![[53.jpg]]
+![](images/53.jpg)
 #### El argumento de la discapacidad
 
 Este argumento le da un enfoque al planteamiento de la pregunta principal, para ello se afirma que una máquina nunca podrá hacer ciertas cosas que los humanos pueden hacer, como ser amable, equivocarse, o enamorarse. 
@@ -64,12 +64,12 @@ El fisicalismo dice que el estado mental de una persona depende de su estado cer
 
 Si tu cerebro fue sacado de tu cuerpo al nacer y puesto en un recipiente que lo mantiene funcionando. Mientras tanto, una computadora te da señales para simular una vida que es igual a la que tendrías si estuvieras en tu cuerpo, algo parecido a la película de Matrix. Podrías tener un estado cerebral igual al de alguien que realmente está comiendo una hamburguesa, pero en realidad no estás comiendo ninguna. En este caso, tu estado mental de "saber que estás comiendo una hamburguesa" no sería correcto porque no estás experimentando eso.
 
-![[Braininvat.jpg]]
+![](images/Braininvat.jpg)
 #### Funcionalismo y el experimento de reemplazo de cerebro
 
 **Funcionalismo:** es una teoría que dice que los estados mentales de una persona (como pensar, sentir o desear) son definidos por sus roles o funciones en un sistema, no por su implementación física específica. Según esta teoría, si dos sistemas (como un cerebro humano y una computadora) tienen los mismos procesos causales, deberían tener los mismos estados mentales.
 
-![[funcionalismo-1.webp]]
+![](images/funcionalismo-1.webp)
 
 Si reemplazamos gradualmente las neuronas de un cerebro humano por componentes electrónicos que cumplen las mismas funciones, y el sujeto sigue mostrando signos de conciencia (respondiendo a preguntas, sintiendo dolor), entonces debemos concluir que la conciencia no es exclusiva de los cerebros biológicos.
 
@@ -86,7 +86,7 @@ Según esta teoría, los estados mentales son características de alto nivel que
 - **Conciencia**: En el debate sobre la IA fuerte, uno de los temas centrales es la conciencia. La conciencia puede desglosarse en diferentes aspectos como la comprensión y la auto-conciencia. 
 - **Qualia**: El término técnico para referirse a la naturaleza intrínseca de las experiencias es **qualia** (del latín que significa “tales cosas”). Los qualia son las cualidades sensoriales subjetivas de nuestras experiencias. Por ejemplo, la sensación de ver el color rojo es un tipo de qualia.
 
-	![[qualia.webp]]
+	![](images/qualia.webp)
 
 - **Brecha explicativa**: Es la dificultad de conectar los procesos neuronales descritos científicamente con la experiencia subjetiva. Incluso si entendemos perfectamente los procesos cerebrales, no hay una forma aceptada de deducir que un ser tiene una experiencia conciente particular. Esta brecha ha llevado a algunos filósofos a concluir que los humanos podrían ser incapaces de comprender completamente su propia conciencia. 
 - **Posición de Turing**: Alan Turing reconoció que la cuestión de la conciencia es difícil, pero no creía que fuera relevante para la práctica de la IA. Turing pensaba que la creación de programas que se comportan de manera inteligente no requiere resolver los misterios de la conciencia. El objetivo principal es desarrollar programas inteligentes, no necesariamente conscientes, y Turing no pensaba que pudiéramos determinar si un programa es conciente o no.
@@ -136,6 +136,7 @@ Según esta teoría, los estados mentales son características de alto nivel que
 Considero que por ahora estamos bastante lejos de desarrollar una "IA Fuerte" ya que primero hay que entender la conciencia humana antes de darle conciencia a una máquina o sistema. Pienso que la teoría del funcionalismo sería la más acertada, si llegáramos a entender los procesos neuronales y describirlos como funciones, no sería costoso representar esas funciones en una máquina.
 
 Por ahora, todos las IA implementadas entrarían a la categoría de "IA Débil", ya que, por más que tengan una gran conocimiento, incluso mucho más amplio que el de cualquier ser humano, no puede extenderse más allá de este, o incluso generar nuevo conocimiento a partir de lo que ya sabe (como sacar conclusiones). 
+![](images/mapa_mental_ia.png)
 ## 2)
 
 ### ¿Es posible considerar a los agentes conversacionales basados en grandes modelos de lenguaje (LLMs) como conscientes?
