@@ -40,3 +40,25 @@ Cuando el algoritmo AC-3 se ejecuta en un árbol estructurado CSP, el peor caso 
 Hay que analizar las restricciones para que para cada valor de Xi tengamos un seguimiento de las variables Xk tales que un archo entre ambos es satisfecho por un valor particular de Xi.
 - Ejemplo: Si Xi puede tomar los valores {1, 2, 3} y tenemos una restricción como Xi > Xk, vamos a guardar cuáles son los valores Xk válidos para cada valor de Xi.
 Entonces, cuando un valor de Xi es eliminado, se reduce la cantidad de valores disponibles para cada arco (Xk, Xi).
+
+# 5. 
+### Demostrar la correctitud del algoritmo CSP para árboles estructurados
+
+La 2-consistencia nos dice que para cada par de variables Xi , Xj conectadas por una restricción, entonces para cada valor del dominio de Xi existe al menos un valor en el dominio Xj que satisface la restricción entre estos.
+
+En un árbol, la propiedad que nos interesa es que no tiene ciclos. Esto significa que una vez que asignamos valores a las variables no vamos a tener caminos "cíclicos" que nos provoquen una inconsistencia. Entonces, una vez que una variable sea consistente con su vecino (nodo hijo), esa consistencia no se verá afectada por la asignaciones posteriores.
+
+Entonces, para demostrar la n-consistencia en un árbol vamos a elegir un nodo "raíz" y vamos a realizar un recorrido hacia abajo, aplicando la 2-consistencia en cada nodo, lo que garantiza que para cualquier valor asignado a una variable, existe al menos un valor compatible en sus nodos hijos. Como el grafo no tiene ciclos, no necesitamos preocuparnos de que las asignaciones en otros subárboles interfieran con las consistencias previamente establecidas. Esto implica que la 2-consistencia es **suficiente** para garantizar la n-consistencia en un CSP basado en árboles.
+# 6 y 7.
+
+Para resolver el problema de las N reinas se implementaron los algoritmos de Backtracking y Forward Checking en tableros de tamaño N = {4, 8, 10, 12, 15}, siendo el tablero de N x N.
+
+![](images/estados_explorados.png)
+
+Como se puede observar en la imagen anterior, la cantidad de estados que explora Forward Checking es mucho menor ya que reduce los posibles dominios de las distintas variables (columnas del tablero). Y backtracking prueba todas las combinaciones posibles hasta llegar a una solución.
+
+![](images/tiempo_ejecucion.png)
+
+Forward Checking también consume menos tiempo, como se observa en la imagen anterior ya que explora menos combinaciones.
+
+Comparando el algoritmo Forward Checking con el de Backtracking podemos concluir que el primero es mejor en términos de eficiencia y tiempo ya que consume menos recursos y tiempo para llegar a la mejor solución.
