@@ -11,7 +11,6 @@ Cuando tenemos datos de estas características, los métodos flexibles no son ta
 ### c) The relationship between the predictors and response is highly non-linear.
 
 En este caso los métodos flexibles son mejores, ya que un método inflexible (como regresión lineal) no se adaptan a relaciones no lineales de forma adecuada.
-
 ### d) The variance of the error terms σ^2=Var(ϵ) is extremely high.
 
 Cuando la varianza del error es alta, es decir, que hay mucha dispersión entre los errores, hay mucho ruido. Un método flexible va a tender a realizar un sobreajuste con el ruido, provocando una mala generalización. 
@@ -25,9 +24,9 @@ Cuando la varianza del error es alta, es decir, que hay mucha dispersión entre 
 
 | Escenario                          | Tipo de problema | Interés    | n   | p   |
 | ---------------------------------- | ---------------- | ---------- | --- | --- |
-| a) Salarios de CEO                 | Regresión        | Inferencia | 500 | 4   |
-| b) Predicción de éxito de producto | Clasificación    | Predicción | 20  | 12  |
-| c) Predicción del tipo de cambio   | Regresión        | Predicción | 52  | 4   |
+| a) Salarios de CEO                 | Regresión        | Inferencia | 500 | 3   |
+| b) Predicción de éxito de producto | Clasificación    | Predicción | 20  | 13  |
+| c) Predicción del tipo de cambio   | Regresión        | Predicción | 52  | 3   |
 ## 5. What are the advantages and disadvantages of a very flexible (versus a less flexible) approach for regression or classification? Under what circumstances might a more flexible approach be preferred to a less flexible approach? When might a less flexible approach be preferred?
 
 ### Ventajas de flexibilidad:

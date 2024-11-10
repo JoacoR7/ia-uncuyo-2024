@@ -1,0 +1,149 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+source("TP7.R")
+```
+
+```{r}
+# Ejercicio 1
+train_data_path <- "../data/arbolado-mza-dataset.csv"
+dataframes <- split_dataset(train_data_path, 0.8)
+```
+
+```{r}
+# Ejercicio 2
+resultados_analisis <- analyze_dataset(dataframes$train)
+resultados_analisis
+```
+
+```{r}
+# Ejercicio 3
+histograms <- create_histograms(dataframes$train)
+histograms
+```
+
+```{r}
+# Ejercicio 4
+validation_data_path <- "../data/arbolado-mendoza-dataset-validation.csv"
+
+column_types <- cols(
+  id = col_integer(),
+  especie = col_character(),
+  ultima_modificacion = col_character(),
+  altura = col_character(),
+  circ_tronco_cm = col_double(),
+  diametro_tronco = col_character(),
+  long = col_double(),
+  lat = col_double(),
+  seccion = col_integer(),
+  nombre_seccion = col_character(),
+  area_seccion = col_double(),
+  inclinacion_peligrosa = col_character()
+)
+
+validation_dataframe <- extract_data(validation_data_path, column_types)
+
+val_random <- random_classifier(validation_dataframe)
+random_metrics <- calculate_metrics(val_random$inclinacion_peligrosa, val_random$prediction_class)
+random_metrics
+```
+```{r}
+# Ejercicio 5
+val_majority <- biggerclass_classifier(dataframes$validation)
+majority_metrics <- calculate_metrics(val_majority$inclinacion_peligrosa, val_majority$prediction_class)
+majority_metrics
+```
+```{r}
+# Ejercicio 7
+cv_results <- cross_validation(dataframes$train, k=10)
+cv_results
+```
+
+```{r}
+clean_dataframe <- remove_rare_species(dataframes$train, 10)
+clean_dataframe_results <- cross_validation(clean_dataframe, k=10)
+clean_dataframe_results
+```
+
+```{r}
+oversampled_dataframe <- perform_oversampling(clean_dataframe)
+oversampled_dataframe_results <- cross_validation(oversampled_dataframe, k=10)
+oversampled_dataframe_results
+```
+
+```{r}
+subsampled_dataframe <- perform_undersampling(clean_dataframe)
+subsampled_dataframe_results <- cross_validation(subsampled_dataframe, k=20)
+subsampled_dataframe_results
+```
+
+```{r}
+
+dataset_path <- "../data/arbolado-mza-dataset.csv"
+test_path <- "../data/arbolado-mza-dataset-test.csv"
+
+column_types <- cols(
+  id = col_integer(),
+  especie = col_character(),
+  ultima_modificacion = col_character(),
+  altura = col_character(),
+  circ_tronco_cm = col_double(),
+  diametro_tronco = col_character(),
+  long = col_double(),
+  lat = col_double(),
+  seccion = col_integer(),
+  nombre_seccion = col_character(),
+  area_seccion = col_double(),
+  inclinacion_peligrosa = col_character()
+)
+
+model_dataframe <- extract_data(dataset_path, column_types)
+
+column_types <- cols(
+  id = col_integer(),
+  especie = col_character(),
+  ultima_modificacion = col_character(),
+  altura = col_character(),
+  circ_tronco_cm = col_double(),
+  diametro_tronco = col_character(),
+  long = col_double(),
+  lat = col_double(),
+  seccion = col_integer(),
+  nombre_seccion = col_character(),
+  area_seccion = col_double()
+)
+test_dataframe <- extract_data(test_path, column_types)
+```
+
+```{r}
+clean_model_dataframe <- remove_rare_species(model_dataframe)
+undersampled_model_dataframe <- perform_undersampling(clean_model_dataframe)
+oversampled_model_dataframe <- perform_oversampling(clean_model_dataframe, method = "ROSE")
+```
+
+```{r}
+model <- random_forest_classifier(undersampled_model_dataframe)
+prediction <- predict_random_forest(model, test_dataframe)
+prediction
+```
+
+
+```{r}
+write.csv(prediction, "predicciones.csv", row.names = FALSE)
+```
+
+```{r}
+modelo <- train_ensemble_model(oversampled_model_dataframe, "inclinacion_peligrosa", c("altura", "circ_tronco_cm", "diametro_tronco", "long", "lat", "seccion", "especie"))
+```
+
+```{r}
+prediction_ensemble <- predict_with_ensemble(modelo, test_dataframe)
+write.csv(prediction_ensemble, "predicciones.csv", row.names = FALSE)
+```
+
+
+
