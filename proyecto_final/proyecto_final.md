@@ -9,11 +9,15 @@ Código de proyecto: SPACEAI
 - [Introducción](#introducción)
 - [Marco teórico](#marco-teórico)
   - [Reinforcement Learning](#reinforcement-learning)
-    - [Q-learning](#q-learning)
-    - [Deep Q-Network](#deep-q-network)
+    - [Diferencia con Machine Learning \[1\]](#diferencia-con-machine-learning-1)
+  - [Q-learning](#q-learning)
+  - [Deep Q-Network](#deep-q-network)
+    - [Arquitectura de la Red Neuronal en DQN](#arquitectura-de-la-red-neuronal-en-dqn)
+    - [Aprendizaje y Optimización](#aprendizaje-y-optimización)
   - [OpenAI Gymnasium API](#openai-gymnasium-api)
     - [Características](#características)
     - [Funcionamiento](#funcionamiento)
+- [Bibliografía](#bibliografía)
 
 ## Introducción
 (A completar)
@@ -36,6 +40,25 @@ El aprendizaje en RL se basa en los siguientes elementos clave:
 - **Política (π):** Estrategia que define que acción tomar en cada estado.
 
 El objetivo del agente es aprender una política óptima $π^*$ que maximice la suma de recompensas a lo largo del tiempo. Para lograrlo, se utilizan diferentes algoritmos de aprendizaje, como **Q-learning, Deep Q-Network (DQN) y Double Deep Q-Network (DDQN)**.
+
+#### Diferencia con Machine Learning [[1]](#ref1)
+
+Para entender mejor el enfoque de Reinforcement Learning, podemos hacer una pequeña comparación entre los distintos paradigmas:
+
+**Supervised Learning:** El agente aprende a estimar valores o clasificar elementos a partir de un conjunto de datos etiquetados, donde cada entrada tiene una salida esperada (etiqueta). Ejemplo: identificar si la foto de un animal se trata de un gato o no.
+
+**Unsupervised Leraning:** El agente trabaja con datos sin etiquetar, a partir de los datos proporcionados debe encontrar patrones, una "estructura oculta" en los datos. Ejemplo: identificar los distintos tipos de clientes en un e-commerce.
+
+**Reinforcement Learning:** El agente aprende a interactuar con el entorno mediante la experiencia, la cual le proporcionará recompensas positivas o negativas, y su objetivo es obtener la mejor recompensa posible. Ejemplo: entrenamiento de vehículos autónomos.
+
+<div align="center">
+
+| _[Figura 1] Comparación de paradigmas [[2]](#ref2)_ |
+| :--------------------------------------------: |
+|    <img src="images/classes_of_learning_problems.png">     |
+
+</div>
+
 
 ### Q-learning
 **Q-learning** es un algoritmo de aprendizaje por refuerzo basado en valores, cuyo objetivo es aprender una función de acción-valor **Q(s, a)** , que representa la recompensa esperada si el agente toma la acción **a** en el estado **s** y sigue la política óptima a partir de ahí.  
@@ -67,7 +90,7 @@ El **Deep Q-Network (DQN)** es una implementación específica de **Deep Q-Learn
 
 DQN ha sido una de las innovaciones más importantes en **Reinforcement Learning**, permitiendo aplicar **Q-learning** en entornos con espacios de estados continuos y de alta dimensión.
 
-#### **Arquitectura de la Red Neuronal en DQN**  
+#### Arquitectura de la Red Neuronal en DQN  
 
 DQN emplea una **red neuronal artificial** con tres componentes principales:  
 
@@ -75,7 +98,7 @@ DQN emplea una **red neuronal artificial** con tres componentes principales:
 - **Capas ocultas**: Son capas intermedias con múltiples neuronas que extraen características relevantes del estado. Utilizan funciones de activación no lineales, como **ReLU (Rectified Linear Unit)**, para capturar patrones complejos.  
 - **Capa de salida**: Genera un conjunto de valores Q(s, a), donde cada neurona en esta capa representa el valor estimado de tomar una acción específica a en el estado s.  
 
-#### **Aprendizaje y Optimización**
+#### Aprendizaje y Optimización
 
 Para mejorar la precisión de los valores Q(s, a), DQN ajusta los **pesos** de las conexiones entre neuronas mediante el algoritmo de **backpropagation** y optimización por **descenso de gradiente estocástico (SGD)** o variantes como **Adam**.  
 
@@ -108,3 +131,7 @@ Para la interacción con un entorno de Gymnasium, el proceso es el siguiente:
 - Done: Indica si el juego terminó.
 - Info: Datos adicionales como puntaje acumulado.
 
+## Bibliografía
+---
+<a id="ref1"></a> [1] R. S. Sutton & A. G. Barto. (2020). Reinforcement Learning: An Introduction, Second Edition. The MIT Press.
+<a id="ref2"></a> [2] Alexander Amini. (2024). MIT 6.S191: Reinforcement Learning. YouTube. 
