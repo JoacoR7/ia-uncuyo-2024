@@ -9,14 +9,15 @@ Código de proyecto: SPACEAI
 - [Introducción](#introducción)
 - [Marco teórico](#marco-teórico)
   - [Reinforcement Learning](#reinforcement-learning)
-    - [Diferencia con Machine Learning \[1\]](#diferencia-con-machine-learning-1)
+    - [Diferencia con Machine Learning](#diferencia-con-machine-learning)
   - [Q-learning](#q-learning)
   - [Deep Q-Network](#deep-q-network)
     - [Arquitectura de la Red Neuronal en DQN](#arquitectura-de-la-red-neuronal-en-dqn)
     - [Aprendizaje y Optimización](#aprendizaje-y-optimización)
-  - [OpenAI Gymnasium API](#openai-gymnasium-api)
-    - [Características](#características)
-    - [Funcionamiento](#funcionamiento)
+  - [Justificación](#justificación)
+- [Diseño experimental](#diseño-experimental)
+  - [Herramientas](#herramientas)
+    - [OpenAI Gymnasium API](#openai-gymnasium-api)
 - [Bibliografía](#bibliografía)
 
 ## Introducción
@@ -41,9 +42,9 @@ El aprendizaje en RL se basa en los siguientes elementos clave:
 
 El objetivo del agente es aprender una política óptima $π^*$ que maximice la suma de recompensas a lo largo del tiempo. Para lograrlo, se utilizan diferentes algoritmos de aprendizaje, como **Q-learning, Deep Q-Network (DQN) y Double Deep Q-Network (DDQN)**.
 
-#### Diferencia con Machine Learning [[1]](#ref1)
+#### Diferencia con Machine Learning
 
-Para entender mejor el enfoque de Reinforcement Learning, podemos hacer una pequeña comparación entre los distintos paradigmas:
+Para entender mejor el enfoque de Reinforcement Learning, podemos hacer una pequeña comparación [[1]](#ref1) entre los distintos paradigmas:
 
 **Supervised Learning:** El agente aprende a estimar valores o clasificar elementos a partir de un conjunto de datos etiquetados, donde cada entrada tiene una salida esperada (etiqueta). Ejemplo: identificar si la foto de un animal se trata de un gato o no.
 
@@ -58,7 +59,6 @@ Para entender mejor el enfoque de Reinforcement Learning, podemos hacer una pequ
 |    <img src="images/classes_of_learning_problems.png">     |
 
 </div>
-
 
 ### Q-learning
 **Q-learning** es un algoritmo de aprendizaje por refuerzo basado en valores, cuyo objetivo es aprender una función de acción-valor **Q(s, a)** , que representa la recompensa esperada si el agente toma la acción **a** en el estado **s** y sigue la política óptima a partir de ahí.  
@@ -108,18 +108,26 @@ El entrenamiento de DQN incluye las siguientes técnicas clave:
 - **Target Network**: Utiliza una segunda red neuronal (red objetivo) para calcular los valores Q en la actualización, evitando oscilaciones inestables durante el entrenamiento.  
 - **Exploración con  ϵ-greedy**: Equilibra la exploración y explotación ajustando la probabilidad de elegir acciones aleatorias a medida que el agente aprende.
 
+### Justificación
+Para la realización de este proyecto se ha optado por utilizar los algoritmos de Q-Learning y Deep Q-Learning ya que son muy efectivos en la resolución de problemas de aprendizaje por refuerzos en entornos discretos y continuos.
 
----
-### OpenAI Gymnasium API
+Primero se optó por Q-Learning debido a la falta de hardware necesario por parte del equipo, aunque luego se encontró la posibilidad de utilizar máquinas virtuales con el hardware necesario, lo que permitió la experimentación con Deep Q-Learning.
+
+## Diseño experimental
+### Herramientas
+
+Para el desarrollo de este proyecto, se utilizó Pytorch[[3]](#ref3), la implementación se realizó en Kaggle por su disponibilidad de hardware[[4](#ref4), el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[5](#ref5)], con la emulación de ALE[[6](#ref6)]
+
+#### OpenAI Gymnasium API
 
 Gymnasium es una librería diseñada para desarrollar y evaluar algoritmos de aprendizaje por refuerzo (RL). Proporciona una interfaz estandarizada que facilita la creación de agentes de RL y su entrenamiento.
 
-#### Características
+##### Características<!-- omit in toc -->
 - **Interfaz unificada:** Proporciona una estructura estándar para interactuar con cualquier entorno con funciones como render(), step() y reset().
 - **Variedad de entornos:** Da la posibilidad de interactuar con simulaciones físicas y también videojuegos clásicos de Atari como Space Invaders, el que vamos a tratar en este proyecto.
 - **Compatibilidad con librerías:** No impone el uso de ninguna librería, por lo tanto se pueden usar librerías como Stable Baselines, TensorFlow y PyTorch, que es la que usaremos en este proyecto.
 
-#### Funcionamiento
+##### Funcionamiento<!-- omit in toc -->
 Para la interacción con un entorno de Gymnasium, el proceso es el siguiente:
 
 1. **Inicializar el entorno:** Se crea el entorno con gym.make('ALE/SpaceInvaders-v5'), lo que permite interactuar con el juego.
@@ -135,3 +143,7 @@ Para la interacción con un entorno de Gymnasium, el proceso es el siguiente:
 ---
 <a id="ref1"></a> [1] R. S. Sutton & A. G. Barto. (2020). Reinforcement Learning: An Introduction, Second Edition. The MIT Press.
 <a id="ref2"></a> [2] Alexander Amini. (2024). MIT 6.S191: Reinforcement Learning. YouTube. 
+<a id="ref3"></a> [3] PyTorch framework. Disponible en: https://pytorch.org/
+<a id="ref4"></a> [4] B. Consolvo. (2024). Hardware Available on Kaggle. Disponible en: https://www.kaggle.com/code/bconsolvo/hardware-available-on-kaggle
+<a id="ref5"></a> [5] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html
+<a id="ref6"></a> [6] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html
