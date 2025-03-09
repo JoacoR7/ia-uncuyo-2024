@@ -20,6 +20,14 @@ Código de proyecto: SPACEAI
     - [OpenAI Gymnasium API](#openai-gymnasium-api)
   - [Implementación](#implementación)
     - [Implementación con Q-learning](#implementación-con-q-learning)
+      - [**Reducción del Espacio de Estados y Acciones**](#reducción-del-espacio-de-estados-y-acciones)
+      - [**Métodos de Entrenamiento y Exploración**](#métodos-de-entrenamiento-y-exploración)
+    - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
+      - [Preprocesamiento de imágenes](#preprocesamiento-de-imágenes)
+    - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
+    - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
+    - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
+    - [Entrenamiento](#entrenamiento)
 - [Bibliografía](#bibliografía)
 
 ## Introducción
@@ -209,6 +217,42 @@ Durante estas implementaciones, se probaron diferentes técnicas para mejorar el
 - **Limitaciones encontradas:**  
   - En todas las implementaciones, la recompensa promedio oscilaba entre 80 y 150, indicando que el agente se estancaba en mínimos locales.
   - Se encontró que priorizar recompensas a largo plazo proporcionaba mejores resultados que enfocarse en recompensas inmediatas.
+  
+#### Implementación con Deep Q-Network
+Como el método de resolución propuesto anteriormente no es muy eficiente, la mejora del algoritmo de Q-Learning permite cambiar el enfoque: ahora se trabajará con imágenes en vez de valores de la RAM. El entorno es capaz de devolver imágenes del juego, lo que nos permite definir una red neuronal para procesar dichas imágenes y entrenar un modelo que pueda tener un buen desempeño en el juego.
+
+##### Preprocesamiento de imágenes
+Con el fin de entrenar un modelo de forma más eficiente, se ha decidido realizar un preprocesamiento a las imágenes antes de que entren en la red neuronal[[7](#ref7)]:
+
+- Como primer paso, se preprocesa la imagen devuelta por el entorno convirtiéndola de RGB a escala de grises. Esto reduce la dimensionalidad del input de la red neuronal al pasar de tres canales de color a uno solo, lo que disminuye la complejidad del modelo sin perder información relevante para la toma de decisiones.
+- Luego, la imagen se redimensiona a 84x84 píxeles para reducir la carga computacional del modelo, manteniendo la información necesaria para la toma de decisiones del agente.
+- Finalmente, la imagen se normaliza dividiendo sus valores por 255, asegurando que los píxeles estén en un rango entre 0 y 1. Por último, se convierte en un tensor de PyTorch y se reestructura para que tenga las dimensiones adecuadas para la red neuronal, permitiendo su procesamiento eficiente en la GPU.
+  
+#### Estructura de la red neuronal
+La red está compuesta por:
+- Tres capas convolucionales con kernel (filtros) de dimensión 8, 4 y 3 respectivamente.
+- Dos capas completamente conectadas de 512 y 256 neuronas.
+- Capa de salida con 6 valores (uno por cada acción posible en el entorno de Space Invaders).
+
+#### Estrategia de aprendizaje
+Con el objetivo de lograr un balance entre exploración y explotación, se ha elegido una estrategia ε-greedy donde:
+- Con probabilidad ε, se elige una acción aleatoria.
+- Con probabilidad 1-ε, se elige la acción con el mayor valor Q.
+- ε decae exponencialmente con los pasos de entrenamiento.
+  
+#### Almacenamiento y muestreo de experiencias
+Se implementó un buffer de memoria (Replay Memory), donde se almacenan las experiencias con la estructura (estado, acción, nuevo estado, recompensa). En el proceso del entrenamiento, se muestran lotes aleatorios de la memoria para reducir la correlación entre las muestras y mejorar la estabilidad del entrenamiento. [[8](#ref8)]
+
+#### Entrenamiento
+El entrenamiento consiste en:
+- Inicializar el entorno y obtener un estado inicial.
+- Luego, por cada paso:
+  - Se elige una acción usando la política ε-greedy.
+  - Se ejecuta la acción en el entorno y se recibe la recompensa.
+  - Se almacena la transición en la memoria de experiencia.
+  - Se actualizan los pesos de la red.
+- El entrenamiento finaliza al alcanzar los 5 millones de pasos, un límite establecido debido a restricciones de hardware. Dado que el equipo no cuenta con una computadora con los recursos necesarios para un entrenamiento prolongado, el proceso se lleva a cabo en un Notebook de Kaggle. Esta plataforma permite el uso de una máquina virtual por un máximo de 12 horas continuas, tras lo cual es necesario reiniciarla para continuar con la ejecución.
+- Al finalizar un entrenamiento, el modelo se guarda, se reinicia la máquina y se retoma el entrenamiento.
 
 ## Bibliografía
 ---
@@ -218,3 +262,6 @@ Durante estas implementaciones, se probaron diferentes técnicas para mejorar el
 <a id="ref4"></a> [4] B. Consolvo. (2024). Hardware Available on Kaggle. Disponible en: https://www.kaggle.com/code/bconsolvo/hardware-available-on-kaggle
 <a id="ref5"></a> [5] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html
 <a id="ref6"></a> [6] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html
+<a id="ref7"></a> [7] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou
+D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
+<a id="ref8"></a> [8] Deeplizard. (2018). Replay Memory Explained - Experience For Deep Q-Network Training. Disponible en: https://deeplizard.com/learn/video/Bcuj2fTH4_4.
