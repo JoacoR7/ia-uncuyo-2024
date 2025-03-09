@@ -18,6 +18,8 @@ Código de proyecto: SPACEAI
 - [Diseño experimental](#diseño-experimental)
   - [Herramientas](#herramientas)
     - [OpenAI Gymnasium API](#openai-gymnasium-api)
+  - [Implementación](#implementación)
+    - [Implementación con Q-learning](#implementación-con-q-learning)
 - [Bibliografía](#bibliografía)
 
 ## Introducción
@@ -132,12 +134,81 @@ Para la interacción con un entorno de Gymnasium, el proceso es el siguiente:
 
 1. **Inicializar el entorno:** Se crea el entorno con gym.make('ALE/SpaceInvaders-v5'), lo que permite interactuar con el juego.
 2. **Reiniciar el entorno:** Se usa env.reset(), lo que devuelve el estado inicial del juego.
-3. **Tomar acciones:** En cada paso, se elige una acción (como moverse a la izquierda, derecha o disparar) y se ejecuta con env.step(action).
+3. **Tomar acciones:** En cada paso, se elige una acción:
+    - Acción 0: No hace nada.
+    - Acción 1: Dispara.
+    - Acción 2: Se mueve a la derecha.
+    - Acción 3: Se mueve a la izquierda.
+    - Acción 4: Se mueve a la derecha disparando.
+    - Acción 5: Se mueve a la izquierda disparando.
+
 4. **Observar el resultado:** El entorno devuelve cuatro elementos clave:
-- Observación: Imagen del juego después de la acción.
-- Recompensa: Puntos obtenidos en ese paso.
-- Done: Indica si el juego terminó.
-- Info: Datos adicionales como puntaje acumulado.
+    - Observación: Imagen del juego después de la acción.
+    - Recompensa: Puntos obtenidos en ese paso.
+    - Done: Indica si el juego terminó.
+    - Info: Datos adicionales como puntaje acumulado.
+
+### Implementación
+
+#### Implementación con Q-learning
+##### **Reducción del Espacio de Estados y Acciones**
+
+El entorno de *Space Invaders* en Gymnasium proporciona una representación del estado en formato RAM con 128 valores, cada uno variando entre 0 y 255. Sin embargo, trabajar con la RAM sin procesar haría que la tabla Q fuera demasiado grande para manejarse eficientemente. Para reducir la dimensionalidad del problema, se implementaron varias estrategias en diferentes versiones.
+
+La dimensión de la tabla Q en su forma general es:
+
+$|Q \text{-table size}| = \text{Número de estados} \times \text{Número de acciones}$
+
+Dado que cada valor de RAM puede tomar 256 valores y hay 128 valores en total, la dimensión inicial sin discretización sería:
+
+$|Q \text{-table size}| = [256^{128} \times 6]$
+
+lo cual es computacionalmente inviable. Se realizaron varias reducciones progresivas:
+
+1. **Primera Implementación**  
+   - **Estados:** 80 valores de la RAM  
+   - **Discretización:** 5 bins por valor  
+   - **Acciones:** 6 posibles  
+   - **Tamaño de la Q-table:**  
+     
+     $[5^{80} \times 6]$
+     
+   - **Problema:** La tabla Q era extremadamente grande y en solo 3,000 episodios ocupaba aproximadamente 2GB de almacenamiento, haciendo inviable su uso.
+
+2. **Segunda Implementación**  
+   - **Estados:** 80 valores de la RAM  
+   - **Discretización:** 5 bins por valor  
+   - **Acciones:** Reducidas a 2 (moverse a la izquierda y disparar, moverse a la derecha y disparar)  
+   - **Tamaño de la Q-table:**  
+
+     $[5^{80} \times 2]$
+
+   - **Problema:** La reducción de acciones no impactó significativamente en el tamaño de la tabla, que seguía siendo demasiado grande para entrenamientos prolongados.
+
+3. **Tercera Implementación**  
+   - **Estados:** 47 valores de la RAM  
+   - **Discretización:** 5 bins por valor  
+   - **Acciones:** 2  
+   - **Tamaño de la Q-table:**  
+
+        $[5^{47} \times 2]$
+
+   - **Problema:** Aunque la reducción de la RAM ayudó, la Q-table aún crecía demasiado con el tiempo. Se pudo entrenar hasta 5,000 episodios, pero cuando se intentó expandir el entrenamiento hasta 10,000 episodios, la tabla se volvió inmanejable.
+
+##### **Métodos de Entrenamiento y Exploración**
+
+Durante estas implementaciones, se probaron diferentes técnicas para mejorar el rendimiento del agente:
+
+- **Política ε-greedy:**  
+  - Se usó una tasa inicial de exploración $(\epsilon = 1.0)$ con una reducción de $(0.99)$ por episodio.
+  - En versiones posteriores, se implementó una exploración periódica: cada 5,000 episodios, $(\epsilon)$ se reiniciaba a 0.5 para evitar mínimos locales.
+
+- **Tasa de aprendizaje fija:**  
+  - En las primeras versiones, se usó un valor fijo para la tasa de aprendizaje $(\alpha)$, pero esto resultó en convergencia prematura a soluciones subóptimas.
+
+- **Limitaciones encontradas:**  
+  - En todas las implementaciones, la recompensa promedio oscilaba entre 80 y 150, indicando que el agente se estancaba en mínimos locales.
+  - Se encontró que priorizar recompensas a largo plazo proporcionaba mejores resultados que enfocarse en recompensas inmediatas.
 
 ## Bibliografía
 ---
