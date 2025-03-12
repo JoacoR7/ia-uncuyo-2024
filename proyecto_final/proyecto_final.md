@@ -11,6 +11,9 @@ Código de proyecto: SPACEAI
   - [Reinforcement Learning](#reinforcement-learning)
     - [Diferencia con Machine Learning](#diferencia-con-machine-learning)
   - [Q-learning](#q-learning)
+  - [Redes neuronales](#redes-neuronales)
+    - [Estructura de una red neuronal](#estructura-de-una-red-neuronal)
+    - [Tipos de redes neuronales](#tipos-de-redes-neuronales)
   - [Deep Q-Network](#deep-q-network)
     - [Arquitectura de la Red Neuronal en DQN](#arquitectura-de-la-red-neuronal-en-dqn)
     - [Aprendizaje y Optimización](#aprendizaje-y-optimización)
@@ -20,8 +23,8 @@ Código de proyecto: SPACEAI
     - [OpenAI Gymnasium API](#openai-gymnasium-api)
   - [Implementación](#implementación)
     - [Implementación con Q-learning](#implementación-con-q-learning)
-      - [**Reducción del Espacio de Estados y Acciones**](#reducción-del-espacio-de-estados-y-acciones)
-      - [**Métodos de Entrenamiento y Exploración**](#métodos-de-entrenamiento-y-exploración)
+      - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
+      - [Métodos de Entrenamiento y Exploración](#métodos-de-entrenamiento-y-exploración)
     - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
       - [Preprocesamiento de imágenes](#preprocesamiento-de-imágenes)
     - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
@@ -92,11 +95,25 @@ El algoritmo de Q-learning, bajo ciertas condiciones (como una tasa de aprendiza
 
 En resumen, Q-learning es un algoritmo de aprendizaje por refuerzo eficiente que permite a un agente aprender una política óptima de acción para maximizar recompensas a largo plazo. Aunque es un algoritmo potente e **independiente del modelo**, lo que significa que no necesita conocer el entorno de antemano, su rendimiento puede ser limitado en entornos con espacios de estados grandes o continuos. La principal ventaja es su capacidad de aprender sin necesidad de un modelo explícito del entorno, pero su **lentitud de convergencia** en problemas complejos y la necesidad de adaptaciones, como las redes neuronales en **Deep Q-Learning**, son algunas de sus principales limitaciones. Además, Q-learning depende de un adecuado balance entre **exploración y explotación**, lo que puede ser un desafío en ciertos contextos.
 
+### Redes neuronales
+Las redes neuronales artificiales (o Artificial Neural Networks, ANN) son modelos computacionales inspirados en el funcionamiento del cerebro humano [[3](#ref3)]. Están compuestas por neuronas artificiales, organizadas en capas, que reciben entradas, las procesan y generan salidas. Son ampliamente utilizadas en aprendizaje por refuerzo (reinforcement learning) y aprendizaje profundo (deep learning), donde han demostrado ser efectivas en tareas como reconocimiento de imágenes, procesamiento de lenguaje natural y aprendizaje por refuerzo.
+
+#### Estructura de una red neuronal
+La estructura general de una red neuronal está compuesta de la siguiente forma [[4](#ref4)]:
+
+- Capa de entrada: Recibe los datos sin procesar, como imágenes o valores numéricos.
+- Capas ocultas: Procesan la información utilizando operaciones matemáticas y funciones de activación.
+- Capa de salida: Genera la respuesta final, que puede ser una clasificación, una predicción numérica o valores Q en el caso del aprendizaje por refuerzo.
+
+#### Tipos de redes neuronales
+A continuación se explicarán los 2 tipos de redes neuronales que se utilizarán en el desarrollo de este proyecto:
+
+
 ### Deep Q-Network 
 
-El **Deep Q-Learning** es una extensión del algoritmo clásico Q-learning que utiliza redes neuronales profundas para aproximar la función de valores **Q(s, a)** en entornos de alta dimensión y con espacios de estados complejos. A diferencia de Q-learning, que emplea una tabla explícita para almacenar los valores de Q, **Deep Q-Learning** utiliza una red neuronal para predecir estos valores, lo que permite manejar escenarios donde los estados no son discretos o son demasiado numerosos para almacenar en una tabla.
+El **Deep Q-Network** es una extensión del algoritmo clásico Q-learning que utiliza redes neuronales profundas para aproximar la función de valores **Q(s, a)** en entornos de alta dimensión y con espacios de estados complejos. A diferencia de Q-learning, que emplea una tabla explícita para almacenar los valores de Q, **Deep Q-Network** utiliza una red neuronal para predecir estos valores, lo que permite manejar escenarios donde los estados no son discretos o son demasiado numerosos para almacenar en una tabla.
 
-El **Deep Q-Network (DQN)** es una implementación específica de **Deep Q-Learning** que introduce mejoras clave para garantizar la estabilidad y eficiencia del aprendizaje. DQN incorpora técnicas como el **Replay Buffer**, que almacena experiencias pasadas para romper la correlación temporal entre las muestras y permitir una actualización más robusta de la red, y la **Target Network**, una red neuronal separada que se actualiza con menor frecuencia para evitar oscilaciones durante el entrenamiento.
+El **Deep Q-Network (DQN)** es una implementación específica de **Deep Q-Network** que introduce mejoras clave para garantizar la estabilidad y eficiencia del aprendizaje. DQN incorpora técnicas como el **Replay Buffer**, que almacena experiencias pasadas para romper la correlación temporal entre las muestras y permitir una actualización más robusta de la red, y la **Target Network**, una red neuronal separada que se actualiza con menor frecuencia para evitar oscilaciones durante el entrenamiento.
 
 DQN ha sido una de las innovaciones más importantes en **Reinforcement Learning**, permitiendo aplicar **Q-learning** en entornos con espacios de estados continuos y de alta dimensión.
 
@@ -159,7 +176,7 @@ Para la interacción con un entorno de Gymnasium, el proceso es el siguiente:
 ### Implementación
 
 #### Implementación con Q-learning
-##### **Reducción del Espacio de Estados y Acciones**
+##### Reducción del Espacio de Estados y Acciones
 
 El entorno de *Space Invaders* en Gymnasium proporciona una representación del estado en formato RAM con 128 valores, cada uno variando entre 0 y 255. Sin embargo, trabajar con la RAM sin procesar haría que la tabla Q fuera demasiado grande para manejarse eficientemente. Para reducir la dimensionalidad del problema, se implementaron varias estrategias en diferentes versiones.
 
@@ -173,7 +190,7 @@ $|Q \text{-table size}| = [256^{128} \times 6]$
 
 lo cual es computacionalmente inviable. Se realizaron varias reducciones progresivas:
 
-1. **Primera Implementación**  
+1. Primera Implementación
    - **Estados:** 80 valores de la RAM  
    - **Discretización:** 5 bins por valor  
    - **Acciones:** 6 posibles  
@@ -203,7 +220,7 @@ lo cual es computacionalmente inviable. Se realizaron varias reducciones progres
 
    - **Problema:** Aunque la reducción de la RAM ayudó, la Q-table aún crecía demasiado con el tiempo. Se pudo entrenar hasta 5,000 episodios, pero cuando se intentó expandir el entrenamiento hasta 10,000 episodios, la tabla se volvió inmanejable.
 
-##### **Métodos de Entrenamiento y Exploración**
+##### Métodos de Entrenamiento y Exploración
 
 Durante estas implementaciones, se probaron diferentes técnicas para mejorar el rendimiento del agente:
 
@@ -257,7 +274,9 @@ El entrenamiento consiste en:
 ## Bibliografía
 ---
 <a id="ref1"></a> [1] R. S. Sutton & A. G. Barto. (2020). Reinforcement Learning: An Introduction, Second Edition. The MIT Press.
-<a id="ref2"></a> [2] Alexander Amini. (2024). MIT 6.S191: Reinforcement Learning. YouTube. 
+<a id="ref2"></a> [2] Alexander Amini. (2024). MIT 6.S191: Reinforcement Learning. Disponible en: https://youtu.be/8JVRbHAVCws. 
+<a id="ref3"></a> [3] M. Volman. (2023). Análisis e Implementación de Herramientas Inteligentes para la Detección de Cáncer en Imágenes Médicas. FING UNCuyo.
+<a id="ref3"></a> [4] 3Blue1Brown. (2020). ¿Qué es una Red Neuronal? | Aprendizaje Profundo Capítulo 1. Disponible en: https://www.youtube.com/watch?v=jKCQsndqEGQ.
 <a id="ref3"></a> [3] PyTorch framework. Disponible en: https://pytorch.org/
 <a id="ref4"></a> [4] B. Consolvo. (2024). Hardware Available on Kaggle. Disponible en: https://www.kaggle.com/code/bconsolvo/hardware-available-on-kaggle
 <a id="ref5"></a> [5] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html
