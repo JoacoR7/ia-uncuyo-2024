@@ -14,6 +14,8 @@ Código de proyecto: SPACEAI
   - [Redes neuronales](#redes-neuronales)
     - [Estructura de una red neuronal](#estructura-de-una-red-neuronal)
     - [Tipos de redes neuronales](#tipos-de-redes-neuronales)
+      - [Redes Neuronales Convolucionales (CNN)](#redes-neuronales-convolucionales-cnn)
+      - [Redes Neuronales Profundas (DNN)](#redes-neuronales-profundas-dnn)
   - [Deep Q-Network](#deep-q-network)
     - [Arquitectura de la Red Neuronal en DQN](#arquitectura-de-la-red-neuronal-en-dqn)
     - [Aprendizaje y Optimización](#aprendizaje-y-optimización)
@@ -109,6 +111,15 @@ La estructura general de una red neuronal está compuesta de la siguiente forma 
 A continuación se explicarán los 2 tipos de redes neuronales que se utilizarán en el desarrollo de este proyecto:
 
 
+
+##### Redes Neuronales Convolucionales (CNN)
+Este tipo de red se utiliza para el procesamiento de imágenes y datos con estructura espacial (videos, datos geoespaciales, entre otros), la cual extrae características y patrones de los datos de entrada. [[3](#ref3)]
+
+Las CNN utilizan kernels, que son pequeñas matrices que recorren la imagen aplicando convoluciones. En cada paso, el kernel multiplica sus valores con los de la región correspondiente de la imagen y suma los resultados, generando un nuevo valor en la salida. Esto permite detectar patrones como bordes, texturas y formas, que se combinan en capas más profundas para extraer características más complejas de los datos. [[5](#ref5)]
+
+##### Redes Neuronales Profundas (DNN)
+Las Redes Neuronales Profundas (DNN) están compuestas por múltiples capas de neuronas interconectadas, utilizadas para modelar relaciones complejas en los datos. Cada neurona aplica una transformación a su entrada mediante una función de activación, lo que permite capturar patrones no lineales y abstraer características de alto nivel. A medida que los datos pasan por las capas ocultas, la red aprende representaciones cada vez más complejas, facilitando la toma de decisiones o la predicción de valores. [[6](#ref6)]
+
 ### Deep Q-Network 
 
 El **Deep Q-Network** es una extensión del algoritmo clásico Q-learning que utiliza redes neuronales profundas para aproximar la función de valores **Q(s, a)** en entornos de alta dimensión y con espacios de estados complejos. A diferencia de Q-learning, que emplea una tabla explícita para almacenar los valores de Q, **Deep Q-Network** utiliza una red neuronal para predecir estos valores, lo que permite manejar escenarios donde los estados no son discretos o son demasiado numerosos para almacenar en una tabla.
@@ -143,7 +154,7 @@ Primero se optó por Q-Learning debido a la falta de hardware necesario por part
 ## Diseño experimental
 ### Herramientas
 
-Para el desarrollo de este proyecto, se utilizó Pytorch[[3]](#ref3), la implementación se realizó en Kaggle por su disponibilidad de hardware[[4](#ref4), el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[5](#ref5)], con la emulación de ALE[[6](#ref6)]
+Para el desarrollo de este proyecto, se utilizó Pytorch[[7]](#ref7), la implementación se realizó en Kaggle por su disponibilidad de hardware[[8](#ref8), el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[9](#ref9)], con la emulación de ALE[[10](#ref10)]
 
 #### OpenAI Gymnasium API
 
@@ -239,7 +250,7 @@ Durante estas implementaciones, se probaron diferentes técnicas para mejorar el
 Como el método de resolución propuesto anteriormente no es muy eficiente, la mejora del algoritmo de Q-Learning permite cambiar el enfoque: ahora se trabajará con imágenes en vez de valores de la RAM. El entorno es capaz de devolver imágenes del juego, lo que nos permite definir una red neuronal para procesar dichas imágenes y entrenar un modelo que pueda tener un buen desempeño en el juego.
 
 ##### Preprocesamiento de imágenes
-Con el fin de entrenar un modelo de forma más eficiente, se ha decidido realizar un preprocesamiento a las imágenes antes de que entren en la red neuronal[[7](#ref7)]:
+Con el fin de entrenar un modelo de forma más eficiente, se ha decidido realizar un preprocesamiento a las imágenes antes de que entren en la red neuronal[[11](#ref11)]:
 
 - Como primer paso, se preprocesa la imagen devuelta por el entorno convirtiéndola de RGB a escala de grises. Esto reduce la dimensionalidad del input de la red neuronal al pasar de tres canales de color a uno solo, lo que disminuye la complejidad del modelo sin perder información relevante para la toma de decisiones.
 - Luego, la imagen se redimensiona a 84x84 píxeles para reducir la carga computacional del modelo, manteniendo la información necesaria para la toma de decisiones del agente.
@@ -258,7 +269,7 @@ Con el objetivo de lograr un balance entre exploración y explotación, se ha el
 - ε decae exponencialmente con los pasos de entrenamiento.
   
 #### Almacenamiento y muestreo de experiencias
-Se implementó un buffer de memoria (Replay Memory), donde se almacenan las experiencias con la estructura (estado, acción, nuevo estado, recompensa). En el proceso del entrenamiento, se muestran lotes aleatorios de la memoria para reducir la correlación entre las muestras y mejorar la estabilidad del entrenamiento. [[8](#ref8)]
+Se implementó un buffer de memoria (Replay Memory), donde se almacenan las experiencias con la estructura (estado, acción, nuevo estado, recompensa). En el proceso del entrenamiento, se muestran lotes aleatorios de la memoria para reducir la correlación entre las muestras y mejorar la estabilidad del entrenamiento. [[12](#ref12)]
 
 #### Entrenamiento
 El entrenamiento consiste en:
@@ -274,13 +285,15 @@ El entrenamiento consiste en:
 ## Bibliografía
 ---
 <a id="ref1"></a> [1] R. S. Sutton & A. G. Barto. (2020). Reinforcement Learning: An Introduction, Second Edition. The MIT Press.
-<a id="ref2"></a> [2] Alexander Amini. (2024). MIT 6.S191: Reinforcement Learning. Disponible en: https://youtu.be/8JVRbHAVCws. 
+<a id="ref2"></a> [2] Alexander Amini. (2024). MIT 6.S191: Reinforcement Learning. Disponible en: https://youtu.be/8JVRbHAVCws. Ultima vez accedido: Febrero de 2025.
 <a id="ref3"></a> [3] M. Volman. (2023). Análisis e Implementación de Herramientas Inteligentes para la Detección de Cáncer en Imágenes Médicas. FING UNCuyo.
-<a id="ref3"></a> [4] 3Blue1Brown. (2020). ¿Qué es una Red Neuronal? | Aprendizaje Profundo Capítulo 1. Disponible en: https://www.youtube.com/watch?v=jKCQsndqEGQ.
-<a id="ref3"></a> [3] PyTorch framework. Disponible en: https://pytorch.org/
-<a id="ref4"></a> [4] B. Consolvo. (2024). Hardware Available on Kaggle. Disponible en: https://www.kaggle.com/code/bconsolvo/hardware-available-on-kaggle
-<a id="ref5"></a> [5] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html
-<a id="ref6"></a> [6] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html
-<a id="ref7"></a> [7] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou
+<a id="ref4"></a> [4] 3Blue1Brown. (2020). ¿Qué es una Red Neuronal? | Aprendizaje Profundo Capítulo 1. Disponible en: https://www.youtube.com/watch?v=jKCQsndqEGQ.
+<a id="ref5"></a> [5] Image Kernels explained visually. (2015). Setosa Project. Disponible en: https://setosa.io/ev/image-kernels. Última vez accedido: Marzo 2025.
+<a id="ref6"></a> [6] ¿Qué es una red neuronal profunda?. (2025). Botpress. Disponible en: https://botpress.com/es/blog/deep-neural-network. Última vez accedido: Marzo 2025.
+<a id="ref7"></a> [7] PyTorch framework. Disponible en: https://pytorch.org/
+<a id="ref8"></a> [8] B. Consolvo. (2024). Hardware Available on Kaggle. Disponible en: https://www.kaggle.com/code/bconsolvo/hardware-available-on-kaggle. Última vez accedido: Marzo de 2025.
+<a id="ref9"></a> [9] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html. Última vez accedido: Febrero de 2025.
+<a id="ref10"></a> [10] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.
+<a id="ref11"></a> [11] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou
 D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
-<a id="ref8"></a> [8] Deeplizard. (2018). Replay Memory Explained - Experience For Deep Q-Network Training. Disponible en: https://deeplizard.com/learn/video/Bcuj2fTH4_4.
+<a id="ref12"></a> [12] Deeplizard. (2018). Replay Memory Explained - Experience For Deep Q-Network Training. Disponible en: https://deeplizard.com/learn/video/Bcuj2fTH4_4. Última vez accedido: Marzo de 2025.
