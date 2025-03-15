@@ -32,8 +32,7 @@ Código de proyecto: SPACEAI
     - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
     - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
     - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
-    - [Entrenamiento](#entrenamiento)
-    - [**Entrenamiento**](#entrenamiento-1)
+    - [**Entrenamiento**](#entrenamiento)
 - [Bibliografía](#bibliografía)
 
 ## Introducción
@@ -290,17 +289,6 @@ Con el objetivo de lograr un balance entre exploración y explotación, se ha el
   
 #### Almacenamiento y muestreo de experiencias
 Se implementó un buffer de memoria (Replay Memory), donde se almacenan las experiencias con la estructura (estado, acción, nuevo estado, recompensa). En el proceso del entrenamiento, se muestran lotes aleatorios de la memoria para reducir la correlación entre las muestras y mejorar la estabilidad del entrenamiento. [[12](#ref12)]
-
-#### Entrenamiento
-El entrenamiento consiste en:
-- Inicializar el entorno y obtener un estado inicial.
-- Luego, por cada paso:
-  - Se elige una acción usando la política ε-greedy.
-  - Se ejecuta la acción en el entorno y se recibe la recompensa.
-  - Se almacena la transición en la memoria de experiencia.
-  - Se actualizan los pesos de la red.
-- El entrenamiento finaliza al alcanzar los 5 millones de pasos, un límite establecido debido a restricciones de hardware. Dado que el equipo no cuenta con una computadora con los recursos necesarios para un entrenamiento prolongado, el proceso se lleva a cabo en un Notebook de Kaggle. Esta plataforma permite el uso de una máquina virtual por un máximo de 12 horas continuas, tras lo cual es necesario reiniciarla para continuar con la ejecución.
-- Al finalizar un entrenamiento, el modelo se guarda, se reinicia la máquina y se retoma el entrenamiento.
 
 #### **Entrenamiento**
 El proceso de entrenamiento sigue los siguientes pasos:
