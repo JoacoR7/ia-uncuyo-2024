@@ -16,6 +16,8 @@ Código de proyecto: SPACEAI
     - [Tipos de redes neuronales](#tipos-de-redes-neuronales)
       - [Redes Neuronales Convolucionales (CNN)](#redes-neuronales-convolucionales-cnn)
       - [Redes Neuronales Profundas (DNN)](#redes-neuronales-profundas-dnn)
+  - [Funciones de activación](#funciones-de-activación)
+    - [Tipos de funciones de activación](#tipos-de-funciones-de-activación)
   - [Deep Q-Network](#deep-q-network)
     - [Arquitectura de la Red Neuronal en DQN](#arquitectura-de-la-red-neuronal-en-dqn)
     - [Aprendizaje y Optimización](#aprendizaje-y-optimización)
@@ -114,8 +116,6 @@ La estructura general de una red neuronal está compuesta de la siguiente forma 
 #### Tipos de redes neuronales
 A continuación se explicarán los 2 tipos de redes neuronales que se utilizarán en el desarrollo de este proyecto:
 
-
-
 ##### Redes Neuronales Convolucionales (CNN)
 Este tipo de red se utiliza para el procesamiento de imágenes y datos con estructura espacial (videos, datos geoespaciales, entre otros), la cual extrae características y patrones de los datos de entrada. [[3](#ref3)]
 
@@ -123,6 +123,69 @@ Las CNN utilizan kernels, que son pequeñas matrices que recorren la imagen apli
 
 ##### Redes Neuronales Profundas (DNN)
 Las Redes Neuronales Profundas (DNN) están compuestas por múltiples capas de neuronas interconectadas, utilizadas para modelar relaciones complejas en los datos. Cada neurona aplica una transformación a su entrada mediante una función de activación, lo que permite capturar patrones no lineales y abstraer características de alto nivel. A medida que los datos pasan por las capas ocultas, la red aprende representaciones cada vez más complejas, facilitando la toma de decisiones o la predicción de valores. [[6](#ref6)]
+
+### Funciones de activación
+Las funciones de activación son componentes esenciales en las redes neuronales artificiales. Su principal propósito es introducir no linealidad en el modelo, permitiendo que la red neuronal pueda aprender patrones complejos y no lineales en los datos. Sin una función de activación, una red neuronal de múltiples capas no sería más que una combinación de transformaciones lineales, lo que limitaría significativamente su capacidad para resolver problemas complejos.
+
+#### Tipos de funciones de activación
+
+1. **Binary Step Function**
+   La función de paso binario es un clasificador binario, lo que significa que no es útil cuando existen muchas clases en una variable objetivo. Una función de paso binario establece que si la entrada es menor que 0, el gradiente es 0, y si es mayor que 0, el gradiente es 1. Cuando el gradiente es 1, la siguiente neurona se activa.
+
+    <div align="center">
+
+    | _[Figura 2] Representación de Binary Step Function [[7]](#ref7)_ |
+    | :--------------------------------------------: |
+    |    <img src="images/binary_function.webp">     |
+
+    </div>
+
+2. **Linear Function**
+   La función de paso binario era binaria porque no contenía un componente de \( x \). Las funciones lineales cambian esto, donde la activación es proporcional a la entrada. El gradiente, en lugar de volverse 0, es una constante que no depende únicamente de la entrada de \( x \).
+
+       <div align="center">
+
+    | _[Figura 3] Representación de Linear Function [[7]](#ref7)_ |
+    | :--------------------------------------------: |
+    |    <img src="images/linear_function.webp">     |
+
+    </div>
+
+3. **Sigmoid Function**
+   La función sigmoide es una de las funciones de activación no lineales más comunes, ya que transforma los valores en un rango de 0 a 1. Dado que es no lineal, asignar múltiples nodos con la función sigmoide dará como resultado una salida no lineal, lo que permite detectar patrones complejos en los datos.
+
+       <div align="center">
+
+    | _[Figura 4] Representación de Sigmoid Function [[7]](#ref7)_ |
+    | :--------------------------------------------: |
+    |    <img src="images/sigmoid_function.webp">     |
+
+    </div>
+
+4. **Tanh Function**
+   La función tanh es similar a la sigmoide, pero es simétrica alrededor del origen y su rango es de -1 a 1. Esto también significa que las entradas a las siguientes capas no siempre serán positivas, ya que la salida siempre estará entre -1 y 1. Todas las demás propiedades de esta función son iguales a las de la sigmoide, siendo continua y diferenciable en todos los puntos.
+
+       <div align="center">
+
+    | _[Figura 5] Representación de Tanh Function [[7]](#ref7)_ |
+    | :--------------------------------------------: |
+    |    <img src="images/tahn_function.webp">     |
+
+    </div>
+   
+
+5. **ReLU (Rectified Linear Unit)**
+   La ReLU es otra función de activación no lineal, pero tiene la ventaja de no activar todos los nodos al mismo tiempo. Los nodos se desactivan si la salida de la transformación lineal es menor que 0; así que para valores de entrada negativos, el resultado es 0 y el nodo no se activa.
+
+       <div align="center">
+
+    | _[Figura 6] Representación de ReLu [[7]](#ref7)_ |
+    | :--------------------------------------------: |
+    |    <img src="images/relu_function.webp">     |
+
+    </div>
+
+
 
 ### Deep Q-Network 
 
@@ -158,7 +221,7 @@ Primero se optó por Q-Learning debido a la falta de hardware necesario por part
 ## Diseño experimental
 ### Herramientas
 
-Para el desarrollo de este proyecto, se utilizó Pytorch[[7]](#ref7), la implementación se realizó en Kaggle por su disponibilidad de hardware[[8](#ref8), el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[9](#ref9)], con la emulación de ALE[[10](#ref10)]
+Para el desarrollo de este proyecto, se utilizó Pytorch[[8]](#ref8), la implementación se realizó en Kaggle por su disponibilidad de hardware[[9](#ref9), el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[10](#ref10)], con la emulación de ALE[[11](#ref11)]
 
 #### OpenAI Gymnasium API
 
@@ -254,7 +317,7 @@ Durante estas implementaciones, se probaron diferentes técnicas para mejorar el
 Como el método de resolución propuesto anteriormente no es muy eficiente, la mejora del algoritmo de Q-Learning permite cambiar el enfoque: ahora se trabajará con imágenes en vez de valores de la RAM. El entorno es capaz de devolver imágenes del juego, lo que nos permite definir una red neuronal para procesar dichas imágenes y entrenar un modelo que pueda tener un buen desempeño en el juego.
 
 ##### Preprocesamiento de imágenes
-Con el fin de entrenar un modelo de forma más eficiente, se ha decidido realizar un preprocesamiento a las imágenes antes de que entren en la red neuronal[[11](#ref11)]:
+Con el fin de entrenar un modelo de forma más eficiente, se ha decidido realizar un preprocesamiento a las imágenes antes de que entren en la red neuronal[[12](#ref12)]:
 
 - Como primer paso, se preprocesa la imagen devuelta por el entorno convirtiéndola de RGB a escala de grises. Esto reduce la dimensionalidad del input de la red neuronal al pasar de tres canales de color a uno solo, lo que disminuye la complejidad del modelo sin perder información relevante para la toma de decisiones.
 - Luego, la imagen se redimensiona a 84x84 píxeles para reducir la carga computacional del modelo, manteniendo la información necesaria para la toma de decisiones del agente.
@@ -262,12 +325,11 @@ Con el fin de entrenar un modelo de forma más eficiente, se ha decidido realiza
   
 <div align="center">
 
-| _[Figura 2]  Ejemplo de visualización de entorno preprocesado_ |
+| _[Figura 7]  Ejemplo de visualización de entorno preprocesado_ |
 | :--------------------------------------------: |
 | <img src="images/space_invaders_video1-ezgif.com-video-to-gif-converter.gif" width="500"> |
 
 </div>
-
 
 #### Estructura de la red neuronal
 La red está compuesta por:
@@ -288,7 +350,7 @@ Con el objetivo de lograr un balance entre exploración y explotación, se ha el
 - ε decae exponencialmente con los pasos de entrenamiento.
   
 #### Almacenamiento y muestreo de experiencias
-Se implementó un buffer de memoria (Replay Memory), donde se almacenan las experiencias con la estructura (estado, acción, nuevo estado, recompensa). En el proceso del entrenamiento, se muestran lotes aleatorios de la memoria para reducir la correlación entre las muestras y mejorar la estabilidad del entrenamiento. [[12](#ref12)]
+Se implementó un buffer de memoria (Replay Memory), donde se almacenan las experiencias con la estructura (estado, acción, nuevo estado, recompensa). En el proceso del entrenamiento, se muestran lotes aleatorios de la memoria para reducir la correlación entre las muestras y mejorar la estabilidad del entrenamiento. [[13](#ref13)]
 
 #### **Entrenamiento**
 El proceso de entrenamiento sigue los siguientes pasos:
@@ -319,10 +381,11 @@ El proceso de entrenamiento sigue los siguientes pasos:
 <a id="ref4"></a> [4] 3Blue1Brown. (2020). ¿Qué es una Red Neuronal? | Aprendizaje Profundo Capítulo 1. Disponible en: https://www.youtube.com/watch?v=jKCQsndqEGQ.
 <a id="ref5"></a> [5] Image Kernels explained visually. (2015). Setosa Project. Disponible en: https://setosa.io/ev/image-kernels. Última vez accedido: Marzo 2025.
 <a id="ref6"></a> [6] ¿Qué es una red neuronal profunda?. (2025). Botpress. Disponible en: https://botpress.com/es/blog/deep-neural-network. Última vez accedido: Marzo 2025.
-<a id="ref7"></a> [7] PyTorch framework. Disponible en: https://pytorch.org/
-<a id="ref8"></a> [8] B. Consolvo. (2024). Hardware Available on Kaggle. Disponible en: https://www.kaggle.com/code/bconsolvo/hardware-available-on-kaggle. Última vez accedido: Marzo de 2025.
-<a id="ref9"></a> [9] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html. Última vez accedido: Febrero de 2025.
-<a id="ref10"></a> [10] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.
-<a id="ref11"></a> [11] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou
+<a id="ref7"></a> [7] A Look Into Neural Networks and Deep Reinforcement Learning. (2021). Medium. Disponible en: https://chloeewang.medium.com/a-look-into-neural-networks-and-deep-reinforcement-learning-2d5a9baef3e3. Última vez accedido: Marzo de 2025.
+<a id="ref8"></a> [8] PyTorch framework. Disponible en: https://pytorch.org/
+<a id="ref9"></a> [9] B. Consolvo. (2024). Hardware Available on Kaggle. Disponible en: https://www.kaggle.com/code/bconsolvo/hardware-available-on-kaggle. Última vez accedido: Marzo de 2025.
+<a id="ref10"></a> [10] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html. Última vez accedido: Febrero de 2025.
+<a id="ref11"></a> [11] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.
+<a id="ref12"></a> [12] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou
 D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
-<a id="ref12"></a> [12] Deeplizard. (2018). Replay Memory Explained - Experience For Deep Q-Network Training. Disponible en: https://deeplizard.com/learn/video/Bcuj2fTH4_4. Última vez accedido: Marzo de 2025.
+<a id="ref13"></a> [13] Deeplizard. (2018). Replay Memory Explained - Experience For Deep Q-Network Training. Disponible en: https://deeplizard.com/learn/video/Bcuj2fTH4_4. Última vez accedido: Marzo de 2025.
