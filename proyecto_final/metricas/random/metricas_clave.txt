@@ -1,0 +1,6 @@
+Métricas Clave:
+- Recompensa Promedio: 152.14
+- Recompensa Máxima: 685.00
+- Recompensa Mínima: 5.00
+- Pasos Promedio: 490.43
+- Tasa de Éxito: 0.20
