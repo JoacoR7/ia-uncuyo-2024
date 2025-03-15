@@ -33,10 +33,15 @@ Código de proyecto: SPACEAI
     - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
     - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
     - [Entrenamiento](#entrenamiento)
+    - [**Entrenamiento**](#entrenamiento-1)
 - [Bibliografía](#bibliografía)
 
 ## Introducción
-(A completar)
+En este proyecto se ha implementado un agente basado en aprendizaje por refuerzo utilizando los algoritmos de Q-Learning y Deep Q-Networks (DQN) para resolver el entorno de Space Invaders. El objetivo es entrenar un modelo capaz de maximizar su rendimiento en el juego, tomando decisiones de forma autónoma para mejorar su puntuación mediante una política de acción adecuada.
+
+El uso de aprendizaje por refuerzo es una excelente opción para este tipo de problemas, ya que se enfoca en la capacidad de un agente para aprender a través de la interacción con su entorno, optimizando sus decisiones en función de las recompensas obtenidas. En el caso de Space Invaders, el agente aprende a seleccionar acciones basadas en el estado del entorno para maximizar su puntuación y sobrevivir el mayor tiempo posible.
+
+A lo largo de este proyecto, se explicarán los fundamentos de Q-Learning y DQN, su implementación, y las métricas utilizadas para evaluar el desempeño del agente en el entorno de juego. Además, se presentarán las herramientas empleadas para la implementación, los experimentos realizados con ambos enfoques (Q-Learning y DQN), los resultados obtenidos y su análisis. Finalmente, se ofrecerán conclusiones sobre la efectividad del enfoque utilizado y las posibles direcciones para futuros trabajos en el campo del aprendizaje por refuerzo aplicado a juegos clásicos.
 
 ## Marco teórico
 
@@ -256,16 +261,31 @@ Con el fin de entrenar un modelo de forma más eficiente, se ha decidido realiza
 - Luego, la imagen se redimensiona a 84x84 píxeles para reducir la carga computacional del modelo, manteniendo la información necesaria para la toma de decisiones del agente.
 - Finalmente, la imagen se normaliza dividiendo sus valores por 255, asegurando que los píxeles estén en un rango entre 0 y 1. Por último, se convierte en un tensor de PyTorch y se reestructura para que tenga las dimensiones adecuadas para la red neuronal, permitiendo su procesamiento eficiente en la GPU.
   
+<div align="center">
+
+| _[Figura 2]  Ejemplo de visualización de entorno preprocesado_ |
+| :--------------------------------------------: |
+| <img src="images/space_invaders_video1-ezgif.com-video-to-gif-converter.gif" width="500"> |
+
+</div>
+
+
 #### Estructura de la red neuronal
 La red está compuesta por:
-- Tres capas convolucionales con kernel (filtros) de dimensión 8, 4 y 3 respectivamente.
-- Dos capas completamente conectadas de 512 y 256 neuronas.
-- Capa de salida con 6 valores (uno por cada acción posible en el entorno de Space Invaders).
+- Entrada: Una imagen de 84x84 en escala de grises (1 canal).
+- Tres capas convolucionales con kernel (filtros) de dimensión 8, 4 y 3 respectivamente:
+  - Conv1: 32 filtros, kernel 8x8, stride 4, activación ReLU.
+  - Conv2: 64 filtros, kernel 4x4, stride 2, activación ReLU.
+  - Conv3: 64 filtros, kernel 3x3, stride 1, activación ReLU.
+- Aplanamiento de la salida de las capas convolucionales para convertir la salida 3D en un vector 1D.
+- Capas completamente conectadas:
+  - FC1: 512 neuronas, activación ReLU.
+  - FC2: n_actions neuronas (sin activación, ya que representa los valores Q correspondientes a cada acción posible en el entorno de Space Invaders).
 
 #### Estrategia de aprendizaje
 Con el objetivo de lograr un balance entre exploración y explotación, se ha elegido una estrategia ε-greedy donde:
-- Con probabilidad ε, se elige una acción aleatoria.
-- Con probabilidad 1-ε, se elige la acción con el mayor valor Q.
+- Con probabilidad ε, se elige una acción aleatoria (exploración)
+- Con probabilidad 1-ε, se elige la acción con el mayor valor Q (explotación).
 - ε decae exponencialmente con los pasos de entrenamiento.
   
 #### Almacenamiento y muestreo de experiencias
@@ -281,6 +301,27 @@ El entrenamiento consiste en:
   - Se actualizan los pesos de la red.
 - El entrenamiento finaliza al alcanzar los 5 millones de pasos, un límite establecido debido a restricciones de hardware. Dado que el equipo no cuenta con una computadora con los recursos necesarios para un entrenamiento prolongado, el proceso se lleva a cabo en un Notebook de Kaggle. Esta plataforma permite el uso de una máquina virtual por un máximo de 12 horas continuas, tras lo cual es necesario reiniciarla para continuar con la ejecución.
 - Al finalizar un entrenamiento, el modelo se guarda, se reinicia la máquina y se retoma el entrenamiento.
+
+#### **Entrenamiento**
+El proceso de entrenamiento sigue los siguientes pasos:
+
+1. **Inicialización:**
+   - Se inicializa el entorno y se obtiene un estado inicial.
+
+2. **Pasos del entrenamiento:**
+   - En cada paso:
+     - Se elige una acción utilizando la política ε-greedy.
+     - La acción se ejecuta en el entorno y se recibe una recompensa.
+     - La transición (estado, acción, nuevo estado, recompensa) se almacena en la memoria de experiencia.
+     - Se actualizan los pesos de la red neuronal mediante el proceso de retropropagación.
+
+3. **Finalización del entrenamiento:**
+   - El entrenamiento se detiene al alcanzar una cantidad predefinida de 1500 episodios , un límite establecido debido a restricciones de hardware.
+   - Debido a que el equipo disponible no cuenta con los recursos necesarios para un entrenamiento prolongado, el proceso se realiza en un *Notebook* de Kaggle. Esta plataforma permite ejecutar máquinas virtuales durante un máximo de 12 horas continuas, después de lo cual es necesario reiniciar la máquina para continuar con la ejecución.
+
+4. **Reinicio y continuación del entrenamiento:**
+   - Al finalizar un ciclo de entrenamiento, el modelo se guarda, se reinicia la máquina virtual y se retoma el entrenamiento desde donde se dejó.
+
 
 ## Bibliografía
 ---
