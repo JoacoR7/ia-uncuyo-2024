@@ -24,6 +24,7 @@ Código de proyecto: SPACEAI
     - [Aprendizaje y Optimización](#aprendizaje-y-optimización)
   - [Justificación](#justificación)
 - [Diseño experimental](#diseño-experimental)
+  - [Métricas](#métricas)
   - [Herramientas](#herramientas)
     - [OpenAI Gymnasium API](#openai-gymnasium-api)
   - [Implementación](#implementación)
@@ -228,9 +229,35 @@ Para la realización de este proyecto se ha optado por utilizar los algoritmos d
 Primero se optó por Q-Learning debido a la falta de hardware necesario por parte del equipo, aunque luego se encontró la posibilidad de utilizar máquinas virtuales con el hardware necesario, lo que permitió la experimentación con Deep Q-Learning.
 
 ## Diseño experimental
+
+### Métricas
+
+Para evaluar el rendimiento de los algoritmos Q-learning y DQN, se utilizaron varias métricas clave que permiten comparar su desempeño frente a un agente aleatorio. Las métricas seleccionadas son las siguientes:
+
+1. **Recompensa Promedio**  
+   Se calculó la recompensa promedio en intervalos regulares de episodios para analizar la evolución del aprendizaje del agente. Este análisis permite observar si el agente mejora con el tiempo y si su desempeño se estabiliza en valores óptimos.
+
+2. **Pasos Promedio**  
+   Se registró la cantidad promedio de pasos tomados por el agente en distintos intervalos de episodios. Esta métrica ayuda a evaluar si el agente está aprendiendo estrategias más eficientes para completar la tarea en menos tiempo.
+
+3. **Winrate**  
+   Se midió el porcentaje de episodios en los que el agente logró una recompensa superior a 630, umbral necesario para pasar el primer nivel. Este indicador refleja la capacidad del agente para alcanzar su objetivo de manera consistente.
+
+4. **Distribución de la Recompensa**  
+   Para comprender mejor la variabilidad del rendimiento del agente, se analizaron las recompensas obtenidas a lo largo del entrenamiento mediante dos enfoques:  
+   
+   - **Gráfico de Frecuencia**  
+     Se construyó un histograma de frecuencias que muestra con qué frecuencia el agente alcanzó determinadas recompensas dentro de intervalos predefinidos. Este análisis permite identificar patrones en la distribución de las recompensas y evaluar la estabilidad del agente en la obtención de buenos resultados. Una distribución sesgada hacia valores más altos indicaría un agente con un rendimiento más consistente y efectivo.
+
+   - **Boxplot**  
+     Se utilizó un diagrama de caja y bigotes (boxplot) para representar la mediana, los cuartiles y los valores atípicos de las recompensas obtenidas. Esta visualización es útil para evaluar la dispersión y estabilidad del rendimiento del agente, así como para identificar si el aprendizaje presenta episodios con recompensas extremas o si el agente converge a una estrategia con resultados más homogéneos.
+
+Estas métricas ofrecen una visión clara del progreso de los algoritmos, permitiendo evaluar tanto la efectividad de sus estrategias como su estabilidad y consistencia a lo largo de la simulación.
+
+
 ### Herramientas
 
-Para el desarrollo de este proyecto, se utilizó Pytorch[[8]](#ref8), la implementación se realizó en Kaggle por su disponibilidad de hardware[[9](#ref9), el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[10](#ref10)], con la emulación de ALE[[11](#ref11)]
+Para el desarrollo de este proyecto, se utilizó Pytorch[[8]](#ref8), la implementación se realizó en Kaggle por su disponibilidad de hardware[[9](#ref9)], el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[10](#ref10)], con la emulación de ALE[[11](#ref11)]
 
 #### OpenAI Gymnasium API
 
@@ -361,7 +388,7 @@ Con el objetivo de lograr un balance entre exploración y explotación, se ha el
 #### Almacenamiento y muestreo de experiencias
 Se implementó un buffer de memoria (Replay Memory), donde se almacenan las experiencias con la estructura (estado, acción, nuevo estado, recompensa). En el proceso del entrenamiento, se muestran lotes aleatorios de la memoria para reducir la correlación entre las muestras y mejorar la estabilidad del entrenamiento. [[13](#ref13)]
 
-#### **Entrenamiento**
+#### Entrenamiento
 El proceso de entrenamiento sigue los siguientes pasos:
 
 1. **Inicialización:**
