@@ -16,6 +16,7 @@ Código de proyecto: SPACEAI
     - [Tipos de redes neuronales](#tipos-de-redes-neuronales)
       - [Redes Neuronales Convolucionales (CNN)](#redes-neuronales-convolucionales-cnn)
       - [Redes Neuronales Profundas (DNN)](#redes-neuronales-profundas-dnn)
+  - [Descenso del gradiente](#descenso-del-gradiente)
   - [Funciones de activación](#funciones-de-activación)
     - [Tipos de funciones de activación](#tipos-de-funciones-de-activación)
   - [Deep Q-Network](#deep-q-network)
@@ -123,6 +124,14 @@ Las CNN utilizan kernels, que son pequeñas matrices que recorren la imagen apli
 
 ##### Redes Neuronales Profundas (DNN)
 Las Redes Neuronales Profundas (DNN) están compuestas por múltiples capas de neuronas interconectadas, utilizadas para modelar relaciones complejas en los datos. Cada neurona aplica una transformación a su entrada mediante una función de activación, lo que permite capturar patrones no lineales y abstraer características de alto nivel. A medida que los datos pasan por las capas ocultas, la red aprende representaciones cada vez más complejas, facilitando la toma de decisiones o la predicción de valores. [[6](#ref6)]
+
+### Descenso del gradiente
+El descenso del gradiente es una función de optimización común que ajusta los pesos según el error. En el descenso del gradiente, se observa cómo se relacionan el error de las redes neuronales artificiales (ANN) y un solo peso para determinar qué peso producirá el menor error.
+
+A medida que una ANN aprende, ajusta los pesos para que pueda mapear correctamente una señal a un significado. Esta relación puede ser modelada por la derivada, la cual mide el grado en el que un pequeño cambio en el peso provoca un pequeño cambio en el error. Dado que cada peso pasa por muchas transformaciones, donde pasa por muchas activaciones y sumas a través de múltiples capas, se puede usar la regla de la cadena para retroceder a través de las activaciones y salidas de la red y llegar al peso y la relación.
+
+A través de este proceso, podemos pensar en las ANNs como el proceso de ajustar los pesos de los modelos en respuesta al error hasta que no se pueda reducir más el error. [[7](#ref7)]
+
 
 ### Funciones de activación
 Las funciones de activación son componentes esenciales en las redes neuronales artificiales. Su principal propósito es introducir no linealidad en el modelo, permitiendo que la red neuronal pueda aprender patrones complejos y no lineales en los datos. Sin una función de activación, una red neuronal de múltiples capas no sería más que una combinación de transformaciones lineales, lo que limitaría significativamente su capacidad para resolver problemas complejos.
