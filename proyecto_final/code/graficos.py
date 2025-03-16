@@ -64,62 +64,106 @@ def calcular_metricas_clave(archivo_csv):
     pasos_promedio = datos['Pasos'].mean()
     tasa_exito = (datos['Recompensa Total'] >= 630).mean() * 100  # Ejemplo: éxito si recompensa >= 630
     
+    # Calcular IQR y desviación estándar
+    q1 = datos['Recompensa Total'].quantile(0.25)
+    q3 = datos['Recompensa Total'].quantile(0.75)
+    iqr = q3 - q1
+    desviacion_estandar = datos['Recompensa Total'].std()
+
     # Crear diccionario con las métricas
     metricas = {
-        "Métrica": ["Recompensa Promedio", "Recompensa Máxima", "Recompensa Mínima", "Pasos Promedio", "Tasa de Éxito"],
-        "Valor": [recompensa_promedio, recompensa_maxima, recompensa_minima, pasos_promedio, tasa_exito]
+        "Métrica": ["Recompensa Promedio", "Recompensa Máxima", "Recompensa Mínima", "Pasos Promedio", "Tasa de Éxito", "IQR (Rango Intercuartílico)", "Desviación Estándar"],
+        "Valor": [recompensa_promedio, recompensa_maxima, recompensa_minima, pasos_promedio, tasa_exito, iqr, desviacion_estandar]
     }
     return metricas
+    
+def graficar_evolucion_recompensa(lista_episodios, lista_promedio_recompensas, ruta_guardado=None, nombre_archivo="evolucion_recompensa.png"):
+    # Crear el gráfico con una figura más ancha
+    plt.figure(figsize=(15, 6))  # Aumenta el ancho de la figura
+    plt.plot(lista_episodios, lista_promedio_recompensas, marker='o', linestyle='-', color='r')
 
-def graficar_recompensa_por_bloques(archivo_csv, intervalo=50, ruta_guardado=None, nombre_archivo="recompensa_por_bloques.png"):
-    datos = pd.read_csv(archivo_csv)
-    # Crear grupos de tamaño intervalo y calcular la media
-    datos["Grupo"] = datos["Episodio"] // intervalo
-    recompensa_promedio_por_bloque = datos.groupby("Grupo")["Recompensa Total"].mean()
-    # Graficar
-    plt.figure(figsize=(10, 5))
-    plt.plot(recompensa_promedio_por_bloque.index * intervalo, recompensa_promedio_por_bloque, marker='o', linestyle='-', color="green", label=f"Promedio cada {intervalo} episodios")
-    plt.xlim(RANGO_X_RECOMPENSA)
-    plt.ylim(RANGO_Y_RECOMPENSA)
-    plt.xlabel("Número de Episodio")
+    # Etiquetas y título
+    plt.xlabel("Episodios (en bloques de 5000)")
     plt.ylabel("Recompensa Promedio")
-    plt.title(f"Recompensa Promedio cada {intervalo} Episodios")
-    plt.legend()
-    plt.grid()
+    plt.title("Evolución de la Recompensa Promedio cada 5000 Episodios")
+    plt.ylim((0, 500))  # Rango fijo para el eje Y
+
+    # Añadir proyección de cada punto sobre el eje X con líneas punteadas
+    for episodio, recompensa in zip(lista_episodios, lista_promedio_recompensas):
+        plt.vlines(episodio, 0, recompensa, linestyles='dotted', colors='gray')
+
+    # Añadir el valor del promedio arriba de cada punto
+    for episodio, recompensa in zip(lista_episodios, lista_promedio_recompensas):
+        plt.text(episodio, recompensa + 5, f'{recompensa:.2f}', ha='center', va='bottom', fontsize=9, color='black')
+
+    # Ajustar las etiquetas del eje x para que estén más separadas
+    plt.xticks(lista_episodios, rotation=45)  # Rota las etiquetas para mejor legibilidad
 
     # Guardar imagen si se especifica
     if ruta_guardado:
         path_completo = os.path.join(ruta_guardado, nombre_archivo)
         plt.savefig(path_completo, bbox_inches='tight')
-        print(f"Gráfico guardado en: {path_completo}")
-    
+        print(f"Gráfico de evolución de recompensas guardado en: {path_completo}")
 
-def graficar_evolucion_pasos(archivo_csv, intervalo=50, ruta_guardado=None, nombre_archivo="evolucion_pasos_por_bloques.png"):
-    datos = pd.read_csv(archivo_csv)
-    # Crear grupos de tamaño intervalo y calcular la media de pasos
-    datos["Grupo"] = datos["Episodio"] // intervalo
-    pasos_promedio_por_bloque = datos.groupby("Grupo")["Pasos"].mean()
-    
-    # Graficar
-    plt.figure(figsize=(10, 5))
-    plt.plot(pasos_promedio_por_bloque.index * intervalo, pasos_promedio_por_bloque, marker='o', linestyle='-', color="blue", label=f"Promedio cada {intervalo} episodios")
+def graficar_evolucion_winrate(lista_episodios, lista_winrate, ruta_guardado=None, nombre_archivo="evolucion_winrate.png"):
+    # Crear el gráfico con una figura más ancha
+    plt.figure(figsize=(15, 6))  # Aumenta el ancho de la figura
+    plt.plot(lista_episodios, lista_winrate, marker='o', linestyle='-', color='r')
 
-    plt.xlim((0, 1000) )  # Rango fijo para el eje X
-    plt.ylim(RANGO_Y_PASOS)  # Rango fijo para el eje Y
-    plt.xlabel("Número de Episodio")
+    # Etiquetas y título
+    plt.xlabel("Episodios (en bloques de 5000)")
+    plt.ylabel("Winrate")
+    plt.title("Evolución del Winrate cada 5000 Episodios")
+    plt.ylim((0, 2))  # Rango fijo para el eje Y
+
+    # Añadir proyección de cada punto sobre el eje X con líneas punteadas
+    for episodio, winrate in zip(lista_episodios, lista_winrate):
+        plt.vlines(episodio, 0, winrate, linestyles='dotted', colors='gray')
+
+    # Añadir el valor del promedio arriba de cada punto
+    for episodio, winrate in zip(lista_episodios, lista_winrate):
+        plt.text(episodio, winrate + 0.015, f'{winrate:.2f}', ha='center', va='bottom', fontsize=9, color='black')
+
+    # Ajustar las etiquetas del eje x para que estén más separadas
+    plt.xticks(lista_episodios, rotation=45)  # Rota las etiquetas para mejor legibilidad
+
+    # Guardar imagen si se especifica
+    if ruta_guardado:
+        path_completo = os.path.join(ruta_guardado, nombre_archivo)
+        plt.savefig(path_completo, bbox_inches='tight')
+        print(f"Gráfico de evolución de winrate guardado en: {path_completo}")
+
+def graficar_evolucion_pasos(lista_episodios, lista_promedio_pasos, ruta_guardado=None, nombre_archivo="evolucion_pasos.png"):
+    # Crear el gráfico con una figura más ancha
+    plt.figure(figsize=(15, 6))  # Aumenta el ancho de la figura
+    plt.plot(lista_episodios, lista_promedio_pasos, marker='o', linestyle='-', color='r')
+
+    # Etiquetas y título
+    plt.xlabel("Episodios (en bloques de 5000)")
     plt.ylabel("Pasos Promedio")
-    plt.title(f"Evolución de Pasos Promedio cada {intervalo} Episodios")
-    plt.legend()
-    plt.grid()
+    plt.title("Evolución de la Cantidad de Pasos Promedio cada 5000 Episodios")
+    plt.ylim((0, 1500))  # Rango fijo para el eje Y
+
+    # Añadir proyección de cada punto sobre el eje X con líneas punteadas
+    for episodio, pasos in zip(lista_episodios, lista_promedio_pasos):
+        plt.vlines(episodio, 0, pasos, linestyles='dotted', colors='gray')
+
+    # Añadir el valor del promedio arriba de cada punto
+    for episodio, pasos in zip(lista_episodios, lista_promedio_pasos):
+        plt.text(episodio - 15, pasos + 10, f'{pasos:.2f}', ha='center', va='bottom', fontsize=7, color='black')
+
+    # Ajustar las etiquetas del eje x para que estén más separadas
+    plt.xticks(lista_episodios, rotation=45)  # Rota las etiquetas para mejor legibilidad
 
     # Guardar imagen si se especifica
     if ruta_guardado:
         path_completo = os.path.join(ruta_guardado, nombre_archivo)
         plt.savefig(path_completo, bbox_inches='tight')
-        print(f"Gráfico de evolución de pasos guardado en: {path_completo}")
-    
+        print(f"Gráfico de evolución de pasos promedio guardado en: {path_completo}")
+ 
 
 def guardar_en_zip(archivo_csv, nombre_zip="resultados.zip"):
+
     with zipfile.ZipFile(nombre_zip, "w") as zipf:
         # Graficar y agregar gráficos al ZIP
         graficar_pasos_vs_recompensa(archivo_csv, ruta_guardado=".")
@@ -130,13 +174,7 @@ def guardar_en_zip(archivo_csv, nombre_zip="resultados.zip"):
         
         graficar_distribucion_recompensas(archivo_csv, ruta_guardado=".")
         zipf.write("distribucion_recompensas.png", arcname="distribucion_recompensas.png")
-        
-        graficar_evolucion_pasos(archivo_csv, ruta_guardado=".")
-        zipf.write("evolucion_pasos_por_bloques.png", arcname="evolucion_pasos_por_bloques.png")
-        
-        graficar_recompensa_por_bloques(archivo_csv, ruta_guardado=".")
-        zipf.write("recompensa_por_bloques.png", arcname="recompensa_por_bloques.png")
-        
+                
         # Calcular métricas y agregarlas al ZIP
         metricas = calcular_metricas_clave(archivo_csv)
         # Guardar las métricas en un archivo de texto
@@ -148,9 +186,23 @@ def guardar_en_zip(archivo_csv, nombre_zip="resultados.zip"):
         zipf.write("metricas_clave.txt", arcname="metricas_clave.txt")
 
     print(f"Todos los archivos han sido guardados en el archivo ZIP: {nombre_zip}")
+    return metricas
 
 
+lista_recompensas_promedio = []
+lista_pasos_promedio = []
+lista_episodios = []
+lista_winrate = []
 # Bucle para procesar archivos
-for i in range(5000,35000, 5000):
+for i in range(5000,135000,5000):
     archivo = f"C:\\Users\\Victor\\Desktop\\Fuentes proyecto\\Ejercicios\\Prueba8\\resultados_ep{i}.csv"
-    guardar_en_zip(archivo, f"resultados_ep{i}.zip")
+    metricas = guardar_en_zip(archivo, f"resultados_ep{i}.zip")
+    lista_recompensas_promedio.append(float(metricas["Valor"][0]))
+    lista_pasos_promedio.append(float(metricas["Valor"][3]))
+    lista_winrate.append(float(metricas["Valor"][4]))
+    lista_episodios.append(i)
+
+
+graficar_evolucion_recompensa(lista_episodios, lista_recompensas_promedio, ruta_guardado=".", nombre_archivo="evolucion_recompensa.png")
+graficar_evolucion_winrate(lista_episodios, lista_winrate, ruta_guardado=".", nombre_archivo="evolucion_winrate.png")
+graficar_evolucion_pasos(lista_episodios, lista_pasos_promedio, ruta_guardado=".", nombre_archivo="evolucion_pasos.png")
