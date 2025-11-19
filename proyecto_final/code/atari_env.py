@@ -38,7 +38,13 @@ class CustomEnv(gym.ObservationWrapper):
             (self.target_size[1], self.target_size[0]),  # width, height
             interpolation=cv2.INTER_AREA
         )
-        return resized
+
+        # Convertir a escala de grises
+        gray = cv2.cvtColor(resized, cv2.COLOR_RGB2GRAY)
+        # Añadir dimensión de canal
+        gray = np.expand_dims(gray, axis=-1)
+        
+        return gray
 
     """
     Hace un video de un episodio con acciones aleatorias
@@ -49,14 +55,15 @@ class CustomEnv(gym.ObservationWrapper):
         frames = []
     
         while not done:
-            frames.append(obs)
+            # Se guarda solo la imagen 2D (H, W) para video
+            frames.append(obs[:, :, 0])
             action = self.action_space.sample()
             obs, reward, terminated, truncated, info = self.step(action)
             done = terminated or truncated
 
     
-        # Guardar video
-        imageio.mimsave(filename, frames, fps=30)
+        # Guardar video en escala de grises directamente
+        imageio.mimsave(filename, frames, fps=30, format="FFMPEG", macro_block_size=None)
         print(f"Video guardado en {filename}")
 
     """
