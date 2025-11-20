@@ -1,4 +1,5 @@
 import gymnasium as gym
+import ale_py
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -23,7 +24,7 @@ class CustomEnv(gym.ObservationWrapper):
         self.observation_space = gym.spaces.Box(
             low=0,
             high=255,
-            shape=(self.target_size[0], self.target_size[1], 3),
+            shape=(self.target_size[0], self.target_size[1], 1),
             dtype=np.uint8
         )
 
@@ -94,3 +95,76 @@ class CustomEnv(gym.ObservationWrapper):
 
         return strips
     
+class RewardWrapper(gym.RewardWrapper):
+    def __init__(self, env):
+        super().__init__(env)
+
+    def reward(self, reward):
+        lives = self.env.unwrapped.ale.lives()
+        if reward > 0:
+            match lives:
+                case 3:
+                    return reward
+                case 2:
+                    return reward * 0.9
+                case 1:
+                    return reward * 0.8
+        return reward;
+
+class LifePenaltyWrapper(gym.Wrapper):
+    def __init__(self, env, penalty=-20):
+        super().__init__(env)
+        self.penalty = penalty
+        self.last_lives = None
+
+    def reset(self, **kwargs):
+        obs, info = self.env.reset(**kwargs)
+        self.last_lives = self.env.unwrapped.ale.lives()
+        return obs, info
+
+    def step(self, action):
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        current_lives = self.env.unwrapped.ale.lives()
+
+        # Penalizar si pierde una vida
+        if current_lives < self.last_lives:
+            reward += self.penalty
+
+        self.last_lives = current_lives
+
+        return obs, reward, terminated, truncated, info
+
+
+def create_space_invaders_env(render_mode="rgb_array"):
+    """
+    Crea y configura el ambiente de Space Invaders con los wrappers personalizados
+    """
+    
+    # Registrar ambientes de ALE
+    gym.register_envs(ale_py)
+    
+    # Crear ambiente base
+    env = gym.make(
+        "ALE/SpaceInvaders-v5",
+        frameskip=3,
+        render_mode=render_mode
+    )
+
+    # Aplicar wrapper de penalización
+    env = LifePenaltyWrapper(env, penalty=-20)
+
+    # Aplicar wrapper de recompensas
+    env = RewardWrapper(env)
+    
+    # Aplicar wrapper de recorte y redimensionamiento
+    env = CustomEnv(
+        env,
+        top=10,
+        bottom=15,
+        left=3,
+        right=15,
+        target_size=(84, 84)
+    )
+    
+    return env
