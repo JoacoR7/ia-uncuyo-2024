@@ -135,6 +135,30 @@ class LifePenaltyWrapper(gym.Wrapper):
 
         return obs, reward, terminated, truncated, info
 
+class ClippedRewardWrapper(gym.Wrapper):
+
+    def __init__(self, env):
+        super().__init__(env)
+        self.lives = self.env.unwrapped.ale.lives()
+
+    def reset(self, **kwargs):
+        obs, info = self.env.reset(**kwargs)
+        self.lives = self.env.unwrapped.ale.lives()
+        return obs, info
+
+    def step(self, action):
+        prev_lives = self.lives
+        obs, reward, terminated, truncated, info = self.env.step(action)
+        self.lives = self.env.unwrapped.ale.lives()
+
+        if self.lives < prev_lives:
+            clipped_reward = -1
+        elif reward > 0:
+            clipped_reward = 1
+        else:
+            clipped_reward = 0
+
+        return obs, clipped_reward, terminated, truncated, info
 
 def create_space_invaders_env(render_mode=None):
     """
@@ -167,4 +191,26 @@ def create_space_invaders_env(render_mode=None):
         target_size=(84, 84)
     )
     
+    return env
+
+def create_clipped_space_invaders_env(render_mode=None):
+    gym.register_envs(ale_py)
+
+    env = gym.make(
+        "ALE/SpaceInvaders-v5",
+        frameskip=3,
+        render_mode=render_mode
+    )
+
+    env = ClippedRewardWrapper(env)
+
+    env = CustomEnv(
+        env,
+        top=10,
+        bottom=15,
+        left=3,
+        right=15,
+        target_size=(84, 84)
+    )
+
     return env

@@ -2,7 +2,11 @@ import numpy as np
 import time
 import csv
 
-from atari_env import create_space_invaders_env
+from atari_env import (
+    create_space_invaders_env,
+    create_clipped_space_invaders_env
+)
+
 from agent.discretizer import aggregate_and_discretize_strip, convert_state_vector_to_int
 from agent.epsilon_policy import choose_action_epsilon_greedy
 from agent.q_table import create_q_table
@@ -16,10 +20,17 @@ def train_q_learning(
     gamma,
     epsilon,
     min_epsilon,
-    decay
+    decay,
+    use_clipped=False,
+    exploration_mode="decay",
+    max_epsilon_cycle=0.5           
 ):
 
-    env = create_space_invaders_env()
+    if use_clipped:
+        env = create_clipped_space_invaders_env()
+    else:
+        env = create_space_invaders_env()
+
     num_states = num_levels ** num_state_variables
     num_actions = env.action_space.n
 
@@ -62,7 +73,19 @@ def train_q_learning(
             state = next_state
             done = terminated or truncated
 
-        epsilon = max(min_epsilon, epsilon * decay)
+        if exploration_mode == "decay":
+            # Decaimiento estándar
+            epsilon = max(min_epsilon, epsilon * decay)
+
+        elif exploration_mode == "cycle":
+            # Modo oscilante
+            if epsilon <= min_epsilon:
+                epsilon = max_epsilon_cycle
+            else:
+                epsilon = max(min_epsilon, epsilon * decay)
+        else:
+            raise ValueError(f"Exploration mode not recognized: {exploration_mode}")
+
         rewards_per_episode.append(total_reward)
 
         with open(csv_filename, "a", newline="") as f:
