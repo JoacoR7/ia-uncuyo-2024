@@ -136,50 +136,7 @@ device="cuda"
 - El modelo empeoró significativamente tanto en rendimiento como en estabilidad.
     - Se estima que puede ser un learning rate muy bajo o que hay mucho ruido al mostrar todos los frames, se harán pruebas para determinar la razón.
 
-## Modelo 4
-
-### Hiperparámetros:
-```
-policy="CnnPolicy",
-env=env,
-verbose=1,
-tensorboard_log=tensorboard_log,
-learning_rate=1e-6,
-n_steps=512,
-batch_size=256,
-n_epochs=4,
-gamma=0.99,
-ent_coef=0.01,
-device="cuda"
-```
-
-### Entorno:
-- Mismo que modelo 3
-
-### Recompensas:
-- Reward shaping: se asigna una recompensa negativa por cada vida perdida.
-- Reward clipping:
-    - Si gana recompensa positiva, se convierte en un punto.
-    - Si no gana nada, devuelve 0.
-    - Si obtiene recompensa negativa, devuelve -1.
-
-### Resultados
-<figure style="text-align: center;">
-  <img src="./graphics/reward_average_ppo4.png" alt="Promedio de recompensas del PPO" width="60%">
-  <figcaption><em>Figura 7. Promedio de recompensas obtenidas por el agente PPO (modelo 4) durante el entrenamiento.</em></figcaption>
-</figure>
-
-
-<figure style="text-align: center;">
-  <img src="./graphics/length_average_ppo4.png" alt="Promedio de recompensas del PPO" width="60%">
-  <figcaption><em>Figura 8. Promedio de duración (en pasos) del agente PPO (modelo 4) durante el entrenamiento.</em></figcaption>
-</figure>
-
-### Observaciones
-- Se implementaron los mismos hiperparámetros que el modelo 1, sólo que se cambió el learning rate (se bajó a 1e-6).
-- EL rendimiento decayó significativamente
-
-## Modelo 5 (Reentrenamiento de modelo 1)
+## Modelo 4 (Reentrenamiento de modelo 1)
 
 ### Hiperparámetros:
 ```
@@ -209,13 +166,13 @@ device="cuda"
 ### Resultados
 <figure style="text-align: center;">
   <img src="./graphics/reward_average_ppo1_finetuned.png" alt="Promedio de recompensas del PPO" width="60%">
-  <figcaption><em>Figura 9. Promedio de recompensas obtenidas por el agente PPO (modelo 8) durante el entrenamiento.</em></figcaption>
+  <figcaption><em>Figura 7. Promedio de recompensas obtenidas por el agente PPO (modelo 4) durante el entrenamiento.</em></figcaption>
 </figure>
 
 
 <figure style="text-align: center;">
   <img src="./graphics/length_average_ppo1_finetuned.png" alt="Promedio de recompensas del PPO" width="60%">
-  <figcaption><em>Figura 10. Promedio de duración (en pasos) del agente PPO (modelo 8) durante el entrenamiento.</em></figcaption>
+  <figcaption><em>Figura 8. Promedio de duración (en pasos) del agente PPO (modelo 4) durante el entrenamiento.</em></figcaption>
 </figure>
 
 ### Observaciones
