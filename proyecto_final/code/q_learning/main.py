@@ -10,5 +10,7 @@ if __name__ == "__main__":
         gamma=0.95,
         epsilon=1.0,
         min_epsilon = 0.2,
-        decay = 0.999
+        decay = 0.999,
+        use_clipped=True,
+        exploration_mode="cycle"
     )
