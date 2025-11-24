@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 import cv2
 import imageio
 
+import csv
+import os
+
 class CustomEnv(gym.ObservationWrapper):
     """
     Recorta las áreas inútiles del frame de Atari (pixeles 
@@ -50,17 +53,25 @@ class CustomEnv(gym.ObservationWrapper):
     """
     Hace un video de un episodio con acciones aleatorias
     """
-    def record_video(self, filename="space_invaders_cropped.mp4"):
+    def record_video(self, filename="space_invaders_cropped.mp4", model=None):
         obs, info = self.reset()
         done = False
         frames = []
-    
-        while not done:
-            # Se guarda solo la imagen 2D (H, W) para video
-            frames.append(obs[:, :, 0])
-            action = self.action_space.sample()
-            obs, reward, terminated, truncated, info = self.step(action)
-            done = terminated or truncated
+
+        if(not model):
+            while not done:
+                # Se guarda solo la imagen 2D (H, W) para video
+                frames.append(obs[:, :, 0])
+                action = self.action_space.sample()
+                obs, reward, terminated, truncated, info = self.step(action)
+                done = terminated or truncated
+        else:
+            while not done:
+                # Se guarda solo la imagen 2D (H, W) para video
+                frames.append(obs[:, :, 0])
+                action = self.action_space.sample()
+                obs, reward, terminated, truncated, info = self.step(action)
+                done = terminated or truncated
 
     
         # Guardar video en escala de grises directamente
@@ -134,20 +145,86 @@ class LifePenaltyWrapper(gym.Wrapper):
         self.last_lives = current_lives
 
         return obs, reward, terminated, truncated, info
+    
+def test_model(model, env, n_episodes, base_filename):
+    # Crear carpeta
+    output_dir = base_filename
+    os.makedirs(output_dir, exist_ok=True)
+
+    rows = []
+    max_reward = 0
+    best_episode = -1
+    episodes_won = 0
+
+    for i in range(n_episodes):
+        obs = env.reset()
+        done = False
+        episode_reward = 0
+        length = 0
+        frames = []
+
+        while not done:
+            action, _states = model.predict(obs, deterministic=True)
+            obs, reward, terminated, info = env.step(action)
+            done = terminated
+            episode_reward += reward
+            length += 1
+
+            # tomar solo el último frame del stack
+            frame_stack = obs[0]                
+            last_frame = frame_stack[:, :, -1]  
+            rgb = np.stack([last_frame]*3, axis=-1)
+
+            frames.append(rgb.astype(np.uint8))
+        
+        if(episode_reward > max_reward):
+            max_reward = episode_reward
+            best_episode = i+1
+        if(episode_reward > 630):
+            episodes_won += 1
+
+        # Guardar el video dentro de la carpeta
+        video_path = os.path.join(
+            output_dir,
+            f"{base_filename}_test_episode_{i+1}.mp4"
+        )
+
+        imageio.mimsave(
+            video_path, 
+            frames, 
+            fps=30, 
+            format="FFMPEG",
+            macro_block_size=None
+        )
+
+        rows.append([i+1, episode_reward, length])
+    
+    print(f"Mejor episodio: {best_episode}")
+    print(f"Episodios ganados: {episodes_won}")
+
+    # Guardar CSV dentro de la carpeta 
+    csv_path = os.path.join(output_dir, f"{base_filename}_test.csv")
+
+    with open(csv_path, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["episode", "episode_reward", "episode_length"])
+        writer.writerows(rows)
+
+    print(f"Archivos guardados en la carpeta: {output_dir}")
 
 
-def create_space_invaders_env(render_mode=None):
+def create_space_invaders_env(render_mode="rgb_array"):
     """
     Crea y configura el ambiente de Space Invaders con los wrappers personalizados
     """
     
-    # Registrar ambientes de ALE
+    # Registrar entornos de ALE
     gym.register_envs(ale_py)
     
-    # Crear ambiente base
+    # Crear entorno base
     env = gym.make(
         "ALE/SpaceInvaders-v5",
-        frameskip=1,
+        frameskip=3,
         render_mode=render_mode
     )
 
