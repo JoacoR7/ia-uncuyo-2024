@@ -347,16 +347,63 @@ verbose=1,
 
 ### Resultados
 <figure style="text-align: center;">
-  <img src="./graphics/reward_average_dqn7.png" alt="Promedio de recompensas del DQN" width="60%">
-  <figcaption><em>Figura 13. Promedio de recompensas obtenidas por el agente DQN (modelo 7) durante el entrenamiento.</em></figcaption>
+  <img src="./graphics/reward_average_dqn8.png" alt="Promedio de recompensas del DQN" width="60%">
+  <figcaption><em>Figura 15. Promedio de recompensas obtenidas por el agente DQN (modelo 8) durante el entrenamiento.</em></figcaption>
 </figure>
 
 
 <figure style="text-align: center;">
-  <img src="./graphics/length_average_dqn7.png" alt="Promedio de recompensas del DQN" width="60%">
-  <figcaption><em>Figura 14. Promedio de duración (en pasos) del agente DQN (modelo 7) durante el entrenamiento.</em></figcaption>
+  <img src="./graphics/length_average_dqn8.png" alt="Promedio de recompensas del DQN" width="60%">
+  <figcaption><em>Figura 16. Promedio de duración (en pasos) del agente DQN (modelo 8) durante el entrenamiento.</em></figcaption>
 </figure>
 
 ### Observaciones
 - Este modelo es una copia del modelo 5, se cambió el batch size (de 132 a 64) y exploration fraction (de 0.3 a 0.2)
 - Al principio el modelo parecía estar mejorando significativamente, pero se estancó y se desestabilizó el entrenamiento.
+
+## Modelo 9 (Reentrenamiento modelo 5)
+
+### Hiperparámetros:
+```
+policy="CnnPolicy",
+env=env,
+learning_rate=1e-5,
+buffer_size=100_000,
+learning_starts=100_000,
+batch_size=132,
+tau=1.0,
+gamma=0.99,
+train_freq=4,
+gradient_steps=1,
+target_update_interval=10_000,
+exploration_fraction=0.3,
+exploration_final_eps=0.05,
+verbose=1
+```
+
+### Entorno:
+- Mismo que los anteriores.
+- Frameskip = 3
+
+### Recompensas:
+- Reward shaping: se asigna una recompensa negativa por cada vida perdida.
+- Reward clipping:
+    - Si gana recompensa positiva, se convierte en un punto.
+    - Si no gana nada, devuelve 0.
+    - Si obtiene recompensa negativa, devuelve -1.
+
+### Resultados
+<figure style="text-align: center;">
+  <img src="./graphics/reward_average_dqn9.png" alt="Promedio de recompensas del DQN" width="60%">
+  <figcaption><em>Figura 17. Promedio de recompensas obtenidas por el agente DQN (modelo 9) durante el entrenamiento.</em></figcaption>
+</figure>
+
+
+<figure style="text-align: center;">
+  <img src="./graphics/length_average_dqn9.png" alt="Promedio de recompensas del DQN" width="60%">
+  <figcaption><em>Figura 18. Promedio de duración (en pasos) del agente DQN (modelo 9) durante el entrenamiento.</em></figcaption>
+</figure>
+
+### Observaciones
+- Se reentrenó el modelo 5, ya que fue el mejor de entre todos los anteriores, se fijó una exploración de 5% para todo el entrenamiento.
+- Aunque algo inestable y lento, mejoró el rendimiento del modelo.
