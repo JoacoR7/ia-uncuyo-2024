@@ -9,7 +9,6 @@ Código de proyecto: SPACEAI
 - [Introducción](#introducción)
 - [Marco teórico](#marco-teórico)
   - [Reinforcement Learning](#reinforcement-learning)
-    - [Diferencia con Machine Learning](#diferencia-con-machine-learning)
   - [Q-learning](#q-learning)
   - [Redes neuronales](#redes-neuronales)
     - [Estructura de una red neuronal](#estructura-de-una-red-neuronal)
@@ -40,11 +39,13 @@ Código de proyecto: SPACEAI
 - [Bibliografía](#bibliografía)
 
 ## Introducción
-En este proyecto se ha implementado un agente basado en aprendizaje por refuerzo utilizando los algoritmos de Q-Learning y Deep Q-Networks (DQN) para resolver el entorno de Space Invaders. El objetivo es entrenar un modelo capaz de maximizar su rendimiento en el juego, tomando decisiones de forma autónoma para mejorar su puntuación mediante una política de acción adecuada.
+En el videojuego Space Invaders, versión de Atari 2600, lanzado en 1978, el jugador controla un cañón que debe desplazarse horizontalmente para destruir oleadas de enemigos que descienden gradualmente. El entorno plantea un escenario de acción en tiempo real donde cada disparo, movimiento y cobertura detrás de los escudos debe gestionarse con precisión. 
+
+Gymnasium, una biblioteca de python, ofrece una réplica de este juego, aportándo un entorno y la posibilidad de editar el mismo con distintos "flavours" y otras opciones para personalizarlo. El hecho de resolver este juego de forma automática implica enfrentar distintos desafíos como anticipar los proyectiles enemigos, adaptarse al incremento de velocidad de los invasores a medida que disminuye su número y optimizar la posición del cañón para maximizar los puntos mientras se minimiza el riesgo (perder vidas). 
 
 El uso de aprendizaje por refuerzo es una excelente opción para este tipo de problemas, ya que se enfoca en la capacidad de un agente para aprender a través de la interacción con su entorno, optimizando sus decisiones en función de las recompensas obtenidas. En el caso de Space Invaders, el agente aprende a seleccionar acciones basadas en el estado del entorno para maximizar su puntuación y sobrevivir el mayor tiempo posible.
 
-A lo largo de este proyecto, se explicarán los fundamentos de Q-Learning y DQN, su implementación, y las métricas utilizadas para evaluar el desempeño del agente en el entorno de juego. Además, se presentarán las herramientas empleadas para la implementación, los experimentos realizados con ambos enfoques (Q-Learning y DQN), los resultados obtenidos y su análisis. Finalmente, se ofrecerán conclusiones sobre la efectividad del enfoque utilizado y las posibles direcciones para futuros trabajos en el campo del aprendizaje por refuerzo aplicado a juegos clásicos.
+A lo largo de este proyecto, se explicarán los fundamentos de los algoritmos Q-Learning, Deep Q Network (DQN), y Proximal Policy Optimization (PPO) su implementación, y las métricas utilizadas para evaluar el desempeño del agente en el entorno de juego. Además, se presentarán las herramientas empleadas para la implementación, los experimentos realizados, los resultados obtenidos y su análisis. Finalmente, se ofrecerán conclusiones sobre la efectividad del enfoque utilizado y las posibles direcciones para futuros trabajos en el campo del aprendizaje por refuerzo aplicado a juegos clásicos.
 
 ## Marco teórico
 
@@ -63,25 +64,7 @@ El aprendizaje en RL se basa en los siguientes elementos clave:
 - **Recompensa (R):** Es un valor que recibe el agente al realizar una acción, nos indica que tan buena fue la decisión del agente.
 - **Política (π):** Estrategia que define que acción tomar en cada estado.
 
-El objetivo del agente es aprender una política óptima $π^*$ que maximice la suma de recompensas a lo largo del tiempo. Para lograrlo, se utilizan diferentes algoritmos de aprendizaje, como **Q-learning, Deep Q-Network (DQN) y Double Deep Q-Network (DDQN)**.
-
-#### Diferencia con Machine Learning
-
-Para entender mejor el enfoque de Reinforcement Learning, podemos hacer una pequeña comparación [[1]](#ref1) entre los distintos paradigmas:
-
-**Supervised Learning:** El agente aprende a estimar valores o clasificar elementos a partir de un conjunto de datos etiquetados, donde cada entrada tiene una salida esperada (etiqueta). Ejemplo: identificar si la foto de un animal se trata de un gato o no.
-
-**Unsupervised Leraning:** El agente trabaja con datos sin etiquetar, a partir de los datos proporcionados debe encontrar patrones, una "estructura oculta" en los datos. Ejemplo: identificar los distintos tipos de clientes en un e-commerce.
-
-**Reinforcement Learning:** El agente aprende a interactuar con el entorno mediante la experiencia, la cual le proporcionará recompensas positivas o negativas, y su objetivo es obtener la mejor recompensa posible. Ejemplo: entrenamiento de vehículos autónomos.
-
-<div align="center">
-
-| _[Figura 1] Comparación de paradigmas [[2]](#ref2)_ |
-| :--------------------------------------------: |
-|    <img src="images/classes_of_learning_problems.png">     |
-
-</div>
+El objetivo del agente es aprender una política óptima $π^*$ que maximice la suma de recompensas a lo largo del tiempo. Para lograrlo, se utilizan diferentes algoritmos de aprendizaje, como **Q-learning, DQN y PPO**.
 
 ### Q-learning
 **Q-learning** es un algoritmo de aprendizaje por refuerzo basado en valores, cuyo objetivo es aprender una función de acción-valor **Q(s, a)** , que representa la recompensa esperada si el agente toma la acción **a** en el estado **s** y sigue la política óptima a partir de ahí.  
