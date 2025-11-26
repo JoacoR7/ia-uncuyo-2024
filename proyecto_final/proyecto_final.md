@@ -45,7 +45,7 @@ Gymnasium, una biblioteca de python, ofrece una réplica de este juego, aportán
 
 El uso de aprendizaje por refuerzo es una excelente opción para este tipo de problemas, ya que se enfoca en la capacidad de un agente para aprender a través de la interacción con su entorno, optimizando sus decisiones en función de las recompensas obtenidas. En el caso de Space Invaders, el agente aprende a seleccionar acciones basadas en el estado del entorno para maximizar su puntuación y sobrevivir el mayor tiempo posible.
 
-A lo largo de este proyecto, se explicarán los fundamentos de los algoritmos Q-Learning, Deep Q Network (DQN), y Proximal Policy Optimization (PPO) su implementación, y las métricas utilizadas para evaluar el desempeño del agente en el entorno de juego. Además, se presentarán las herramientas empleadas para la implementación, los experimentos realizados, los resultados obtenidos y su análisis. Finalmente, se ofrecerán conclusiones sobre la efectividad del enfoque utilizado y las posibles direcciones para futuros trabajos en el campo del aprendizaje por refuerzo aplicado a juegos clásicos.
+A lo largo de este proyecto, se explicarán los fundamentos de los algoritmos Q-Learning, Deep Q-Network (DQN), y Proximal Policy Optimization (PPO) su implementación, y las métricas utilizadas para evaluar el desempeño del agente en el entorno de juego. Además, se presentarán las herramientas empleadas para la implementación, los experimentos realizados, los resultados obtenidos y su análisis. Finalmente, se ofrecerán conclusiones sobre la efectividad del enfoque utilizado y las posibles direcciones para futuros trabajos en el campo del aprendizaje por refuerzo aplicado a juegos clásicos.
 
 ## Marco teórico
 
@@ -88,128 +88,20 @@ El algoritmo de Q-learning, bajo ciertas condiciones (como una tasa de aprendiza
 
 En resumen, Q-learning es un algoritmo de aprendizaje por refuerzo eficiente que permite a un agente aprender una política óptima de acción para maximizar recompensas a largo plazo. Aunque es un algoritmo potente e **independiente del modelo**, lo que significa que no necesita conocer el entorno de antemano, su rendimiento puede ser limitado en entornos con espacios de estados grandes o continuos. La principal ventaja es su capacidad de aprender sin necesidad de un modelo explícito del entorno, pero su **lentitud de convergencia** en problemas complejos y la necesidad de adaptaciones, como las redes neuronales en **Deep Q-Learning**, son algunas de sus principales limitaciones. Además, Q-learning depende de un adecuado balance entre **exploración y explotación**, lo que puede ser un desafío en ciertos contextos.
 
-### Redes neuronales
-Las redes neuronales artificiales (o Artificial Neural Networks, ANN) son modelos computacionales inspirados en el funcionamiento del cerebro humano [[3](#ref3)]. Están compuestas por neuronas artificiales, organizadas en capas, que reciben entradas, las procesan y generan salidas. Son ampliamente utilizadas en aprendizaje por refuerzo (reinforcement learning) y aprendizaje profundo (deep learning), donde han demostrado ser efectivas en tareas como reconocimiento de imágenes, procesamiento de lenguaje natural y aprendizaje por refuerzo.
-
-#### Estructura de una red neuronal
-La estructura general de una red neuronal está compuesta de la siguiente forma [[4](#ref4)]:
-
-- Capa de entrada: Recibe los datos sin procesar, como imágenes o valores numéricos.
-- Capas ocultas: Procesan la información utilizando operaciones matemáticas y funciones de activación.
-- Capa de salida: Genera la respuesta final, que puede ser una clasificación, una predicción numérica o valores Q en el caso del aprendizaje por refuerzo.
-
-#### Tipos de redes neuronales
-A continuación se explicarán los 2 tipos de redes neuronales que se utilizarán en el desarrollo de este proyecto:
-
-##### Redes Neuronales Convolucionales (CNN)
-Este tipo de red se utiliza para el procesamiento de imágenes y datos con estructura espacial (videos, datos geoespaciales, entre otros), la cual extrae características y patrones de los datos de entrada. [[3](#ref3)]
-
-Las CNN utilizan kernels, que son pequeñas matrices que recorren la imagen aplicando convoluciones. En cada paso, el kernel multiplica sus valores con los de la región correspondiente de la imagen y suma los resultados, generando un nuevo valor en la salida. Esto permite detectar patrones como bordes, texturas y formas, que se combinan en capas más profundas para extraer características más complejas de los datos. [[5](#ref5)]
-
-##### Redes Neuronales Profundas (DNN)
-Las Redes Neuronales Profundas (DNN) están compuestas por múltiples capas de neuronas interconectadas, utilizadas para modelar relaciones complejas en los datos. Cada neurona aplica una transformación a su entrada mediante una función de activación, lo que permite capturar patrones no lineales y abstraer características de alto nivel. A medida que los datos pasan por las capas ocultas, la red aprende representaciones cada vez más complejas, facilitando la toma de decisiones o la predicción de valores. [[6](#ref6)]
-
-### Descenso del gradiente
-El descenso del gradiente es una función de optimización común que ajusta los pesos según el error. En el descenso del gradiente, se observa cómo se relacionan el error de las redes neuronales artificiales (ANN) y un solo peso para determinar qué peso producirá el menor error.
-
-A medida que una ANN aprende, ajusta los pesos para que pueda mapear correctamente una señal a un significado. Esta relación puede ser modelada por la derivada, la cual mide el grado en el que un pequeño cambio en el peso provoca un pequeño cambio en el error. Dado que cada peso pasa por muchas transformaciones, donde pasa por muchas activaciones y sumas a través de múltiples capas, se puede usar la regla de la cadena para retroceder a través de las activaciones y salidas de la red y llegar al peso y la relación.
-
-A través de este proceso, podemos pensar en las ANNs como el proceso de ajustar los pesos de los modelos en respuesta al error hasta que no se pueda reducir más el error. [[7](#ref7)]
-
-
-### Funciones de activación
-Las funciones de activación son componentes esenciales en las redes neuronales artificiales. Su principal propósito es introducir no linealidad en el modelo, permitiendo que la red neuronal pueda aprender patrones complejos y no lineales en los datos. Sin una función de activación, una red neuronal de múltiples capas no sería más que una combinación de transformaciones lineales, lo que limitaría significativamente su capacidad para resolver problemas complejos.
-
-#### Tipos de funciones de activación
-
-1. **Binary Step Function**
-   La función de paso binario es un clasificador binario, lo que significa que no es útil cuando existen muchas clases en una variable objetivo. Una función de paso binario establece que si la entrada es menor que 0, el gradiente es 0, y si es mayor que 0, el gradiente es 1. Cuando el gradiente es 1, la siguiente neurona se activa.
-
-    <div align="center">
-
-    | _[Figura 2] Representación de Binary Step Function [[7]](#ref7)_ |
-    | :--------------------------------------------: |
-    |    <img src="images/binary_function.webp">     |
-
-    </div>
-
-2. **Linear Function**
-   La función de paso binario era binaria porque no contenía un componente de \( x \). Las funciones lineales cambian esto, donde la activación es proporcional a la entrada. El gradiente, en lugar de volverse 0, es una constante que no depende únicamente de la entrada de \( x \).
-
-       <div align="center">
-
-    | _[Figura 3] Representación de Linear Function [[7]](#ref7)_ |
-    | :--------------------------------------------: |
-    |    <img src="images/linear_function.webp">     |
-
-    </div>
-
-3. **Sigmoid Function**
-   La función sigmoide es una de las funciones de activación no lineales más comunes, ya que transforma los valores en un rango de 0 a 1. Dado que es no lineal, asignar múltiples nodos con la función sigmoide dará como resultado una salida no lineal, lo que permite detectar patrones complejos en los datos.
-
-       <div align="center">
-
-    | _[Figura 4] Representación de Sigmoid Function [[7]](#ref7)_ |
-    | :--------------------------------------------: |
-    |    <img src="images/sigmoid_function.webp">     |
-
-    </div>
-
-4. **Tanh Function**
-   La función tanh es similar a la sigmoide, pero es simétrica alrededor del origen y su rango es de -1 a 1. Esto también significa que las entradas a las siguientes capas no siempre serán positivas, ya que la salida siempre estará entre -1 y 1. Todas las demás propiedades de esta función son iguales a las de la sigmoide, siendo continua y diferenciable en todos los puntos.
-
-       <div align="center">
-
-    | _[Figura 5] Representación de Tanh Function [[7]](#ref7)_ |
-    | :--------------------------------------------: |
-    |    <img src="images/tahn_function.webp">     |
-
-    </div>
-   
-
-5. **ReLU (Rectified Linear Unit)**
-   La ReLU es otra función de activación no lineal, pero tiene la ventaja de no activar todos los nodos al mismo tiempo. Los nodos se desactivan si la salida de la transformación lineal es menor que 0; así que para valores de entrada negativos, el resultado es 0 y el nodo no se activa.
-
-       <div align="center">
-
-    | _[Figura 6] Representación de ReLu [[7]](#ref7)_ |
-    | :--------------------------------------------: |
-    |    <img src="images/relu_function.webp">     |
-
-    </div>
-
-
-
 ### Deep Q-Network 
 
 El **Deep Q-Network** es una extensión del algoritmo clásico Q-learning que utiliza redes neuronales profundas para aproximar la función de valores **Q(s, a)** en entornos de alta dimensión y con espacios de estados complejos. A diferencia de Q-learning, que emplea una tabla explícita para almacenar los valores de Q, **Deep Q-Network** utiliza una red neuronal para predecir estos valores, lo que permite manejar escenarios donde los estados no son discretos o son demasiado numerosos para almacenar en una tabla.
 
-El **Deep Q-Network (DQN)** es una implementación específica de **Deep Q-Network** que introduce mejoras clave para garantizar la estabilidad y eficiencia del aprendizaje. DQN incorpora técnicas como el **Replay Buffer**, que almacena experiencias pasadas para romper la correlación temporal entre las muestras y permitir una actualización más robusta de la red, y la **Target Network**, una red neuronal separada que se actualiza con menor frecuencia para evitar oscilaciones durante el entrenamiento.
+El **Deep Q-Network (DQN)** es una implementación específica de **Deep Q-Learning** que introduce mejoras clave para garantizar la estabilidad y eficiencia del aprendizaje.
 
 DQN ha sido una de las innovaciones más importantes en **Reinforcement Learning**, permitiendo aplicar **Q-learning** en entornos con espacios de estados continuos y de alta dimensión.
 
-#### Arquitectura de la Red Neuronal en DQN  
-
-DQN emplea una **red neuronal artificial** con tres componentes principales:  
-
-- **Capa de entrada**: Recibe la representación del estado actual del entorno s , que puede ser una imagen (como en juegos de Atari) o una serie de valores numéricos.  
-- **Capas ocultas**: Son capas intermedias con múltiples neuronas que extraen características relevantes del estado. Utilizan funciones de activación no lineales, como **ReLU (Rectified Linear Unit)**, para capturar patrones complejos.  
-- **Capa de salida**: Genera un conjunto de valores Q(s, a), donde cada neurona en esta capa representa el valor estimado de tomar una acción específica a en el estado s.  
-
-#### Aprendizaje y Optimización
-
-Para mejorar la precisión de los valores Q(s, a), DQN ajusta los **pesos** de las conexiones entre neuronas mediante el algoritmo de **backpropagation** y optimización por **descenso de gradiente estocástico (SGD)** o variantes como **Adam**.  
-
-El entrenamiento de DQN incluye las siguientes técnicas clave:  
-
-- **Replay Buffer**: Almacena experiencias pasadas (s, a, r, s') en un buffer y las reutiliza para entrenar la red, reduciendo la correlación entre muestras consecutivas.  
-- **Target Network**: Utiliza una segunda red neuronal (red objetivo) para calcular los valores Q en la actualización, evitando oscilaciones inestables durante el entrenamiento.  
-- **Exploración con  ϵ-greedy**: Equilibra la exploración y explotación ajustando la probabilidad de elegir acciones aleatorias a medida que el agente aprende.
-
 ### Justificación
-Para la realización de este proyecto se ha optado por utilizar los algoritmos de Q-Learning y Deep Q-Learning ya que son muy efectivos en la resolución de problemas de aprendizaje por refuerzos en entornos discretos y continuos.
+Para la realización de este proyecto se ha optado por utilizar los algoritmos de Q-Learning, Deep Q-Learning y PPO.
 
-Primero se optó por Q-Learning debido a la falta de hardware necesario por parte del equipo, aunque luego se encontró la posibilidad de utilizar máquinas virtuales con el hardware necesario, lo que permitió la experimentación con Deep Q-Learning.
+En primer lugar, se empleó Q-Learning por su simplicidad y valor formativo. Si bien presenta baja eficiencia en entornos con una gran cantidad de estados, resulta útil para comprender los conceptos fundamentales de estado, acción y recompensa, así como la dinámica entre exploración y explotación. Además, sirve como punto de referencia para contrastar posteriormente los resultados con algoritmos más avanzados como DQN y PPO.
+
+Por su parte, DQN se incorporó como una extensión natural de Q-Learning para manejar observaciones de alta dimensionalidad, como las imágenes del juego. Al utilizar redes neuronales profundas para aproximar la función Q, evita la necesidad de discretizar el entorno y ofrece un rendimiento significativamente superior en escenarios complejos.
 
 ## Diseño experimental
 
