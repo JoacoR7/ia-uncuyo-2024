@@ -43,6 +43,10 @@ verbose=1
 - El promedio de recompensas se mantiene bajo. Para completar una partida se requieren entre 630 y 830 puntos, dependiendo de si se elimina o no al enemigo especial que otorga 200 puntos adicionales.
 - El entrenamiento muestra inestabilidad notable: las recompensas presentan ciclos de mejora y deterioro sin una tendencia sostenida.
 
+### Test
+- Ganó 26 de 1000 episodios.
+- El mayor puntaje fue 890
+
 ## Modelo 2
 
 ### Hiperparámetros:
@@ -85,6 +89,10 @@ verbose=1
 - El promedio de recompensas aumenta ligeramente respecto al modelo 1. En algunos episodios logra finalizar la primera partida, aunque el desempeño medio sigue siendo limitado.
 - El comportamiento del aprendizaje es más estable. Las recompensas muestran una tendencia ascendente más consistente, aunque el progreso es reducido.
 
+### Test
+- Ganó 50 de 1000 episodios.
+- El mayor puntaje fue 1005
+
 ## Modelo 3
 
 ### Hiperparámetros:
@@ -125,6 +133,10 @@ verbose=1
 
 ### Observaciones
 - El rendimiento deterioró con respecto al modelo 2, y es más inestable incluso. Por ahora el mejor modelo dqn es el 2.
+
+### Test
+- Ganó 21 de 1000 episodios.
+- El mayor puntaje fue 985
 
 ## Modelo 4
 
@@ -172,6 +184,9 @@ verbose=1
 - El rendimiento mejoró significativamente, ya que en promedio estaba cerca de ganar (algunas partidas las ganaba y otras no).
 - El entrenamiento se estabilizó al tener recompensas más estables (aumentan de 1 en 1 en vez de tener diferencias de hasta 400 puntos).
 
+### Test
+- Ganó 181 de 1000 episodios.
+- El mayor puntaje fue 1275
 
 ## Modelo 5
 
@@ -219,6 +234,9 @@ verbose=1
 - El rendimiento mejoró aún más con respecto al modelo anterior, en promedio obtenía un poco más de 30 puntos, es decir que en promedio ganaba la partida.
 - El entrenamiento sigue siendo estable pero ahora la tendencia a mejorar es un poco más elevada.
 
+### Test
+- Ganó 201 de 1000 episodios.
+- El mayor puntaje fue 1425.
 
 ## Modelo 6
 
@@ -267,6 +285,10 @@ verbose=1,
 - El rendimiento se deterioró significativamente, en promedio no llega ni a la mitad del puntaje requerido para superar el primer nivel, es decir, no llega a eliminar a la mitad de los enemigos.
 - Entrenamiento muy inestable.
 
+### Test
+- Ganó 7 de 1000 episodios.
+- El mayor puntaje fue 835.
+
 ## Modelo 7
 
 ### Hiperparámetros:
@@ -313,6 +335,10 @@ verbose=1,
 ### Observaciones
 - Este modelo es una copia del modelo 5, lo único que cambió fue el learning rate que bajó de 1e-5 a 1e-7.
 - Tanto el rendimiento como la estabilidad se deterioraron significativamente.
+
+### Test
+- Ganó 20 de 1000 episodios.
+- El mayor puntaje fue 1185.
 
 ## Modelo 8
 
@@ -361,6 +387,10 @@ verbose=1,
 - Este modelo es una copia del modelo 5, se cambió el batch size (de 132 a 64) y exploration fraction (de 0.3 a 0.2)
 - Al principio el modelo parecía estar mejorando significativamente, pero se estancó y se desestabilizó el entrenamiento.
 
+### Test
+- Ganó 5 de 1000 episodios.
+- El mayor puntaje fue 770.
+
 ## Modelo 9 (Reentrenamiento modelo 5)
 
 ### Hiperparámetros:
@@ -407,3 +437,7 @@ verbose=1
 ### Observaciones
 - Se reentrenó el modelo 5, ya que fue el mejor de entre todos los anteriores, se fijó una exploración de 5% para todo el entrenamiento.
 - Aunque algo inestable y lento, mejoró el rendimiento del modelo.
+
+### Test
+- Ganó 262 de 1000 episodios.
+- El mayor puntaje fue 1555.
