@@ -44,6 +44,10 @@ device="cuda"
 - Presenta una mejora notable respecto a los modelos DQN 1, 2 y 3: a partir de aproximadamente 8000 episodios obtiene en promedio alrededor de 30 puntos, lo que indica que derrota a todos los enemigos de la primera fase (30 unidades, más un bonus opcional) y avanza a una segunda fase.
 - El entrenamiento es más estable, ya que el reward clipping reduce la variabilidad del entorno original, donde las recompensas podían diferir en valores de cien puntos. Con la escala actual, las variaciones son menores y más uniformes.
 
+### Test
+- Ganó 122 de 1000 episodios.
+- El mayor puntaje fue 1360.
+
 ## Modelo 2
 
 ### Hiperparámetros:
@@ -89,6 +93,10 @@ device="cuda"
 ### Observaciones
 - Deterioro de rendimiento, en promedio está cerca de ganar, pero no supera el puntaje del anterior modelo.
 - Inestabilidad: es más inestable que el modelo anterior.
+
+### Test
+- Ganó 169 de 1000 episodios.
+- El mayor puntaje fue 1565.
 
 ## Modelo 3
 
@@ -136,6 +144,10 @@ device="cuda"
 - El modelo empeoró significativamente tanto en rendimiento como en estabilidad.
     - Se estima que puede ser un learning rate muy bajo o que hay mucho ruido al mostrar todos los frames, se harán pruebas para determinar la razón.
 
+### Test
+- Ganó 9 de 1000 episodios.
+- El mayor puntaje fue 890.
+
 ## Modelo 4 (Reentrenamiento de modelo 1)
 
 ### Hiperparámetros:
@@ -179,6 +191,10 @@ device="cuda"
 - Se cargó el modelo 1 y se lo reentrenó de nuevo con 10 millones de pasos.
 - El rendimiento mejoró significativamente, llegando a ganar incluso 2 niveles.
 
+### Test
+- Ganó 581 de 1000 episodios.
+- El mayor puntaje fue 2260.
+
 ## Modelo 5 (Reentrenamiento de modelo 4)
 
 ### Hiperparámetros:
@@ -221,3 +237,7 @@ device="cuda"
 ### Observaciones
 - Se cargó el modelo 4 y se lo reentrenó de nuevo con 10 millones de pasos.
 - El rendimiento volvió a mejorar significativamente, ahora hay varios casos en los que resuelve hasta 3 niveles.
+
+### Test
+- Ganó 850 de 1000 episodios.
+- El mayor puntaje fue 2660.
