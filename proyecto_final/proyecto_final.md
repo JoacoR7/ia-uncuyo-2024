@@ -3,45 +3,38 @@
 ---
 Código de proyecto: SPACEAI
 
+
 ---
 ## Índice <!-- omit in toc -->
-
 - [Introducción](#introducción)
 - [Marco teórico](#marco-teórico)
   - [Reinforcement Learning](#reinforcement-learning)
   - [Q-learning](#q-learning)
-  - [Redes neuronales](#redes-neuronales)
-    - [Estructura de una red neuronal](#estructura-de-una-red-neuronal)
-    - [Tipos de redes neuronales](#tipos-de-redes-neuronales)
-      - [Redes Neuronales Convolucionales (CNN)](#redes-neuronales-convolucionales-cnn)
-      - [Redes Neuronales Profundas (DNN)](#redes-neuronales-profundas-dnn)
-  - [Descenso del gradiente](#descenso-del-gradiente)
-  - [Funciones de activación](#funciones-de-activación)
-    - [Tipos de funciones de activación](#tipos-de-funciones-de-activación)
   - [Deep Q-Network](#deep-q-network)
-    - [Arquitectura de la Red Neuronal en DQN](#arquitectura-de-la-red-neuronal-en-dqn)
-    - [Aprendizaje y Optimización](#aprendizaje-y-optimización)
+  - [Proximal Policy Optimization (PPO)](#proximal-policy-optimization-ppo)
   - [Justificación](#justificación)
 - [Diseño experimental](#diseño-experimental)
   - [Métricas](#métricas)
   - [Herramientas](#herramientas)
     - [OpenAI Gymnasium API](#openai-gymnasium-api)
+    - [Stable Baselines 3](#stable-baselines-3)
   - [Implementación](#implementación)
+    - [Preprocesamiento de entorno](#preprocesamiento-de-entorno)
     - [Implementación con Q-learning](#implementación-con-q-learning)
       - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
       - [Métodos de Entrenamiento y Exploración](#métodos-de-entrenamiento-y-exploración)
     - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
-      - [Preprocesamiento de imágenes](#preprocesamiento-de-imágenes)
     - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
     - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
     - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
-    - [**Entrenamiento**](#entrenamiento)
+    - [Entrenamiento](#entrenamiento)
 - [Bibliografía](#bibliografía)
+
 
 ## Introducción
 En el videojuego Space Invaders, versión de Atari 2600, lanzado en 1978, el jugador controla un cañón que debe desplazarse horizontalmente para destruir oleadas de enemigos que descienden gradualmente. El entorno plantea un escenario de acción en tiempo real donde cada disparo, movimiento y cobertura detrás de los escudos debe gestionarse con precisión. 
 
-Gymnasium, una biblioteca de python, ofrece una réplica de este juego, aportándo un entorno y la posibilidad de editar el mismo con distintos "flavours" y otras opciones para personalizarlo. El hecho de resolver este juego de forma automática implica enfrentar distintos desafíos como anticipar los proyectiles enemigos, adaptarse al incremento de velocidad de los invasores a medida que disminuye su número y optimizar la posición del cañón para maximizar los puntos mientras se minimiza el riesgo (perder vidas). 
+Gymnasium, una biblioteca de python, ofrece una réplica de este juego [[1](#ref1)], aportándo un entorno y la posibilidad de editar el mismo con distintos "flavours" y otras opciones para personalizarlo. El hecho de resolver este juego de forma automática implica enfrentar distintos desafíos como anticipar los proyectiles enemigos, adaptarse al incremento de velocidad de los invasores a medida que disminuye su número y optimizar la posición del cañón para maximizar los puntos mientras se minimiza el riesgo (perder vidas). 
 
 El uso de aprendizaje por refuerzo es una excelente opción para este tipo de problemas, ya que se enfoca en la capacidad de un agente para aprender a través de la interacción con su entorno, optimizando sus decisiones en función de las recompensas obtenidas. En el caso de Space Invaders, el agente aprende a seleccionar acciones basadas en el estado del entorno para maximizar su puntuación y sobrevivir el mayor tiempo posible.
 
@@ -96,18 +89,33 @@ El **Deep Q-Network (DQN)** es una implementación específica de **Deep Q-Learn
 
 DQN ha sido una de las innovaciones más importantes en **Reinforcement Learning**, permitiendo aplicar **Q-learning** en entornos con espacios de estados continuos y de alta dimensión.
 
+### Proximal Policy Optimization (PPO)
+
+**Proximal Policy Optimization (PPO)** es un algoritmo de aprendizaje por refuerzo basado en políticas (*policy-based*) que optimiza directamente la política del agente sin recurrir a una tabla de valores Q. A diferencia de Q-Learning o DQN, PPO utiliza una red neuronal que produce una distribución de acciones para cada estado.
+
+PPO pertenece a la familia de métodos **actor–critic**, donde dos redes trabajan en conjunto:
+
+- **Actor**: genera la política π(a|s), es decir, la probabilidad de ejecutar cada acción.  
+- **Critic**: estima el valor V(s), que se utiliza para calcular la *ventaja* y guiar la actualización del actor.
+
+La principal innovación de PPO es la función objetivo **clipped surrogate objective**, diseñada para evitar cambios bruscos en la política y mantener el entrenamiento estable. El algoritmo controla cuánto puede cambiar la política nueva respecto a la anterior mediante el ratio.
+
+Este mecanismo impide actualizaciones inestables, PPO utiliza **batches** de experiencias y realiza varias épocas de optimización por cada batch para maximizar eficiencia.
+
 ### Justificación
-Para la realización de este proyecto se ha optado por utilizar los algoritmos de Q-Learning, Deep Q-Learning y PPO.
+Para la realización de este proyecto se optó por utilizar los algoritmos de Q-Learning, Deep Q-Learning y PPO por los siguientes motivos:
 
-En primer lugar, se empleó Q-Learning por su simplicidad y valor formativo. Si bien presenta baja eficiencia en entornos con una gran cantidad de estados, resulta útil para comprender los conceptos fundamentales de estado, acción y recompensa, así como la dinámica entre exploración y explotación. Además, sirve como punto de referencia para contrastar posteriormente los resultados con algoritmos más avanzados como DQN y PPO.
+- En primer lugar, se empleó Q-Learning por su simplicidad y facilidad a la hora de entender el algoritmo. Si bien presenta baja eficiencia en entornos con una gran cantidad de estados, resulta útil para comprender los conceptos fundamentales de estado, acción y recompensa, así como la dinámica entre exploración y explotación. Además, sirve como punto de referencia para contrastar posteriormente los resultados con algoritmos más avanzados como DQN y PPO.
 
-Por su parte, DQN se incorporó como una extensión natural de Q-Learning para manejar observaciones de alta dimensionalidad, como las imágenes del juego. Al utilizar redes neuronales profundas para aproximar la función Q, evita la necesidad de discretizar el entorno y ofrece un rendimiento significativamente superior en escenarios complejos.
+- Por su parte, DQN se incorporó como una extensión natural de Q-Learning para manejar observaciones de alta dimensionalidad, como las imágenes del juego. Al utilizar redes neuronales profundas para aproximar la función Q, evita la necesidad de discretizar el entorno y ofrece un rendimiento significativamente superior en escenarios complejos.
+
+- Por último, PPO también tiene la ventaja de poder manejar observaciones continuas o de muchas dimensiones sin necesidad de discretizar, además, el entrenamiento es muy estable ya que aprende políticas de forma suave, y consistente. Tiene también la propiedad de converger más rápido y con mayor robustez.
 
 ## Diseño experimental
 
 ### Métricas
 
-Para evaluar el rendimiento de los algoritmos Q-learning y DQN, se utilizaron varias métricas clave que permiten comparar su desempeño frente a un agente aleatorio. Las métricas seleccionadas son las siguientes:
+Para evaluar el rendimiento de los algoritmos Q-learning, DQN y PPO se utilizaron varias métricas clave que permiten comparar su desempeño frente a un agente aleatorio. Las métricas seleccionadas son las siguientes:
 
 1. **Recompensa Promedio**  
    Se calculó la recompensa promedio en intervalos regulares de episodios para analizar la evolución del aprendizaje del agente. Este análisis permite observar si el agente mejora con el tiempo y si su desempeño se estabiliza en valores óptimos.
@@ -132,7 +140,7 @@ Estas métricas ofrecen una visión clara del progreso de los algoritmos, permit
 
 ### Herramientas
 
-Para el desarrollo de este proyecto, se utilizó Pytorch[[8]](#ref8), la implementación se realizó en Kaggle por su disponibilidad de hardware[[9](#ref9)], el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[10](#ref10)], con la emulación de ALE[[11](#ref11)]
+Para el desarrollo de este proyecto, se utilizó Stable Baselines 3[[8]](#ref8), la implementación se realizó en Kaggle por su disponibilidad de hardware[[9](#ref9)], el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[10](#ref10)], con la emulación de ALE[[11](#ref11)]
 
 #### OpenAI Gymnasium API
 
@@ -141,9 +149,9 @@ Gymnasium es una librería diseñada para desarrollar y evaluar algoritmos de ap
 ##### Características<!-- omit in toc -->
 - **Interfaz unificada:** Proporciona una estructura estándar para interactuar con cualquier entorno con funciones como render(), step() y reset().
 - **Variedad de entornos:** Da la posibilidad de interactuar con simulaciones físicas y también videojuegos clásicos de Atari como Space Invaders, el que vamos a tratar en este proyecto.
-- **Compatibilidad con librerías:** No impone el uso de ninguna librería, por lo tanto se pueden usar librerías como Stable Baselines, TensorFlow y PyTorch, que es la que usaremos en este proyecto.
-
-##### Funcionamiento<!-- omit in toc -->
+- **Compatibilidad con librerías:** No impone el uso de ninguna librería, por lo tanto se pueden usar librerías como Stable Baselines, TensorFlow y PyTorch.
+  
+##### Funcionamiento <!-- omit in toc -->
 Para la interacción con un entorno de Gymnasium, el proceso es el siguiente:
 
 1. **Inicializar el entorno:** Se crea el entorno con gym.make('ALE/SpaceInvaders-v5'), lo que permite interactuar con el juego.
@@ -162,7 +170,56 @@ Para la interacción con un entorno de Gymnasium, el proceso es el siguiente:
     - Done: Indica si el juego terminó.
     - Info: Datos adicionales como puntaje acumulado.
 
+#### Stable Baselines 3
+
+Stable Baselines 3 (SB3) es un conjunto de implementaciones confiables y estandarizadas de algoritmos de aprendizaje profundo, desarrollado sobre PyTorch. Está orientado a la reproducibilidad, la estabilidad del entrenamiento y la facilidad de uso.
+
+##### Características <!-- omit in toc -->
+- **Implementaciones probadas:** Incluye versiones estables de algoritmos ampliamente utilizados, incluidos DQN y PPO.   
+- **Entrenamiento simplificado:** Proporciona métodos como `.learn()`, `.predict()` y `.save()` que abstraen detalles internos y permiten enfocarse en el diseño del agente.  
+- **Herramientas de monitoreo:** Integra callbacks y registro de métricas para evaluar el desempeño del agente durante el entrenamiento.  
+- **Modularidad:** Permite personalizar políticas, arquitecturas de redes neuronales y buffers de experiencia sin alterar la estructura principal del algoritmo.
+
+##### Funcionamiento <!-- omit in toc -->
+1. **Crear el entorno:**  
+   Se inicializa un entorno Gymnasium o una versión envuelta (Wrappers) con preprocesamiento.
+
+2. **Definir el modelo:**  
+model = DQN("CnnPolicy", env, verbose=1)
+
+1. **Entrenar el agente:**  
+model.learn(total_timesteps=n)
+
+1. **Evaluar agente:**  
+action, _ = model.predict(obs)
+
+1. **Guardar y cargar modelos:**  
+model.save("dqn_spaceinvaders")  
+model = DQN.load("dqn_spaceinvaders")
+
 ### Implementación
+
+#### Preprocesamiento de entorno
+El espacio de observación que posee Gymnasium en el juego Space Invaders es Box(0, 255, (210, 160, 3), uint8) [[1](#ref1)],
+es decir, son observaciones de 3 canales (RGB), de 210 x 160 píxeles, con valores entre 0 y 255.
+
+Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [[2](#ref2)].
+
+Siguiendo las recomendaciones, se recortan las secciones de la imagen que no aportan información (ver Figura 1). Después del recorte, la imagen se redimensiona a 84×84 píxeles y, finalmente, se convierte a escala de grises (ver figura 2).
+
+<p align="center">
+  <img src="images/area_recortada.jpeg" width="500">
+  <br>
+  <em>[Figura 1] Área visible para el modelo (recuadrada en rojo)</em>
+  <br>
+  <br>
+</p>
+
+<p align="center">
+  <img src="images/imagen_final.png" width="500">
+  <br>
+  <em>[Figura 2] Imagen luego del preprocesamiento</em>
+</p>
 
 #### Implementación con Q-learning
 ##### Reducción del Espacio de Estados y Acciones
@@ -225,22 +282,7 @@ Durante estas implementaciones, se probaron diferentes técnicas para mejorar el
   - Se encontró que priorizar recompensas a largo plazo proporcionaba mejores resultados que enfocarse en recompensas inmediatas.
   
 #### Implementación con Deep Q-Network
-Como el método de resolución propuesto anteriormente no es muy eficiente, la mejora del algoritmo de Q-Learning permite cambiar el enfoque: ahora se trabajará con imágenes en vez de valores de la RAM. El entorno es capaz de devolver imágenes del juego, lo que nos permite definir una red neuronal para procesar dichas imágenes y entrenar un modelo que pueda tener un buen desempeño en el juego.
-
-##### Preprocesamiento de imágenes
-Con el fin de entrenar un modelo de forma más eficiente, se ha decidido realizar un preprocesamiento a las imágenes antes de que entren en la red neuronal[[12](#ref12)]:
-
-- Como primer paso, se preprocesa la imagen devuelta por el entorno convirtiéndola de RGB a escala de grises. Esto reduce la dimensionalidad del input de la red neuronal al pasar de tres canales de color a uno solo, lo que disminuye la complejidad del modelo sin perder información relevante para la toma de decisiones.
-- Luego, la imagen se redimensiona a 84x84 píxeles para reducir la carga computacional del modelo, manteniendo la información necesaria para la toma de decisiones del agente.
-- Finalmente, la imagen se normaliza dividiendo sus valores por 255, asegurando que los píxeles estén en un rango entre 0 y 1. Por último, se convierte en un tensor de PyTorch y se reestructura para que tenga las dimensiones adecuadas para la red neuronal, permitiendo su procesamiento eficiente en la GPU.
-  
-<div align="center">
-
-| _[Figura 7]  Ejemplo de visualización de entorno preprocesado_ |
-| :--------------------------------------------: |
-| <img src="images/space_invaders_video1-ezgif.com-video-to-gif-converter.gif" width="500"> |
-
-</div>
+La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace muy grande debido a la cantidad de estados y acciones. Con este algoritmo (DQN) podemos definir una red neuronal para procesar el entorno y entrenar un modelo que pueda tener un buen desempeño en el juego.
 
 #### Estructura de la red neuronal
 La red está compuesta por:
@@ -286,17 +328,16 @@ El proceso de entrenamiento sigue los siguientes pasos:
 
 ## Bibliografía
 ---
-<a id="ref1"></a> [1] R. S. Sutton & A. G. Barto. (2020). Reinforcement Learning: An Introduction, Second Edition. The MIT Press.
-<a id="ref2"></a> [2] Alexander Amini. (2024). MIT 6.S191: Reinforcement Learning. Disponible en: https://youtu.be/8JVRbHAVCws. Ultima vez accedido: Febrero de 2025.
-<a id="ref3"></a> [3] M. Volman. (2023). Análisis e Implementación de Herramientas Inteligentes para la Detección de Cáncer en Imágenes Médicas. FING UNCuyo.
-<a id="ref4"></a> [4] 3Blue1Brown. (2020). ¿Qué es una Red Neuronal? | Aprendizaje Profundo Capítulo 1. Disponible en: https://www.youtube.com/watch?v=jKCQsndqEGQ.
-<a id="ref5"></a> [5] Image Kernels explained visually. (2015). Setosa Project. Disponible en: https://setosa.io/ev/image-kernels. Última vez accedido: Marzo 2025.
-<a id="ref6"></a> [6] ¿Qué es una red neuronal profunda?. (2025). Botpress. Disponible en: https://botpress.com/es/blog/deep-neural-network. Última vez accedido: Marzo 2025.
-<a id="ref7"></a> [7] A Look Into Neural Networks and Deep Reinforcement Learning. (2021). Medium. Disponible en: https://chloeewang.medium.com/a-look-into-neural-networks-and-deep-reinforcement-learning-2d5a9baef3e3. Última vez accedido: Marzo de 2025.
-<a id="ref8"></a> [8] PyTorch framework. Disponible en: https://pytorch.org/
+<a id="ref1"></a> [1] Farama Foundation. (2025). Space Invaders Environment. Disponible en: https://ale.farama.org/environments/space_invaders/. Última vez accedido: Noviembre de 2025.
+
+<a id="ref2"></a> [2] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
+
 <a id="ref9"></a> [9] B. Consolvo. (2024). Hardware Available on Kaggle. Disponible en: https://www.kaggle.com/code/bconsolvo/hardware-available-on-kaggle. Última vez accedido: Marzo de 2025.
+
 <a id="ref10"></a> [10] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html. Última vez accedido: Febrero de 2025.
+
 <a id="ref11"></a> [11] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.
-<a id="ref12"></a> [12] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou
-D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
+
+
+
 <a id="ref13"></a> [13] Deeplizard. (2018). Replay Memory Explained - Experience For Deep Q-Network Training. Disponible en: https://deeplizard.com/learn/video/Bcuj2fTH4_4. Última vez accedido: Marzo de 2025.
