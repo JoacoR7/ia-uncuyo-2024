@@ -21,8 +21,8 @@ Código de proyecto: SPACEAI
   - [Implementación](#implementación)
     - [Preprocesamiento de entorno](#preprocesamiento-de-entorno)
     - [Implementación con Q-learning](#implementación-con-q-learning)
-      - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
-      - [Métodos de Entrenamiento y Exploración](#métodos-de-entrenamiento-y-exploración)
+      - [Representación Discreta del Estado](#representación-discreta-del-estado)
+      - [Tamaño final de la Q-table](#tamaño-final-de-la-q-table)
     - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
     - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
     - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
@@ -148,6 +148,10 @@ Con respecto a hardware, se utilizó una computadora del equipo de trabajo y ent
   - Memoria RAM: 32GB  DDR5
   - Almacenamiento: 1TB SSD
   - Procesador: AMD Ryzen 7 7700X
+- Google Colab:
+  - Memoria RAM: ~13 GB
+  - Almacenamiento: ~108 GB
+  - Procesador: Intel Xeon E5-26xx v4 (Broadwell, virtualizado – Google Colab)
 
 #### OpenAI Gymnasium API
 
@@ -231,62 +235,45 @@ Siguiendo las recomendaciones, se recortan las secciones de la imagen que no apo
 #### Implementación con Q-learning
 ##### Reducción del Espacio de Estados y Acciones
 
-El entorno de *Space Invaders* en Gymnasium proporciona una representación del estado en formato RAM con 128 valores, cada uno variando entre 0 y 255. Sin embargo, trabajar con la RAM sin procesar haría que la tabla Q fuera demasiado grande para manejarse eficientemente. Para reducir la dimensionalidad del problema, se implementaron varias estrategias en diferentes versiones.
+El entorno Space Invaders en Gymnasium entrega observaciones en formato de imagen RGB de tamaño 210×160×3, lo cual resulta impracticable para Q-learning tabular debido a la dimensionalidad extremadamente alta del espacio de estados.
+Para que la tabla Q fuera manejable, se implementó un proceso de reducción, compresión y discretización de los fotogramas del juego.
 
-La dimensión de la tabla Q en su forma general es:
+La dimensión general de una Q-table es:
 
 $|Q \text{-table size}| = \text{Número de estados} \times \text{Número de acciones}$
 
-Dado que cada valor de RAM puede tomar 256 valores y hay 128 valores en total, la dimensión inicial sin discretización sería:
+Si se utilizara la imagen completa sin procesamiento, el número de estados sería:
 
-$|Q \text{-table size}| = [256^{128} \times 6]$
+$|Q \text{-table size}| = [256^{210*160*3} \times 6]$
 
-lo cual es computacionalmente inviable. Se realizaron varias reducciones progresivas:
+lo cual es computacionalmente inviable.\
+Por ello, se desarrolló un pipeline de reducción progresiva del estado visual, introduciendo recorte, escalado y discretización en tiras verticales.
 
-1. Primera Implementación
-   - **Estados:** 80 valores de la RAM  
-   - **Discretización:** 5 bins por valor  
-   - **Acciones:** 6 posibles  
-   - **Tamaño de la Q-table:**  
-     
-     $[5^{80} \times 6]$
-     
-   - **Problema:** La tabla Q era extremadamente grande y en solo 3,000 episodios ocupaba aproximadamente 2GB de almacenamiento, haciendo inviable su uso.
+##### Representación Discreta del Estado
+A partir de la imagen ya preprocesada (recortada, redimensionada y convertida a escala de grises), se aplica un esquema de agregación y discretización que transforma cada frame en un vector pequeño y manejable:
+1. **División de la imagen en N columnas**\
+  Cada columna representa una franja vertical del entorno de juego.
 
-2. **Segunda Implementación**  
-   - **Estados:** 80 valores de la RAM  
-   - **Discretización:** 5 bins por valor  
-   - **Acciones:** Reducidas a 2 (moverse a la izquierda y disparar, moverse a la derecha y disparar)  
-   - **Tamaño de la Q-table:**  
+2. **Extracción de una característica por columna**  
+  Se calcula la media de intensidad de los píxeles dentro de cada columna.
 
-     $[5^{80} \times 2]$
+3. **Discretización en K niveles**  
+  Cada valor de media se asigna a uno de K bins, obteniendo así un vector discreto de tamaño N.
 
-   - **Problema:** La reducción de acciones no impactó significativamente en el tamaño de la tabla, que seguía siendo demasiado grande para entrenamientos prolongados.
+Este vector captura información esencial sobre la distribución visual en pantalla, pero en una forma suficientemente reducida como para permitir su uso en una Q-table.
 
-3. **Tercera Implementación**  
-   - **Estados:** 47 valores de la RAM  
-   - **Discretización:** 5 bins por valor  
-   - **Acciones:** 2  
-   - **Tamaño de la Q-table:**  
+##### Tamaño final de la Q table
+Tras el preprocesamiento y discretización, el número total de estados posibles pasa a ser:
 
-        $[5^{47} \times 2]$
+$\text{Número de estados} = K^{N}$
 
-   - **Problema:** Aunque la reducción de la RAM ayudó, la Q-table aún crecía demasiado con el tiempo. Se pudo entrenar hasta 5,000 episodios, pero cuando se intentó expandir el entrenamiento hasta 10,000 episodios, la tabla se volvió inmanejable.
+Por lo tanto, la dimensión final de la Q-table queda:
 
-##### Métodos de Entrenamiento y Exploración
+$|Q \text{-table size}| = [K^{N} \times 6]$
+donde:
+- N = número de columnas en que se divide la imagen,
+- K = número de niveles de discretización,
 
-Durante estas implementaciones, se probaron diferentes técnicas para mejorar el rendimiento del agente:
-
-- **Política ε-greedy:**  
-  - Se usó una tasa inicial de exploración $(\epsilon = 1.0)$ con una reducción de $(0.99)$ por episodio.
-  - En versiones posteriores, se implementó una exploración periódica: cada 5,000 episodios, $(\epsilon)$ se reiniciaba a 0.5 para evitar mínimos locales.
-
-- **Tasa de aprendizaje fija:**  
-  - En las primeras versiones, se usó un valor fijo para la tasa de aprendizaje $(\alpha)$, pero esto resultó en convergencia prematura a soluciones subóptimas.
-
-- **Limitaciones encontradas:**  
-  - En todas las implementaciones, la recompensa promedio oscilaba entre 80 y 150, indicando que el agente se estancaba en mínimos locales.
-  - Se encontró que priorizar recompensas a largo plazo proporcionaba mejores resultados que enfocarse en recompensas inmediatas.
   
 #### Implementación con Deep Q-Network
 La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace muy grande debido a la cantidad de estados y acciones. Con este algoritmo (DQN) podemos definir una red neuronal para procesar el entorno y entrenar un modelo que pueda tener un buen desempeño en el juego.
