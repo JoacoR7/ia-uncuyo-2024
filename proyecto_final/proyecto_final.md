@@ -140,7 +140,14 @@ Estas métricas ofrecen una visión clara del progreso de los algoritmos, permit
 
 ### Herramientas
 
-Para el desarrollo de este proyecto, se utilizó Stable Baselines 3[[8]](#ref8), la implementación se realizó en Kaggle por su disponibilidad de hardware[[9](#ref9)], el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[10](#ref10)], con la emulación de ALE[[11](#ref11)]
+Para el desarrollo de este proyecto, se utilizó Stable Baselines 3, el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[2](#ref2)], con la emulación de ALE[[3](#ref3)].
+
+Con respecto a hardware, se utilizó una computadora del equipo de trabajo y entornos de Google Colab:
+- Computadora:
+  - GPU: RTX 3080 ti
+  - Memoria RAM: 32GB  DDR5
+  - Almacenamiento: 1TB SSD
+  - Procesador: AMD Ryzen 7 7700X
 
 #### OpenAI Gymnasium API
 
@@ -203,7 +210,7 @@ model = DQN.load("dqn_spaceinvaders")
 El espacio de observación que posee Gymnasium en el juego Space Invaders es Box(0, 255, (210, 160, 3), uint8) [[1](#ref1)],
 es decir, son observaciones de 3 canales (RGB), de 210 x 160 píxeles, con valores entre 0 y 255.
 
-Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [[2](#ref2)].
+Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [[4](#ref4)].
 
 Siguiendo las recomendaciones, se recortan las secciones de la imagen que no aportan información (ver Figura 1). Después del recorte, la imagen se redimensiona a 84×84 píxeles y, finalmente, se convierte a escala de grises (ver figura 2).
 
@@ -285,16 +292,71 @@ Durante estas implementaciones, se probaron diferentes técnicas para mejorar el
 La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace muy grande debido a la cantidad de estados y acciones. Con este algoritmo (DQN) podemos definir una red neuronal para procesar el entorno y entrenar un modelo que pueda tener un buen desempeño en el juego.
 
 #### Estructura de la red neuronal
-La red está compuesta por:
-- Entrada: Una imagen de 84x84 en escala de grises (1 canal).
-- Tres capas convolucionales con kernel (filtros) de dimensión 8, 4 y 3 respectivamente:
-  - Conv1: 32 filtros, kernel 8x8, stride 4, activación ReLU.
-  - Conv2: 64 filtros, kernel 4x4, stride 2, activación ReLU.
-  - Conv3: 64 filtros, kernel 3x3, stride 1, activación ReLU.
-- Aplanamiento de la salida de las capas convolucionales para convertir la salida 3D en un vector 1D.
-- Capas completamente conectadas:
-  - FC1: 512 neuronas, activación ReLU.
-  - FC2: n_actions neuronas (sin activación, ya que representa los valores Q correspondientes a cada acción posible en el entorno de Space Invaders).
+
+La red está compuesta por un extractor convolucional de características y una cabeza final que predice los valores Q.
+
+**1. Extractor convolucional (NatureCNN)**  
+La entrada del modelo consiste en un stack de **n_stack** de tamaño **84×84**. El extractor convolucional se compone de:
+
+- **Conv1:** 32 filtros, kernel 8×8, stride 4, activación ReLU.  
+- **Conv2:** 64 filtros, kernel 4×4, stride 2, activación ReLU.  
+- **Conv3:** 64 filtros, kernel 3×3, stride 1, activación ReLU.  
+- **Flatten:** conversión de la salida tridimensional a un vector unidimensional.  
+- **Linear:** capa completamente conectada de **3136 → 512**, activación ReLU.
+
+**2. Cabeza de valores Q (Q-Network)**  
+Tras el extractor de características, la red final que produce los valores Q está formada por:
+
+- **Capa final:** lineal de **512 → n_actions**, sin activación, que genera los valores Q para cada acción posible en el entorno.
+
+La misma arquitectura se replica tanto en la red principal (*q_net*) como en la red objetivo (*q_net_target*).
+
+La información sobre la estructura se puede obtener cargando el modelo y ejecutando `print(model.policy)`:
+
+```text
+CnnPolicy(
+  (q_net): QNetwork(
+    (features_extractor): NatureCNN(
+      (cnn): Sequential(
+        (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
+        (1): ReLU()
+        (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
+        (3): ReLU()
+        (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
+        (5): ReLU()
+        (6): Flatten(start_dim=1, end_dim=-1)
+      )
+      (linear): Sequential(
+        (0): Linear(in_features=3136, out_features=512, bias=True)
+        (1): ReLU()
+      )
+    )
+    (q_net): Sequential(
+      (0): Linear(in_features=512, out_features=6, bias=True)
+    )
+  )
+  (q_net_target): QNetwork(
+    (features_extractor): NatureCNN(
+      (cnn): Sequential(
+        (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
+        (1): ReLU()
+        (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
+        (3): ReLU()
+        (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
+        (5): ReLU()
+        (6): Flatten(start_dim=1, end_dim=-1)
+      )
+      (linear): Sequential(
+        (0): Linear(in_features=3136, out_features=512, bias=True)
+        (1): ReLU()
+      )
+    )
+    (q_net): Sequential(
+      (0): Linear(in_features=512, out_features=6, bias=True)
+    )
+  )
+)
+```
 
 #### Estrategia de aprendizaje
 Con el objetivo de lograr un balance entre exploración y explotación, se ha elegido una estrategia ε-greedy donde:
@@ -303,41 +365,41 @@ Con el objetivo de lograr un balance entre exploración y explotación, se ha el
 - ε decae exponencialmente con los pasos de entrenamiento.
   
 #### Almacenamiento y muestreo de experiencias
-Se implementó un buffer de memoria (Replay Memory), donde se almacenan las experiencias con la estructura (estado, acción, nuevo estado, recompensa). En el proceso del entrenamiento, se muestran lotes aleatorios de la memoria para reducir la correlación entre las muestras y mejorar la estabilidad del entrenamiento. [[13](#ref13)]
+El entorno se vectoriza y se aplica un apilado de frames, por lo que cada estado observado por el agente está compuesto por una secuencia de n imágenes consecutivas. Esto permite que la red neuronal disponga de información temporal, que es muy importante para este entorno ya que el movimiento de los objetos no puede inferirse a partir de un solo frame.
+
+Cada transición generada durante la interacción con el entorno (que incluye el estado apilado actual, la acción ejecutada, la recompensa recibida, el siguiente estado apilado y la señal de finalización) se almacena en un buffer de memoria.
+
+Durante el entrenamiento, se extraen lotes aleatorios desde este buffer. Este muestreo aleatorio rompe la correlación temporal entre transiciones consecutivas y utiliza de forma más eficiente la experiencia almacenada, mejorando la estabilidad del aprendizaje y la convergencia del modelo.
 
 #### Entrenamiento
 El proceso de entrenamiento sigue los siguientes pasos:
 
 1. **Inicialización:**
+   - Se construye el entorno personalizado, se vectoriza y se aplica frame stacking.
    - Se inicializa el entorno y se obtiene un estado inicial.
 
 2. **Pasos del entrenamiento:**
    - En cada paso:
-     - Se elige una acción utilizando la política ε-greedy.
-     - La acción se ejecuta en el entorno y se recibe una recompensa.
-     - La transición (estado, acción, nuevo estado, recompensa) se almacena en la memoria de experiencia.
-     - Se actualizan los pesos de la red neuronal mediante el proceso de retropropagación.
+     - Observa un estado compuesto por una secuencia de n_stack frames.
+     - Selecciona una acción de acuerdo con la política ε-greedy.
+     - Ejecuta la acción en el entorno y recibe la recompensa y el siguiente estado apilado.
+     - La transición se almacena automáticamente en el Replay Buffer del modelo.
+     - Cuando corresponde (según train_freq), el modelo actualiza sus parámetros usando lotes aleatorios extraídos del buffer y la red objetivo se sincroniza periódicamente (target_update_interval).
 
 3. **Finalización del entrenamiento:**
-   - El entrenamiento se detiene al alcanzar una cantidad predefinida de 1500 episodios , un límite establecido debido a restricciones de hardware.
-   - Debido a que el equipo disponible no cuenta con los recursos necesarios para un entrenamiento prolongado, el proceso se realiza en un *Notebook* de Kaggle. Esta plataforma permite ejecutar máquinas virtuales durante un máximo de 12 horas continuas, después de lo cual es necesario reiniciar la máquina para continuar con la ejecución.
+   - El entrenamiento se detiene al alcanzar una cantidad predefinida de 10 millones de pasos, lo que implica una duración de aproximadamente 7 horas.
+   - El modelo se guarda para su posterior testeo y, en caso de que se requiera, un reentrenamiento.
 
-4. **Reinicio y continuación del entrenamiento:**
-   - Al finalizar un ciclo de entrenamiento, el modelo se guarda, se reinicia la máquina virtual y se retoma el entrenamiento desde donde se dejó.
+4. **Testeo:**
+   - Se carga el modelo y se lo testea con 1000 episodios para medir su desempeño en el entorno.
 
 
 ## Bibliografía
 ---
 <a id="ref1"></a> [1] Farama Foundation. (2025). Space Invaders Environment. Disponible en: https://ale.farama.org/environments/space_invaders/. Última vez accedido: Noviembre de 2025.
 
-<a id="ref2"></a> [2] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
+<a id="ref2"></a> [2] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html. Última vez accedido: Febrero de 2025.
 
-<a id="ref9"></a> [9] B. Consolvo. (2024). Hardware Available on Kaggle. Disponible en: https://www.kaggle.com/code/bconsolvo/hardware-available-on-kaggle. Última vez accedido: Marzo de 2025.
+<a id="ref3"></a> [3] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.
 
-<a id="ref10"></a> [10] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html. Última vez accedido: Febrero de 2025.
-
-<a id="ref11"></a> [11] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.
-
-
-
-<a id="ref13"></a> [13] Deeplizard. (2018). Replay Memory Explained - Experience For Deep Q-Network Training. Disponible en: https://deeplizard.com/learn/video/Bcuj2fTH4_4. Última vez accedido: Marzo de 2025.
+<a id="ref4"></a> [4] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
