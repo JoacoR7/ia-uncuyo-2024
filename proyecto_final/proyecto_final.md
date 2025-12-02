@@ -21,13 +21,16 @@ Código de proyecto: SPACEAI
   - [Implementación](#implementación)
     - [Preprocesamiento de entorno](#preprocesamiento-de-entorno)
     - [Implementación con Q-learning](#implementación-con-q-learning)
+      - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
       - [Representación Discreta del Estado](#representación-discreta-del-estado)
-      - [Tamaño final de la Q-table](#tamaño-final-de-la-q-table)
+      - [Tamaño final de la Q table](#tamaño-final-de-la-q-table)
     - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
     - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
     - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
     - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
     - [Entrenamiento](#entrenamiento)
+    - [Implementación con PPO](#implementación-con-ppo)
+      - [Estructura de la red neuronal](#estructura-de-la-red-neuronal-1)
 - [Bibliografía](#bibliografía)
 
 
@@ -379,6 +382,100 @@ El proceso de entrenamiento sigue los siguientes pasos:
 
 4. **Testeo:**
    - Se carga el modelo y se lo testea con 1000 episodios para medir su desempeño en el entorno.
+
+#### Implementación con PPO
+A diferencia de DQN que utiliza Q-learning, PPO es un algoritmo de gradiente de política que optimiza directamente la política del agente. Este enfoque es más estable y eficiente para muchos entornos.
+
+##### Estructura de la red neuronal
+PPO utiliza una arquitectura de Actor-Crítico con extractores de características separados para la política (actor) y la función de valor (crítico). Esta separación permite que cada componente aprenda representaciones especializadas de manera independiente, optimizando tanto la selección de acciones como la estimación de valores.
+
+**1. Extractores convolucionales independientes (NatureCNN)**  
+La arquitectura implementa tres extractores NatureCNN con pesos independientes:
+
+- **features_extractor:** Extractor base de respaldo.
+- **pi_features_extractor:** Extractor dedicado para la red de política (actor).
+- **vf_features_extractor:** Extractor dedicado para la red de valor (crítico).
+
+La entrada de cada extractor consiste en un stack de **n_stack** frames de tamaño 84×84. Cada NatureCNN se compone de:
+
+- **Conv1:** 32 filtros, kernel 8×8, stride 4, activación ReLU.
+- **Conv2:** 64 filtros, kernel 4×4, stride 2, activación ReLU.
+- **Conv3:** 64 filtros, kernel 3×3, stride 1, activación ReLU.
+- **Flatten:** conversión de la salida tridimensional a un vector unidimensional.
+- **Linear:** capa completamente conectada de 3136 → 512, activación ReLU.
+
+**2. Extractor MLP (MlpExtractor)**  
+Después de los extractores convolucionales, existe un componente MlpExtractor que contiene dos ramas:
+
+- **policy_net:** Sequential vacío (las características de 512 dimensiones van directamente a la cabeza de acción).
+- **value_net:** Sequential vacío (las características de 512 dimensiones van directamente a la cabeza de valor).
+
+En esta configuración, el MlpExtractor no agrega capas adicionales, funcionando como un pass-through que mantiene la separación entre las dos ramas.
+
+**3. Cabezas de salida**
+
+Finalmente, cada rama tiene su propia cabeza de salida:
+
+- **action_net (Actor):** capa lineal de 512 → 6, que genera logits para la distribución de probabilidad sobre las 6 acciones posibles del entorno. Durante la inferencia, estos logits se convierten en probabilidades mediante softmax.
+- **value_net (Crítico):** capa lineal de 512 → 1, sin activación, que estima el valor del estado actual V(s). Esta estimación se utiliza para calcular las ventajas durante el entrenamiento.
+
+La información sobre la estructura se puede obtener cargando el modelo y ejecutando `print(model.policy)`:
+
+```text
+ActorCriticCnnPolicy(
+  (features_extractor): NatureCNN(
+    (cnn): Sequential(
+      (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
+      (1): ReLU()
+      (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
+      (3): ReLU()
+      (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
+      (5): ReLU()
+      (6): Flatten(start_dim=1, end_dim=-1)
+    )
+    (linear): Sequential(
+      (0): Linear(in_features=3136, out_features=512, bias=True)
+      (1): ReLU()
+    )
+  )
+  (pi_features_extractor): NatureCNN(
+    (cnn): Sequential(
+      (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
+      (1): ReLU()
+      (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
+      (3): ReLU()
+      (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
+      (5): ReLU()
+      (6): Flatten(start_dim=1, end_dim=-1)
+    )
+    (linear): Sequential(
+      (0): Linear(in_features=3136, out_features=512, bias=True)
+      (1): ReLU()
+    )
+  )
+  (vf_features_extractor): NatureCNN(
+    (cnn): Sequential(
+      (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
+      (1): ReLU()
+      (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
+      (3): ReLU()
+      (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
+      (5): ReLU()
+      (6): Flatten(start_dim=1, end_dim=-1)
+    )
+    (linear): Sequential(
+      (0): Linear(in_features=3136, out_features=512, bias=True)
+      (1): ReLU()
+    )
+  )
+  (mlp_extractor): MlpExtractor(
+    (policy_net): Sequential()
+    (value_net): Sequential()
+  )
+  (action_net): Linear(in_features=512, out_features=6, bias=True)
+  (value_net): Linear(in_features=512, out_features=1, bias=True)
+)
+```
 
 
 ## Bibliografía
