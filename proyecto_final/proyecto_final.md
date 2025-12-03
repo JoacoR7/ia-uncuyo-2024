@@ -129,14 +129,8 @@ Para evaluar el rendimiento de los algoritmos Q-learning, DQN y PPO se utilizaro
 3. **Winrate**  
    Se midió el porcentaje de episodios en los que el agente logró una recompensa superior a 630, umbral necesario para pasar el primer nivel. Este indicador refleja la capacidad del agente para alcanzar su objetivo de manera consistente.
 
-4. **Distribución de la Recompensa**  
-   Para comprender mejor la variabilidad del rendimiento del agente, se analizaron las recompensas obtenidas a lo largo del entrenamiento mediante dos enfoques:  
-   
-   - **Gráfico de Frecuencia**  
-     Se construyó un histograma de frecuencias que muestra con qué frecuencia el agente alcanzó determinadas recompensas dentro de intervalos predefinidos. Este análisis permite identificar patrones en la distribución de las recompensas y evaluar la estabilidad del agente en la obtención de buenos resultados. Una distribución sesgada hacia valores más altos indicaría un agente con un rendimiento más consistente y efectivo.
-
-   - **Boxplot**  
-     Se utilizó un diagrama de caja y bigotes (boxplot) para representar la mediana, los cuartiles y los valores atípicos de las recompensas obtenidas. Esta visualización es útil para evaluar la dispersión y estabilidad del rendimiento del agente, así como para identificar si el aprendizaje presenta episodios con recompensas extremas o si el agente converge a una estrategia con resultados más homogéneos.
+4. **Gráfico de Frecuencia**  
+   Se construyó un histograma de frecuencias que muestra con qué frecuencia el agente alcanzó determinadas recompensas dentro de intervalos predefinidos. Este análisis permite identificar patrones en la distribución de las recompensas y evaluar la estabilidad del agente en la obtención de buenos resultados. Una distribución sesgada hacia valores más altos indicaría un agente con un rendimiento más consistente y efectivo.
 
 Estas métricas ofrecen una visión clara del progreso de los algoritmos, permitiendo evaluar tanto la efectividad de sus estrategias como su estabilidad y consistencia a lo largo de la simulación.
 
