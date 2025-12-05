@@ -17,6 +17,7 @@ Código de proyecto: SPACEAI
   - [Métricas](#métricas)
   - [Herramientas](#herramientas)
     - [OpenAI Gymnasium API](#openai-gymnasium-api)
+      - [Modos y dificultades](#modos-y-dificultades)
     - [Stable Baselines 3](#stable-baselines-3)
   - [Implementación](#implementación)
     - [Preprocesamiento de entorno](#preprocesamiento-de-entorno)
@@ -26,11 +27,11 @@ Código de proyecto: SPACEAI
       - [Tamaño final de la Q table](#tamaño-final-de-la-q-table)
     - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
     - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
-    - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
+      - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
     - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
-    - [Entrenamiento](#entrenamiento)
     - [Implementación con PPO](#implementación-con-ppo)
       - [Estructura de la red neuronal](#estructura-de-la-red-neuronal-1)
+  - [Experimentos](#experimentos)
 - [Bibliografía](#bibliografía)
 
 
@@ -48,8 +49,6 @@ A lo largo de este proyecto, se explicarán los fundamentos de los algoritmos Q-
 ### Reinforcement Learning
 
 El **Reinforcement Learning (RL)** o **aprendizaje por refuerzo** es un paradigma del aprendizaje automático en el que un agente aprende a tomar decisiones en un entorno para maximizar una recompensa acumulada. En RL, el agente interactúa con el entorno siguiendo un proceso de prueba y error, utilizando una política que define qué acción tomar en cada estado.  
-
-Este enfoque está inspirado en cómo los animales aprenden mediante **ensayo y error**, utilizando **recompensas positivas y negativas**. Por ejemplo, al entrenar a un perro para realizar trucos, se le da un premio como refuerzo positivo cuando ejecuta correctamente una acción. De manera similar, un agente de RL aprende a comportarse de forma óptima en un entorno al recibir recompensas o penalizaciones según sus acciones.  
 
 El aprendizaje en RL se basa en los siguientes elementos clave:  
 
@@ -81,8 +80,6 @@ Donde:
 
 
 El algoritmo de Q-learning, bajo ciertas condiciones (como una tasa de aprendizaje adecuada y la exploración suficiente), converge a una **política óptima**. La política óptima es la que maximiza la recompensa esperada a largo plazo para el agente. Es importante notar que Q-learning es un algoritmo **off-policy**, lo que significa que el agente puede aprender la política óptima sin tener que seguir exactamente la política que está aprendiendo. 
-
-En resumen, Q-learning es un algoritmo de aprendizaje por refuerzo eficiente que permite a un agente aprender una política óptima de acción para maximizar recompensas a largo plazo. Aunque es un algoritmo potente e **independiente del modelo**, lo que significa que no necesita conocer el entorno de antemano, su rendimiento puede ser limitado en entornos con espacios de estados grandes o continuos. La principal ventaja es su capacidad de aprender sin necesidad de un modelo explícito del entorno, pero su **lentitud de convergencia** en problemas complejos y la necesidad de adaptaciones, como las redes neuronales en **Deep Q-Learning**, son algunas de sus principales limitaciones. Además, Q-learning depende de un adecuado balance entre **exploración y explotación**, lo que puede ser un desafío en ciertos contextos.
 
 ### Deep Q-Network 
 
@@ -132,9 +129,6 @@ Para evaluar el rendimiento de los algoritmos Q-learning, DQN y PPO se utilizaro
 4. **Gráfico de Frecuencia**  
    Se construyó un histograma de frecuencias que muestra con qué frecuencia el agente alcanzó determinadas recompensas dentro de intervalos predefinidos. Este análisis permite identificar patrones en la distribución de las recompensas y evaluar la estabilidad del agente en la obtención de buenos resultados. Una distribución sesgada hacia valores más altos indicaría un agente con un rendimiento más consistente y efectivo.
 
-Estas métricas ofrecen una visión clara del progreso de los algoritmos, permitiendo evaluar tanto la efectividad de sus estrategias como su estabilidad y consistencia a lo largo de la simulación.
-
-
 ### Herramientas
 
 Para el desarrollo de este proyecto, se utilizó Stable Baselines 3, el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[2](#ref2)], con la emulación de ALE[[3](#ref3)].
@@ -154,56 +148,15 @@ Con respecto a hardware, se utilizó una computadora del equipo de trabajo y ent
 
 Gymnasium es una librería diseñada para desarrollar y evaluar algoritmos de aprendizaje por refuerzo (RL). Proporciona una interfaz estandarizada que facilita la creación de agentes de RL y su entrenamiento.
 
-##### Características<!-- omit in toc -->
-- **Interfaz unificada:** Proporciona una estructura estándar para interactuar con cualquier entorno con funciones como render(), step() y reset().
-- **Variedad de entornos:** Da la posibilidad de interactuar con simulaciones físicas y también videojuegos clásicos de Atari como Space Invaders, el que vamos a tratar en este proyecto.
-- **Compatibilidad con librerías:** No impone el uso de ninguna librería, por lo tanto se pueden usar librerías como Stable Baselines, TensorFlow y PyTorch.
-  
-##### Funcionamiento <!-- omit in toc -->
-Para la interacción con un entorno de Gymnasium, el proceso es el siguiente:
+Gymnasium incluye una variedad de entornos predefinidos, como tareas clásicas de control, simulaciones físicas, y escenarios similares a videojuegos. También permite crear entornos personalizados para aplicaciones específicas, manteniendo la misma estructura API. Se utilizará para obtener el entorno de Space Invaders.
 
-1. **Inicializar el entorno:** Se crea el entorno con gym.make('ALE/SpaceInvaders-v5'), lo que permite interactuar con el juego.
-2. **Reiniciar el entorno:** Se usa env.reset(), lo que devuelve el estado inicial del juego.
-3. **Tomar acciones:** En cada paso, se elige una acción:
-    - Acción 0: No hace nada.
-    - Acción 1: Dispara.
-    - Acción 2: Se mueve a la derecha.
-    - Acción 3: Se mueve a la izquierda.
-    - Acción 4: Se mueve a la derecha disparando.
-    - Acción 5: Se mueve a la izquierda disparando.
+##### Modos y dificultades
+Para el caso del entorno a trabajar, la librería ofrece modos y dificultades [[4](#ref4)]. Ofrece 16 modos distintos y 2 dificultades distintas, en cuanto a la dificultad, simplemente agranda o achica el cañón, por defecto empieza con el cañón más chico (menos probabilidad de ser golpeado). Con respecto a los modos, hay distintas posibilidades como escudos que se mueven, balas que se mueven horizontalmente, invisibilidad de enemigos, entre otros (ejemplos completos en [[8](#ref8)]).
 
-4. **Observar el resultado:** El entorno devuelve cuatro elementos clave:
-    - Observación: Imagen del juego después de la acción.
-    - Recompensa: Puntos obtenidos en ese paso.
-    - Done: Indica si el juego terminó.
-    - Info: Datos adicionales como puntaje acumulado.
 
 #### Stable Baselines 3
 
 Stable Baselines 3 (SB3) es un conjunto de implementaciones confiables y estandarizadas de algoritmos de aprendizaje profundo, desarrollado sobre PyTorch. Está orientado a la reproducibilidad, la estabilidad del entrenamiento y la facilidad de uso.
-
-##### Características <!-- omit in toc -->
-- **Implementaciones probadas:** Incluye versiones estables de algoritmos ampliamente utilizados, incluidos DQN y PPO.   
-- **Entrenamiento simplificado:** Proporciona métodos como `.learn()`, `.predict()` y `.save()` que abstraen detalles internos y permiten enfocarse en el diseño del agente.  
-- **Herramientas de monitoreo:** Integra callbacks y registro de métricas para evaluar el desempeño del agente durante el entrenamiento.  
-- **Modularidad:** Permite personalizar políticas, arquitecturas de redes neuronales y buffers de experiencia sin alterar la estructura principal del algoritmo.
-
-##### Funcionamiento <!-- omit in toc -->
-1. **Crear el entorno:**  
-   Se inicializa un entorno Gymnasium o una versión envuelta (Wrappers) con preprocesamiento.
-
-2. **Definir el modelo:**  
-model = DQN("CnnPolicy", env, verbose=1)
-
-1. **Entrenar el agente:**  
-model.learn(total_timesteps=n)
-
-1. **Evaluar agente:**  
-action, _ = model.predict(obs)
-
-1. **Guardar y cargar modelos:**  
-model.save("dqn_spaceinvaders")  
-model = DQN.load("dqn_spaceinvaders")
 
 ### Implementación
 
@@ -211,7 +164,7 @@ model = DQN.load("dqn_spaceinvaders")
 El espacio de observación que posee Gymnasium en el juego Space Invaders es Box(0, 255, (210, 160, 3), uint8) [[1](#ref1)],
 es decir, son observaciones de 3 canales (RGB), de 210 x 160 píxeles, con valores entre 0 y 255.
 
-Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [[4](#ref4)].
+Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [[5](#ref5)].
 
 Siguiendo las recomendaciones, se recortan las secciones de la imagen que no aportan información (ver Figura 1). Después del recorte, la imagen se redimensiona a 84×84 píxeles y, finalmente, se convierte a escala de grises (ver figura 2).
 
@@ -277,7 +230,7 @@ La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace m
 
 #### Estructura de la red neuronal
 
-La red está compuesta por un extractor convolucional de características y una cabeza final que predice los valores Q.
+La red está compuesta por un extractor convolucional de características y una cabeza final que predice los valores Q [[6](#ref6)].
 
 **1. Extractor convolucional (NatureCNN)**  
 La entrada del modelo consiste en un stack de **n_stack** de tamaño **84×84**. El extractor convolucional se compone de:
@@ -295,54 +248,7 @@ Tras el extractor de características, la red final que produce los valores Q es
 
 La misma arquitectura se replica tanto en la red principal (*q_net*) como en la red objetivo (*q_net_target*).
 
-La información sobre la estructura se puede obtener cargando el modelo y ejecutando `print(model.policy)`:
-
-```text
-CnnPolicy(
-  (q_net): QNetwork(
-    (features_extractor): NatureCNN(
-      (cnn): Sequential(
-        (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
-        (1): ReLU()
-        (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
-        (3): ReLU()
-        (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
-        (5): ReLU()
-        (6): Flatten(start_dim=1, end_dim=-1)
-      )
-      (linear): Sequential(
-        (0): Linear(in_features=3136, out_features=512, bias=True)
-        (1): ReLU()
-      )
-    )
-    (q_net): Sequential(
-      (0): Linear(in_features=512, out_features=6, bias=True)
-    )
-  )
-  (q_net_target): QNetwork(
-    (features_extractor): NatureCNN(
-      (cnn): Sequential(
-        (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
-        (1): ReLU()
-        (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
-        (3): ReLU()
-        (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
-        (5): ReLU()
-        (6): Flatten(start_dim=1, end_dim=-1)
-      )
-      (linear): Sequential(
-        (0): Linear(in_features=3136, out_features=512, bias=True)
-        (1): ReLU()
-      )
-    )
-    (q_net): Sequential(
-      (0): Linear(in_features=512, out_features=6, bias=True)
-    )
-  )
-)
-```
-
-#### Estrategia de aprendizaje
+##### Estrategia de aprendizaje
 Con el objetivo de lograr un balance entre exploración y explotación, se ha elegido una estrategia ε-greedy donde:
 - Con probabilidad ε, se elige una acción aleatoria (exploración)
 - Con probabilidad 1-ε, se elige la acción con el mayor valor Q (explotación).
@@ -355,33 +261,11 @@ Cada transición generada durante la interacción con el entorno (que incluye el
 
 Durante el entrenamiento, se extraen lotes aleatorios desde este buffer. Este muestreo aleatorio rompe la correlación temporal entre transiciones consecutivas y utiliza de forma más eficiente la experiencia almacenada, mejorando la estabilidad del aprendizaje y la convergencia del modelo.
 
-#### Entrenamiento
-El proceso de entrenamiento sigue los siguientes pasos:
-
-1. **Inicialización:**
-   - Se construye el entorno personalizado, se vectoriza y se aplica frame stacking.
-   - Se inicializa el entorno y se obtiene un estado inicial.
-
-2. **Pasos del entrenamiento:**
-   - En cada paso:
-     - Observa un estado compuesto por una secuencia de n_stack frames.
-     - Selecciona una acción de acuerdo con la política ε-greedy.
-     - Ejecuta la acción en el entorno y recibe la recompensa y el siguiente estado apilado.
-     - La transición se almacena automáticamente en el Replay Buffer del modelo.
-     - Cuando corresponde (según train_freq), el modelo actualiza sus parámetros usando lotes aleatorios extraídos del buffer y la red objetivo se sincroniza periódicamente (target_update_interval).
-
-3. **Finalización del entrenamiento:**
-   - El entrenamiento se detiene al alcanzar una cantidad predefinida de 10 millones de pasos, lo que implica una duración de aproximadamente 7 horas.
-   - El modelo se guarda para su posterior testeo y, en caso de que se requiera, un reentrenamiento.
-
-4. **Testeo:**
-   - Se carga el modelo y se lo testea con 1000 episodios para medir su desempeño en el entorno.
-
 #### Implementación con PPO
 A diferencia de DQN que utiliza Q-learning, PPO es un algoritmo de gradiente de política que optimiza directamente la política del agente. Este enfoque es más estable y eficiente para muchos entornos.
 
 ##### Estructura de la red neuronal
-PPO utiliza una arquitectura de Actor-Crítico con extractores de características separados para la política (actor) y la función de valor (crítico). Esta separación permite que cada componente aprenda representaciones especializadas de manera independiente, optimizando tanto la selección de acciones como la estimación de valores.
+PPO utiliza una arquitectura de Actor-Crítico con extractores de características separados para la política (actor) y la función de valor (crítico). Esta separación permite que cada componente aprenda representaciones especializadas de manera independiente, optimizando tanto la selección de acciones como la estimación de valores [[7](#ref7)].
 
 **1. Extractores convolucionales independientes (NatureCNN)**  
 La arquitectura implementa tres extractores NatureCNN con pesos independientes:
@@ -413,63 +297,16 @@ Finalmente, cada rama tiene su propia cabeza de salida:
 - **action_net (Actor):** capa lineal de 512 → 6, que genera logits para la distribución de probabilidad sobre las 6 acciones posibles del entorno. Durante la inferencia, estos logits se convierten en probabilidades mediante softmax.
 - **value_net (Crítico):** capa lineal de 512 → 1, sin activación, que estima el valor del estado actual V(s). Esta estimación se utiliza para calcular las ventajas durante el entrenamiento.
 
-La información sobre la estructura se puede obtener cargando el modelo y ejecutando `print(model.policy)`:
+### Experimentos
+Como se mencionó anteriormente, se utilizaron 3 algoritmos para explorar el entorno, además de un algoritmo random, además, se entrenaron con el modo y dificultad por defecto que ofrece el entorno (modo 0 y dificultad 0). A continuación se especifica cuánto se dedicó en entrenamiento para cada modelo de cada algoritmo.
 
-```text
-ActorCriticCnnPolicy(
-  (features_extractor): NatureCNN(
-    (cnn): Sequential(
-      (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
-      (1): ReLU()
-      (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
-      (3): ReLU()
-      (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
-      (5): ReLU()
-      (6): Flatten(start_dim=1, end_dim=-1)
-    )
-    (linear): Sequential(
-      (0): Linear(in_features=3136, out_features=512, bias=True)
-      (1): ReLU()
-    )
-  )
-  (pi_features_extractor): NatureCNN(
-    (cnn): Sequential(
-      (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
-      (1): ReLU()
-      (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
-      (3): ReLU()
-      (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
-      (5): ReLU()
-      (6): Flatten(start_dim=1, end_dim=-1)
-    )
-    (linear): Sequential(
-      (0): Linear(in_features=3136, out_features=512, bias=True)
-      (1): ReLU()
-    )
-  )
-  (vf_features_extractor): NatureCNN(
-    (cnn): Sequential(
-      (0): Conv2d(n_stack, 32, kernel_size=(8, 8), stride=(4, 4))
-      (1): ReLU()
-      (2): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
-      (3): ReLU()
-      (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
-      (5): ReLU()
-      (6): Flatten(start_dim=1, end_dim=-1)
-    )
-    (linear): Sequential(
-      (0): Linear(in_features=3136, out_features=512, bias=True)
-      (1): ReLU()
-    )
-  )
-  (mlp_extractor): MlpExtractor(
-    (policy_net): Sequential()
-    (value_net): Sequential()
-  )
-  (action_net): Linear(in_features=512, out_features=6, bias=True)
-  (value_net): Linear(in_features=512, out_features=1, bias=True)
-)
-```
+| Algoritmo  | Cantidad de entrenamiento por modelo |
+| ---------- | ------------------------- |
+| Random     | –                         |
+| Q-Learning | 20000 episodios (Aproximadamente 4 horas)            |
+| DQN        | 10 millones de pasos (Aproximadamente 7 horas)      |
+| PPO        | 10 millones de pasos (Aproximadamente 7 horas)      |
+
 
 
 ## Bibliografía
@@ -480,4 +317,12 @@ ActorCriticCnnPolicy(
 
 <a id="ref3"></a> [3] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.
 
-<a id="ref4"></a> [4] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
+<a id="ref4"></a> [4] Farama Foundation. (2025). Flavors. Disponible en: https://gymnasium.farama.org/v0.28.0/environments/atari/#flavors. Última vez accedido: Noviembre de 2025.
+
+<a id="ref5"></a> [5] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
+
+<a id="ref6"></a> [6] Estructura de la red DQN. Disponible en: .\code\dqn\network_structure.md. Última vez accedido: Noviembre de 2025.
+
+<a id="ref7"></a> [7] Estructura de la red PPO. Disponible en: .\code\ppo\network_structure.md. Última vez accedido: Noviembre de 2025.
+
+<a id="ref8"></a> [8] Modos de space invaders. Disponible en: .\modos_de_juego. Última vez accedido: Diciembre de 2025.
