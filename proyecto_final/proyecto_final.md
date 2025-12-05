@@ -303,12 +303,15 @@ Finalmente, cada rama tiene su propia cabeza de salida:
 ### Experimentos
 Se realizaron experimentos empleando cuatro enfoques: un agente con comportamiento aleatorio y tres algoritmos de aprendizaje por refuerzo (Q-Learning, DQN y PPO). Todos los modelos fueron entrenados utilizando la configuración por defecto del entorno, correspondiente al modo 0 y dificultad 0.
 
+<div align="center">
+
 | Algoritmo  | Cantidad de entrenamiento por modelo |
 | ---------- | ------------------------- |
 | Random     | –                         |
 | Q-Learning | 20000 episodios (Aproximadamente 4 horas)            |
 | DQN        | 10 millones de pasos (Aproximadamente 7 horas)      |
 | PPO        | 10 millones de pasos (Aproximadamente 7 horas)      |
+</div>
 
 Se decidió utilizar el modo por defecto y la dificultad 0 ya que es el entorno más sencillo para entrenar un modelo. Luego, a la hora de testear, se utilizaron los modos 0, 3, 4 y 8 para evaluar no sólo su desempeño en un entorno ya conocido, sino también entornos nuevos para evalúar qué tan bien se adapta a los cambios que estos modos proponen.
 
@@ -356,19 +359,21 @@ Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrará
 <table align="center">
   <tr>
     <td align="center">
-      <img src="code/dqn/graphics/histograma_dqn9.png" width="300"><br>
+      <img src="code/dqn/graphics/histograma_dqn9.png" width="500"><br>
       <em>[Figura] Histograma de frecuencia para modo 0</em>
     </td>
     <td align="center">
-      <img src="code/dqn/graphics/histograma_DQN9_modo3_test.png" width="300"><br>
+      <img src="code/dqn/graphics/histograma_DQN9_modo3_test.png" width="500"><br>
       <em>[Figura] Histograma de frecuencia para modo 3</em>
     </td>
+  </tr>
+  <tr>  
     <td align="center">
-      <img src="code/dqn/graphics/histograma_DQN9_modo4_test.png" width="300"><br>
+      <img src="code/dqn/graphics/histograma_DQN9_modo4_test.png" width="500"><br>
       <em>[Figura] Histograma de frecuencia para modo 4</em>
     </td>
     <td align="center">
-      <img src="code/dqn/graphics/histograma_DQN9_modo8_test.png" width="300"><br>
+      <img src="code/dqn/graphics/histograma_DQN9_modo8_test.png" width="500"><br>
       <em>[Figura] Histograma de frecuencia para modo 8</em>
     </td>
   </tr>
