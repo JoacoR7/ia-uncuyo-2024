@@ -171,19 +171,19 @@ Se recomienda simplificar el entorno para tener un entrenamiento más estable y 
 
 Siguiendo las recomendaciones, se recortan las secciones de la imagen que no aportan información (ver Figura 1). Después del recorte, la imagen se redimensiona a 84×84 píxeles y, finalmente, se convierte a escala de grises (ver figura 2).
 
-<p align="center">
-  <img src="images/area_recortada.jpeg" width="500">
-  <br>
-  <em>[Figura 1] Área visible para el modelo (recuadrada en rojo)</em>
-  <br>
-  <br>
-</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="images/area_recortada.jpeg" width="421"><br>
+      <em>[Figura 1] Área visible para el modelo</em>
+    </td>
+    <td align="center">
+      <img src="images/imagen_final.png" width="300"><br>
+      <em>[Figura 2] Imagen luego del preprocesamiento</em>
+    </td>
+  </tr>
+</table>
 
-<p align="center">
-  <img src="images/imagen_final.png" width="500">
-  <br>
-  <em>[Figura 2] Imagen luego del preprocesamiento</em>
-</p>
 
 #### Implementación con Q-learning
 ##### Reducción del Espacio de Estados y Acciones
@@ -351,7 +351,38 @@ Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrará
 | 0     |  0,269  |      280       |      1555      |646.41 |       166.34        | [DQN9_MODO0](https://drive.google.com/file/d/1UlGfo6eKGTnzr2wtIhh2A_ky9octcHd8/view?usp=sharing) |
 | 3     |  0,024  |      0         |       985      |222.725|       170.52        | [DQN9_MODO3](https://drive.google.com/file/d/1IijHQN9J9SwuiSW6cGdNXKCykKVWkJKW/view?usp=sharing) |
 | 4     |  0.057  |      30        |       905      |392.66 |       152.43        | [DQN9_MODO4](https://drive.google.com/file/d/1VG_M7-tSZpeLfGrcuzuwNAfJZDeSNfx-/view?usp=sharing) |
-| 8     |  0.076  |      10        |       1025     |350.44 |       170.06        | [DQN9_MODO8](https://drive.google.com/file/d/1X1c2KdexSGxFqWuXrlWhrf_BfzQ45uaV/view?usp=sharing) |
+| 8     |  0.076  |      10        |       1025     |350.44 |       170.06        | [DQN9_MODO8](https://drive.google.com/file/d/1HQOnbnM38JoxFz6A_8pvNpe7K7D1XkkM/view?usp=sharing) |
+
+</div>
+
+**PPO**
+
+Como se mencionó al inicio de la sección de experimentos, sólo se entrenó con Wrapper de recompensas ya que sin Wrapper no entrenaba adecuadamente y a los pocos episodios se estancaba en una política que utilizaría durante el resto de los 10 millones de pasos.
+
+**Mejor modelo (agente PPO5)**
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/ppo/graphics/reward_average_ppo5.png" width="500"><br>
+      <em>[Figura] Promedio de recompensas en 10 millones de pasos para PPO5</em>
+    </td>
+    <td align="center">
+      <img src="code/ppo/graphics/length_average_ppo5.png" width="500"><br>
+      <em>[Figura] Promedio de pasos por episodio en 10 millones de pasos para PPO5</em>
+    </td>
+  </tr>
+</table>
+
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+
+| Modo  | Winrate | Puntaje mínimo | Puntaje máximo | Media | Desviación Estándar | Video de ejemplo |
+| ----- | ------- | -------------- | -------------- | ----- | ------------------- | ---------------- |
+| 0     |  0,850  |      245       |      2660      |1304.23|       500.74        | [PPO5_MODO0](https://drive.google.com/file/d/1sA3cDy1DR3tplbaYk6dyQSpOZHj_UV5P/view?usp=sharing) |
+| 3     |  0,123  |      35         |     1835      |341.94 |       264.17        | [PPO5_MODO3](https://drive.google.com/file/d/1FVBgHBGrE2HUO0T0h0hKwUR4GAPxkPZX/view?usp=sharing) |
+| 4     |  0.004  |      15        |       840      |43.34  |       67.69         | [PPO5_MODO4](https://drive.google.com/file/d/1Yu1ndn6tffvat56VQ-z2xQn-ydIEklN9/view?usp=sharing) |
+| 8     |  0.0    |      0        |       140       |0.9    |       7.35        | [PPO5_MODO8](https://drive.google.com/file/d/15IDOVXpsruXjhgEo84UOmT30yL-gFPA3/view?usp=sharing) |
 
 </div>
 
@@ -359,21 +390,21 @@ Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrará
 <table align="center">
   <tr>
     <td align="center">
-      <img src="code/dqn/graphics/histograma_dqn9.png" width="500"><br>
+      <img src="code/ppo/graphics/histograma_ppo5.png" width="500"><br>
       <em>[Figura] Histograma de frecuencia para modo 0</em>
     </td>
     <td align="center">
-      <img src="code/dqn/graphics/histograma_DQN9_modo3_test.png" width="500"><br>
+      <img src="code/ppo/graphics/histograma_PPO5_modo3_test.png" width="500"><br>
       <em>[Figura] Histograma de frecuencia para modo 3</em>
     </td>
   </tr>
   <tr>  
     <td align="center">
-      <img src="code/dqn/graphics/histograma_DQN9_modo4_test.png" width="500"><br>
+      <img src="code/ppo/graphics/histograma_PPO5_modo4_test.png" width="500"><br>
       <em>[Figura] Histograma de frecuencia para modo 4</em>
     </td>
     <td align="center">
-      <img src="code/dqn/graphics/histograma_DQN9_modo8_test.png" width="500"><br>
+      <img src="code/ppo/graphics/histograma_PPO5_modo8_test.png" width="500"><br>
       <em>[Figura] Histograma de frecuencia para modo 8</em>
     </td>
   </tr>
