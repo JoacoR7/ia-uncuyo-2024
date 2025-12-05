@@ -328,6 +328,58 @@ Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gra
 
 Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrarán los resultados de los tests de los mejores agentes de cada enfoque.
 
+**Mejor modelo sin Wrapper de recompensa (agente DQN2)**
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/dqn/graphics/reward_average_dqn2.png" width="500"><br>
+      <em>[Figura] Promedio de recompensas en 10 millones de pasos para DQN2</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/length_average_dqn2.png" width="500"><br>
+      <em>[Figura] Promedio de pasos por episodio en 10 millones de pasos para DQN2</em>
+    </td>
+  </tr>
+</table>
+
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+
+| Modo  | Winrate | Puntaje mínimo | Puntaje máximo | Media | Desviación Estándar | Video de ejemplo |
+| ----- | ------- | -------------- | -------------- | ----- | ------------------- | ---------------- |
+| 0     |  0,050  |      120       |      1005      |406.03 |       112.08        | [DQN2_MODO0](https://drive.google.com/file/d/1JSmCvx1zgXEkoMQ578XnchLg-dyd7kT9/view?usp=sharing) |
+| 3     |  0,001  |      5         |       685      |135.34 |       98.95        | [DQN2_MODO3](https://drive.google.com/file/d/1IijHQN9J9SwuiSW6cGdNXKCykKVWkJKW/view?usp=sharing) |
+| 4     |  0.001  |      35        |       630      |213.91 |       93.12        | [DQN2_MODO4](https://drive.google.com/file/d/15QS_VutP0w5fmF3A1ykYPSSqLiIwyqyG/view?usp=sharing) |
+| 8     |  0.0    |      0         |       440      |20.36  |       29.54        | [DQN2_MODO8](https://drive.google.com/file/d/1Uhm7H_1mZfCNqX-MrMRh8-3P2YKKQqkc/view?usp=sharing) |
+
+</div>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_dqn2.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN2_modo3_test.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN2_modo4_test.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN2_modo8_test.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+
+---
+
 **Mejor modelo con Wrapper de recompensa (agente DQN9)**
 
 <table align="center">
@@ -354,6 +406,29 @@ Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrará
 | 8     |  0.076  |      10        |       1025     |350.44 |       170.06        | [DQN9_MODO8](https://drive.google.com/file/d/1HQOnbnM38JoxFz6A_8pvNpe7K7D1XkkM/view?usp=sharing) |
 
 </div>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_dqn9.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN9_modo3_test.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN9_modo4_test.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN9_modo8_test.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
 
 **PPO**
 
