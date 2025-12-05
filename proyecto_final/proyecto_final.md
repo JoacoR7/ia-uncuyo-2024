@@ -32,6 +32,7 @@ Código de proyecto: SPACEAI
     - [Implementación con PPO](#implementación-con-ppo)
       - [Estructura de la red neuronal](#estructura-de-la-red-neuronal-1)
   - [Experimentos](#experimentos)
+    - [Resultados](#resultados)
 - [Bibliografía](#bibliografía)
 
 
@@ -124,7 +125,7 @@ Para evaluar el rendimiento de los algoritmos Q-learning, DQN y PPO se utilizaro
    Se registró la cantidad promedio de pasos tomados por el agente en distintos intervalos de episodios. Esta métrica ayuda a evaluar si el agente está aprendiendo estrategias más eficientes para completar la tarea en menos tiempo.
 
 3. **Winrate**  
-   Se midió el porcentaje de episodios en los que el agente logró una recompensa superior a 630, umbral necesario para pasar el primer nivel. Este indicador refleja la capacidad del agente para alcanzar su objetivo de manera consistente.
+   Se midió el porcentaje de episodios en los que el agente logró una recompensa igual superior a 630, umbral necesario para pasar el primer nivel. Este indicador refleja la capacidad del agente para alcanzar su objetivo de manera consistente.
 
 4. **Gráfico de Frecuencia**  
    Se construyó un histograma de frecuencias que muestra con qué frecuencia el agente alcanzó determinadas recompensas dentro de intervalos predefinidos. Este análisis permite identificar patrones en la distribución de las recompensas y evaluar la estabilidad del agente en la obtención de buenos resultados. Una distribución sesgada hacia valores más altos indicaría un agente con un rendimiento más consistente y efectivo.
@@ -156,7 +157,9 @@ Para el caso del entorno a trabajar, la librería ofrece modos y dificultades [[
 
 #### Stable Baselines 3
 
-Stable Baselines 3 (SB3) es un conjunto de implementaciones confiables y estandarizadas de algoritmos de aprendizaje profundo, desarrollado sobre PyTorch. Está orientado a la reproducibilidad, la estabilidad del entrenamiento y la facilidad de uso.
+Stable Baselines 3 (SB3) [[9](#ref9)] es un conjunto de implementaciones confiables y estandarizadas de algoritmos de aprendizaje profundo, desarrollado sobre PyTorch. Está orientado a la reproducibilidad, la estabilidad del entrenamiento y la facilidad de uso.
+
+Además de proporcionar las bases de los algoritmos a implementar en el proyecto, también proporcionan herramientas que son necesarias para este trabajo como las de vectorización y stacking de entornos.
 
 ### Implementación
 
@@ -298,7 +301,7 @@ Finalmente, cada rama tiene su propia cabeza de salida:
 - **value_net (Crítico):** capa lineal de 512 → 1, sin activación, que estima el valor del estado actual V(s). Esta estimación se utiliza para calcular las ventajas durante el entrenamiento.
 
 ### Experimentos
-Como se mencionó anteriormente, se utilizaron 3 algoritmos para explorar el entorno, además de un algoritmo random, además, se entrenaron con el modo y dificultad por defecto que ofrece el entorno (modo 0 y dificultad 0). A continuación se especifica cuánto se dedicó en entrenamiento para cada modelo de cada algoritmo.
+Se realizaron experimentos empleando cuatro enfoques: un agente con comportamiento aleatorio y tres algoritmos de aprendizaje por refuerzo (Q-Learning, DQN y PPO). Todos los modelos fueron entrenados utilizando la configuración por defecto del entorno, correspondiente al modo 0 y dificultad 0.
 
 | Algoritmo  | Cantidad de entrenamiento por modelo |
 | ---------- | ------------------------- |
@@ -306,6 +309,70 @@ Como se mencionó anteriormente, se utilizaron 3 algoritmos para explorar el ent
 | Q-Learning | 20000 episodios (Aproximadamente 4 horas)            |
 | DQN        | 10 millones de pasos (Aproximadamente 7 horas)      |
 | PPO        | 10 millones de pasos (Aproximadamente 7 horas)      |
+
+Se decidió utilizar el modo por defecto y la dificultad 0 ya que es el entorno más sencillo para entrenar un modelo. Luego, a la hora de testear, se utilizaron los modos 0, 3, 4 y 8 para evaluar no sólo su desempeño en un entorno ya conocido, sino también entornos nuevos para evalúar qué tan bien se adapta a los cambios que estos modos proponen.
+
+Al observar inestabilidad (rangos de recompensas muy variados, que podían ir de 0 a alrededor de 1000) a la hora de entrenar agentes de Q-learning y DQN, se decidió implementar Wrappers [[10](#ref10)] de recompensa para fijar 2 reglas más al entorno:
+- Si pierde una vida, pierde puntaje.
+- Puntos uniformes:
+  - Si obtiene recompensa positiva, sólo se suma un punto (ya sea que el agente gane 10 o 200 puntos por una acción).
+  - Si obtiene recompensa negativa, sólo pierde un punto.
+
+Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gran inestabilidad, los valores de pérdida también eran muy inestables y a partir de unos pocos episodios de entrenamiento se estancaba en valores muy pequeños. Por lo que se decidió sólo entrenar con los wrappers de recompensa ya implementados.
+
+#### Resultados
+**DQN**
+
+Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrarán los resultados de los tests de los mejores agentes de cada enfoque.
+
+**Mejor modelo con Wrapper de recompensa (agente DQN9)**
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/dqn/graphics/reward_average_dqn9.png" width="500"><br>
+      <em>[Figura] Promedio de recompensas en 10 millones de pasos para DQN9</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/length_average_dqn9.png" width="500"><br>
+      <em>[Figura] Promedio de pasos por episodio en 10 millones de pasos para DQN9</em>
+    </td>
+  </tr>
+</table>
+
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+
+| Modo  | Winrate | Puntaje mínimo | Puntaje máximo | Media | Desviación Estándar | Video de ejemplo |
+| ----- | ------- | -------------- | -------------- | ----- | ------------------- | ---------------- |
+| 0     |  0,269  |      280       |      1555      |646.41 |       166.34        | [DQN9_MODO0](https://drive.google.com/file/d/1UlGfo6eKGTnzr2wtIhh2A_ky9octcHd8/view?usp=sharing) |
+| 3     |  0,024  |      0         |       985      |222.725|       170.52        | [DQN9_MODO3](https://drive.google.com/file/d/1IijHQN9J9SwuiSW6cGdNXKCykKVWkJKW/view?usp=sharing) |
+| 4     |  0.057  |      30        |       905      |392.66 |       152.43        | [DQN9_MODO4](https://drive.google.com/file/d/1VG_M7-tSZpeLfGrcuzuwNAfJZDeSNfx-/view?usp=sharing) |
+| 8     |  0.076  |      10        |       1025     |350.44 |       170.06        | [DQN9_MODO8](https://drive.google.com/file/d/1X1c2KdexSGxFqWuXrlWhrf_BfzQ45uaV/view?usp=sharing) |
+
+</div>
+
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_dqn9.png" width="300"><br>
+      <em>[Figura] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN9_modo3_test.png" width="300"><br>
+      <em>[Figura] Histograma de frecuencia para modo 3</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN9_modo4_test.png" width="300"><br>
+      <em>[Figura] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN9_modo8_test.png" width="300"><br>
+      <em>[Figura] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
 
 
 
@@ -326,3 +393,7 @@ Como se mencionó anteriormente, se utilizaron 3 algoritmos para explorar el ent
 <a id="ref7"></a> [7] Estructura de la red PPO. Disponible en: .\code\ppo\network_structure.md. Última vez accedido: Noviembre de 2025.
 
 <a id="ref8"></a> [8] Modos de space invaders. Disponible en: .\modos_de_juego. Última vez accedido: Diciembre de 2025.
+
+<a id="ref2"></a> [9] Hill, A., Raffin, A., Ernestus, M., Gleave, A., Kanervisto, A., & Dormann, N. (2025). Stable Baselines3: Reliable Reinforcement Learning Implementations. Disponible en: https://stable-baselines3.readthedocs.io/. Última vez accedido: Diciembre de 2025.
+
+<a id="ref10"></a> [10] Farama Foundation. (2023). Wrappers. Disponible en: https://gymnasium.farama.org/api/wrappers/. Última vez accedido: Noviembre de 2025.
