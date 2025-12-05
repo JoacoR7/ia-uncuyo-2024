@@ -5,8 +5,10 @@ import ast
 import os
 import numpy as np
 
-path = "/home/jr/Escritorio/ia-uncuyo-2024/proyecto_final/code/ppo/tests"
-files = sorted(glob.glob(f"{path}/*_test.csv"))
+path = "C:/Users/joaqu/OneDrive/Desktop/ia-uncuyo-2024/proyecto_final/code/ppo/tests"
+files = sorted(glob.glob(f"{path}/PPO*_modo*_test.csv"))
+print("Archivos encontrados:", files)
+
 
 def parse_reward(x):
     x = str(x).strip()
@@ -35,7 +37,7 @@ for f in files:
         print(f"Advertencia: No se encontró columna de recompensa en {f}")
         continue
     
-    label = os.path.basename(f).split("_")[0]
+    label = os.path.basename(f).replace(".csv", "")
     rewards_by_test[label] = rewards
     all_rewards.extend(rewards)
 
@@ -62,7 +64,7 @@ for label, rewards in sorted(rewards_by_test.items()):
     plt.text(0.02, 0.98, textstr, transform=plt.gca().transAxes, fontsize=10,
             verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     
-    filename = f"histograma_{label}_ppo.png"
+    filename = f"histograma_{label}.png"
     plt.savefig(filename, dpi=300, bbox_inches="tight")
     print(f"Histograma guardado como {filename}")
     plt.close()

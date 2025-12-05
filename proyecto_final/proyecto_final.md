@@ -428,7 +428,7 @@ Como se mencionó al inicio de la sección de experimentos, sólo se entrenó co
 
 <a id="ref7"></a> [7] Estructura de la red PPO. Disponible en: .\code\ppo\network_structure.md. Última vez accedido: Noviembre de 2025.
 
-<a id="ref8"></a> [8] Modos de space invaders. Disponible en: .\modos_de_juego. Última vez accedido: Diciembre de 2025.
+<a id="ref8"></a> [8] Modos de space invaders. Disponible en: .\code\modos_de_juego. Última vez accedido: Diciembre de 2025.
 
 <a id="ref2"></a> [9] Hill, A., Raffin, A., Ernestus, M., Gleave, A., Kanervisto, A., & Dormann, N. (2025). Stable Baselines3: Reliable Reinforcement Learning Implementations. Disponible en: https://stable-baselines3.readthedocs.io/. Última vez accedido: Diciembre de 2025.
 
