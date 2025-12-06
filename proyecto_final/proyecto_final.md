@@ -88,9 +88,8 @@ El objetivo del agente es aprender una política óptima $π^*$ que maximice la 
 
 El algoritmo actualiza iterativamente la función **Q(s, a)** mediante la ecuación de Bellman: 
 
-$
-Q(s, a) \leftarrow Q(s, a) + α \left[ R + \gamma \max_{a'} Q(s', a')  - Q(s, a) \right]
-$
+Q(s, a) ← Q(s, a) + α [ R + γ max_{a'} Q(s', a') − Q(s, a) ]
+
 
 Donde:  
 
@@ -214,11 +213,13 @@ Para que la tabla Q fuera manejable, se implementó un proceso de reducción, co
 
 La dimensión general de una Q-table es:
 
-$|Q \text{-table size}| = \text{Número de estados} \times \text{Número de acciones}$
+|Q-table size| = Número de estados × Número de acciones
+
 
 Si se utilizara la imagen completa sin procesamiento, el número de estados sería:
 
-$|Q \text{-table size}| = [256^{210*160*3} \times 6]$
+|Q-table size| = 256^(210×160×3) × 6
+
 
 lo cual es computacionalmente inviable.\
 Por ello, se desarrolló un pipeline de reducción progresiva del estado visual, introduciendo recorte, escalado y discretización en tiras verticales.
