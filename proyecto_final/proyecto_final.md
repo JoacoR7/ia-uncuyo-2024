@@ -727,13 +727,13 @@ Con respecto a las políticas, aprendió mejores políticas que los modelos ante
 
 #### Desempeño por modo
 
-En donde mejor tuvo desempeño fue en el modo 0, ganando en un 85% de los test aplicados, donde la media de puntos fue 1304.23, cuando el puntaje mínimo para ganar es de 630. Por lo tanto, en promedio ganaba la partida.
+En donde mejor tuvo desempeño fue en el modo 0, ganando en un 85% de los tests aplicados, donde la media de puntos fue 1304.23, cuando el puntaje mínimo para ganar es de 630. Por lo tanto, en promedio ganaba la partida.
 
-En el modo 3 bajó el desempeño, pero aún así fue mejor que en los otros algoritmos, esto se debe a lo mencionado con los disparos, esquiva bien los disparos y ataca exitosamente a los enemigos.
+En el modo 3 bajó el desempeño, pero aún así fue mejor que en los otros algoritmos, esto se debe a lo mencionado con los disparos ya que los esquiva bien y ataca exitosamente a los enemigos.
 
-Donde bajó significativamente el desempeño fue en los modos 4 y 0, con respecto al modo 4 se puede explicar por la velocidad de disparos del enemigo, el agente no alcanza a esquivarlos y pierde vidas rápidamente.
+Donde bajó significativamente el desempeño fue en los modos 4 y 8. Con respecto al modo 4, se puede explicar por la velocidad de disparos del enemigo, el agente no alcanza a esquivarlos y pierde vidas rápidamente, teniendo una recompensa promedio inferior a la del agente random y a los modelos de Q-learning, aunque alcanza puntajes máximos más altos en algunos episodios.
 
-Por último, con el modo 8, es entendible que no haya ganado partidas y no haya tenido un buen puntaje, esto se debe a lo mencionado anteriormente: no dispara si no ve enemigos. En este caso esta regla le juega en contra ya que prácticamente todo el episodio es así, los enemigos no son visibles. Por lo tanto, en estos episodios lo que más hacía era esquivar disparos en vez de intentar alcanzar enemigos.
+Por último, en el modo 8, es entendible que no haya ganado partidas y no haya tenido un buen puntaje, esto se debe a lo mencionado anteriormente: no dispara si no ve enemigos. En este caso esta regla le juega en contra ya que prácticamente todo el episodio es así, los enemigos no son visibles. Por lo tanto, en estos episodios lo que más hacía era esquivar disparos en lugar de intentar alcanzar enemigos, haciendo que sea el algoritmo con peor desempeño para este modo.
 
 #### Winrate
 
@@ -748,7 +748,7 @@ Tras comparar los resultados de testeo entre los distintos modos y teniendo en c
 
 Aunque los 2 algoritmos superiores fueron superadores, valió la pena implementar tanto Q-learning como el algoritmo aleatorio, ya que permitió tener mejor entendimiento del entorno y tener un punto de comparación de qué era bueno y qué no.
 
-Con respecto a Q-Learning, es bastante fácil de entender, lo que sirve de base para comprender DQN, el principal problema de este algoritmo es que no sirve para espacios continuos o con múltiples y estados o acciones, por lo que no se logró un modelo superior a los obtenidos.
+Con respecto a Q-Learning, es bastante fácil de entender, lo que sirve de base para comprender DQN, el principal problema de este algoritmo es que no sirve para espacios continuos ni para entornos con un número elevado de estados o acciones, por lo que no se logró un modelo superior a los obtenidos.
 
 Si nos basamos sólo en el modo (modo 0) en que se entrenó, se puede decir que el mejor algoritmo fue PPO, ya que el winrate superó casi 4 veces a DQN en el mismo modo. Pero si se cambia el entorno, su rendimiento baja, esto quiere decir que si el entorno de prueba se aleja con respecto al que se entrenó, el rendimiento baja. Luego, DQN, con modos distintos al default, tuvo un mejor rendimiento que PPO, por lo que se podría decir que en entornos distintos al que se entrenó tiene un mejor rendimiento al PPO.
 
