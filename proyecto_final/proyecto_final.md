@@ -33,6 +33,27 @@ Código de proyecto: SPACEAI
       - [Estructura de la red neuronal](#estructura-de-la-red-neuronal-1)
   - [Experimentos](#experimentos)
     - [Resultados](#resultados)
+- [Análisis y Discusión de Resultados](#análisis-y-discusión-de-resultados)
+  - [Random](#random)
+    - [Desempeño general](#desempeño-general)
+    - [Desempeño por modo](#desempeño-por-modo)
+    - [Winrate](#winrate)
+    - [Conclusión](#conclusión)
+  - [Q-learning](#q-learning-1)
+    - [Desempeño general](#desempeño-general-1)
+    - [Desempeño por modo](#desempeño-por-modo-1)
+    - [Winrate](#winrate-1)
+    - [Conclusión](#conclusión-1)
+  - [DQN](#dqn)
+    - [Desempeño general](#desempeño-general-2)
+    - [Desempeño por modo](#desempeño-por-modo-2)
+    - [Winrate](#winrate-2)
+  - [PPO](#ppo)
+    - [Desempeño general](#desempeño-general-3)
+    - [Desempeño por modo](#desempeño-por-modo-3)
+    - [Winrate](#winrate-3)
+    - [Conclusión](#conclusión-2)
+- [Conclusiones finales](#conclusiones-finales)
 - [Bibliografía](#bibliografía)
 
 
@@ -343,21 +364,21 @@ Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gra
   <tr>
     <td align="center">
       <img src="code/random/graficos/histograma_random_eval_mode_0.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 0</em>
+      <em>[Figura 3] Histograma de frecuencia para modo 0</em>
     </td>
     <td align="center">
       <img src="code/random/graficos/histograma_random_eval_mode_3.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 3</em>
+      <em>[Figura 4] Histograma de frecuencia para modo 3</em>
     </td>
   </tr>
   <tr>  
     <td align="center">
       <img src="code/random/graficos/histograma_random_eval_mode_4.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 4</em>
+      <em>[Figura 5] Histograma de frecuencia para modo 4</em>
     </td>
     <td align="center">
       <img src="code/random/graficos/histograma_random_eval_mode_8.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 8</em>
+      <em>[Figura 6] Histograma de frecuencia para modo 8</em>
     </td>
   </tr>
 </table>
@@ -369,11 +390,11 @@ Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gra
   <tr>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_custom_reward_v1/reward_average_q_learning.png" width="500"><br>
-      <em>[Figura] Promedio de recompensas en 10 mil episodios</em>
+      <em>[Figura 7] Promedio de recompensas en 20 mil episodios</em>
     </td>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_custom_reward_v1/length_average_q_learning.png" width="500"><br>
-      <em>[Figura] Promedio de pasos en 10 mil episodios</em>
+      <em>[Figura 8] Promedio de pasos en 20 mil episodios</em>
     </td>
   </tr>
 </table>
@@ -394,21 +415,21 @@ Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gra
   <tr>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_0.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 0</em>
+      <em>[Figura 9] Histograma de frecuencia para modo 0</em>
     </td>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_3.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 3</em>
+      <em>[Figura 10] Histograma de frecuencia para modo 3</em>
     </td>
   </tr>
   <tr>  
     <td align="center">
       <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_4.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 4</em>
+      <em>[Figura 11] Histograma de frecuencia para modo 4</em>
     </td>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_8.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 8</em>
+      <em>[Figura 12] Histograma de frecuencia para modo 8</em>
     </td>
   </tr>
 </table>
@@ -419,11 +440,11 @@ Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gra
   <tr>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_clipped_v3/reward_average_q_learning.png" width="500"><br>
-      <em>[Figura] Promedio de recompensas en 10 mil episodios</em>
+      <em>[Figura 13] Promedio de recompensas en 20 mil episodios</em>
     </td>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_clipped_v3/length_average_q_learning.png" width="500"><br>
-      <em>[Figura] Promedio de pasos en 10 mil episodios</em>
+      <em>[Figura 14] Promedio de pasos en 20 mil episodios</em>
     </td>
   </tr>
 </table>
@@ -443,21 +464,21 @@ Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gra
   <tr>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_0.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 0</em>
+      <em>[Figura 15] Histograma de frecuencia para modo 0</em>
     </td>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_3.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 3</em>
+      <em>[Figura 16] Histograma de frecuencia para modo 3</em>
     </td>
   </tr>
   <tr>  
     <td align="center">
       <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_4.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 4</em>
+      <em>[Figura 17] Histograma de frecuencia para modo 4</em>
     </td>
     <td align="center">
       <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_8.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 8</em>
+      <em>[Figura 18] Histograma de frecuencia para modo 8</em>
     </td>
   </tr>
 </table>
@@ -472,11 +493,11 @@ Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrará
   <tr>
     <td align="center">
       <img src="code/dqn/graphics/reward_average_dqn2.png" width="500"><br>
-      <em>[Figura] Promedio de recompensas en 10 millones de pasos para DQN2</em>
+      <em>[Figura 19] Promedio de recompensas en 10 millones de pasos para DQN2</em>
     </td>
     <td align="center">
       <img src="code/dqn/graphics/length_average_dqn2.png" width="500"><br>
-      <em>[Figura] Promedio de pasos por episodio en 10 millones de pasos para DQN2</em>
+      <em>[Figura 20] Promedio de pasos por episodio en 10 millones de pasos para DQN2</em>
     </td>
   </tr>
 </table>
@@ -497,21 +518,21 @@ Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrará
   <tr>
     <td align="center">
       <img src="code/dqn/graphics/histograma_dqn2.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 0</em>
+      <em>[Figura 21] Histograma de frecuencia para modo 0</em>
     </td>
     <td align="center">
       <img src="code/dqn/graphics/histograma_DQN2_modo3_test.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 3</em>
+      <em>[Figura 22] Histograma de frecuencia para modo 3</em>
     </td>
   </tr>
   <tr>  
     <td align="center">
       <img src="code/dqn/graphics/histograma_DQN2_modo4_test.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 4</em>
+      <em>[Figura 23] Histograma de frecuencia para modo 4</em>
     </td>
     <td align="center">
       <img src="code/dqn/graphics/histograma_DQN2_modo8_test.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 8</em>
+      <em>[Figura 24] Histograma de frecuencia para modo 8</em>
     </td>
   </tr>
 </table>
@@ -524,11 +545,11 @@ Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrará
   <tr>
     <td align="center">
       <img src="code/dqn/graphics/reward_average_dqn9.png" width="500"><br>
-      <em>[Figura] Promedio de recompensas en 10 millones de pasos para DQN9</em>
+      <em>[Figura 25] Promedio de recompensas en 10 millones de pasos para DQN9</em>
     </td>
     <td align="center">
       <img src="code/dqn/graphics/length_average_dqn9.png" width="500"><br>
-      <em>[Figura] Promedio de pasos por episodio en 10 millones de pasos para DQN9</em>
+      <em>[Figura 26] Promedio de pasos por episodio en 10 millones de pasos para DQN9</em>
     </td>
   </tr>
 </table>
@@ -549,21 +570,21 @@ Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrará
   <tr>
     <td align="center">
       <img src="code/dqn/graphics/histograma_dqn9.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 0</em>
+      <em>[Figura 27] Histograma de frecuencia para modo 0</em>
     </td>
     <td align="center">
       <img src="code/dqn/graphics/histograma_DQN9_modo3_test.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 3</em>
+      <em>[Figura 28] Histograma de frecuencia para modo 3</em>
     </td>
   </tr>
   <tr>  
     <td align="center">
       <img src="code/dqn/graphics/histograma_DQN9_modo4_test.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 4</em>
+      <em>[Figura 29] Histograma de frecuencia para modo 4</em>
     </td>
     <td align="center">
       <img src="code/dqn/graphics/histograma_DQN9_modo8_test.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 8</em>
+      <em>[Figura 30] Histograma de frecuencia para modo 8</em>
     </td>
   </tr>
 </table>
@@ -578,11 +599,11 @@ Como se mencionó al inicio de la sección de experimentos, sólo se entrenó co
   <tr>
     <td align="center">
       <img src="code/ppo/graphics/reward_average_ppo5.png" width="500"><br>
-      <em>[Figura] Promedio de recompensas en 10 millones de pasos para PPO5</em>
+      <em>[Figura 31] Promedio de recompensas en 10 millones de pasos para PPO5</em>
     </td>
     <td align="center">
       <img src="code/ppo/graphics/length_average_ppo5.png" width="500"><br>
-      <em>[Figura] Promedio de pasos por episodio en 10 millones de pasos para PPO5</em>
+      <em>[Figura 32] Promedio de pasos por episodio en 10 millones de pasos para PPO5</em>
     </td>
   </tr>
 </table>
@@ -604,44 +625,44 @@ Como se mencionó al inicio de la sección de experimentos, sólo se entrenó co
   <tr>
     <td align="center">
       <img src="code/ppo/graphics/histograma_ppo5.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 0</em>
+      <em>[Figura 33] Histograma de frecuencia para modo 0</em>
     </td>
     <td align="center">
       <img src="code/ppo/graphics/histograma_PPO5_modo3_test.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 3</em>
+      <em>[Figura 34] Histograma de frecuencia para modo 3</em>
     </td>
   </tr>
   <tr>  
     <td align="center">
       <img src="code/ppo/graphics/histograma_PPO5_modo4_test.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 4</em>
+      <em>[Figura 35] Histograma de frecuencia para modo 4</em>
     </td>
     <td align="center">
       <img src="code/ppo/graphics/histograma_PPO5_modo8_test.png" width="500"><br>
-      <em>[Figura] Histograma de frecuencia para modo 8</em>
+      <em>[Figura 36] Histograma de frecuencia para modo 8</em>
     </td>
   </tr>
 </table>
 
-### Análisis y Discusión de Resultados
-#### Random
-##### Métrica integradora
+## Análisis y Discusión de Resultados
+### Random
+#### Desempeño general
 
 El desempeño promedio es bajo en todos los modos, con valores entre 88.52 (modo 4) y 154.12 (modo 0), reflejando que la mayor parte del tiempo el agente muere rápidamente sin destruir una cantidad relevante de enemigos. Además los máximos puntajes que se alcanzan no reflejan un patrón en el comportamiento, sino simplemente episodios afortunados donde los disparos aleatorios conectan contra los enemigos y el agente sobrevive un poco mas de tiempo.
 
-##### Desempeño por modo
+#### Desempeño por modo
 
 En términos generales, el modo normal (modo 0) y el modo con enemigos que se hacen invisibles (modo 8) presentan los mejores promedios, aunque esto no implica un desempeño sólido, sino simplemente que en esos contextos el azar le permite sobrevivir ligeramente más y conectar algunos disparos. Los modos 3 y 4, que introducen dinámicas más complejas como paredes móviles, disparos que no son rectos o un mayor volumen de disparos enemigos, muestran peores resultados, evidenciando que cualquier incremento en la dificultad afecta negativamente al agente, ya que este no aprende a sobrevivir mientras elimina a los enemigos.
 
-##### Winrate
+#### Winrate
 
 El winrate del agente random es prácticamente insignificante, con menos del 0,2% de victorias en todos los modos. Las pocas partidas ganadas son producto del azar y no reflejan ningún tipo de estrategia ni comportamiento intencional por parte del agente.
 
-##### Conclusión
+#### Conclusión
 El agente random presenta un comportamiento totalmente limitado y sin capacidad de adaptación. Sus acciones carecen de propósito, por lo que su desempeño depende únicamente del azar. Aunque ocasionalmente obtiene buenos puntajes, estos episodios aislados no se deben a una estrategia, sino coincidencias estadísticas.
 
-#### Q-learning
-##### Métrica integradora
+### Q-learning
+#### Desempeño general
 
 Los modelos entrenados con Q-learning muestran un desempeño considerablemente superior al del agente aleatorio. En los modos más simples (0 y 8), ambos modelos alcanzan promedios de recompensa que superan los 260–280 puntos, lo que evidencia que lograron aprender patrones de supervivencia y ataque más estables. Si bien los puntajes máximos no difieren demasiado de los obtenidos por el agente random, los puntajes mínimos son más altos en los modos 0, 3 y 4 (especialmente en el modelo con reward shaping) indican que el agente aprendió a garantizar un nivel mínimo de efectividad, eliminando al menos algunos enemigos antes de morir incluso en sus peores episodios.
 
@@ -651,22 +672,88 @@ En cuanto a la duración de los episodios, el shaping presenta un crecimiento in
 
 Finalmente, las desviaciones estándar relativamente altas en ambos modelos reflejan la presencia de variabilidad considerable entre episodios, especialmente en los modos más exigentes. Esto es coherente con la naturaleza del entorno, donde el ruido y la aleatoriedad de los disparos enemigos afectan significativamente la estabilidad del desempeño.
 
-##### Desempeño por modo
+#### Desempeño por modo
 
 En general, ambos modelos de Q-learning muestran un desempeño significativamente mejor que el agente aleatorio en todos los modos evaluados. Los modos 0 y 8 presentan las mayores recompensas promedio, lo que sugiere que el agente logra adaptarse mejor a configuraciones donde las dinámicas del entorno son más predecibles o estables. El modo 8, aun con enemigos invisibles, ofrece un entorno donde las posiciones de los enemigos y la estructura del nivel permiten que el agente desarrolle patrones útiles sin depender exclusivamente de la visibilidad.
 
 A diferencia del resto de los modos, el modo 4 muestra un comportamiento particular: el agente aleatorio obtiene un promedio de recompensa (88.52) superior al de ambos modelos de Q-learning (62.91 con reward shaping y 61.75 con reward clipping). Esto sugiere que las dinámicas propias de este modo, donde los enemigos generan una mayor cantidad o frecuencia de disparos, producen un entorno tan caótico que la supervivencia depende más del azar que de una estrategia aprendida. En estas condiciones, las políticas derivadas de Q-learning no logran generalizar correctamente y, al seguir patrones más estructurados, pueden quedar más expuestas a los ataques enemigos que un comportamiento completamente aleatorio.
 
-##### Winrate
+#### Winrate
 
 El winrate de ambos modelos se mantiene bajo, con valores que no superan el 1–1.3% según el modo. Si bien esto representa una mejora real frente al agente aleatorio, sigue siendo insuficiente para considerar que el agente domine el juego. Las victorias obtenidas indican que el agente es capaz de completar una partida ocasionalmente, pero la baja frecuencia evidencia que el comportamiento aprendido no es lo suficientemente sólido ni consistente como para garantizar un desempeño robusto en escenarios complejos.
 
-##### Conclusión
+#### Conclusión
 
 Los modelos entrenados con Q-learning muestran una mejora clara respecto del agente aleatorio, logrando promedios de recompensa más altos y un comportamiento más estable en todos los modos. Ambos agentes aprenden patrones básicos de supervivencia y ataque, pero el modelo con Reward Shaping Personalizado destaca por presentar un progreso sostenido a lo largo del entrenamiento y por alcanzar mejores mínimos y mayor consistencia entre episodios. En contraste, el modelo con Reward Clipping tiende a estancarse de forma prematura, lo que sugiere que las recompensas acotadas limitan la capacidad del agente para seguir refinando su estrategia.
 
 A pesar de estas mejoras, el algoritmo mantiene un winrate bajo y su desempeño disminuye en modos más complejos, reflejando las limitaciones propias de Q-learning tabular en entornos de alta variabilidad y gran espacio de estados. En conjunto, los resultados muestran que Q-learning permite superar ampliamente al agente random, pero no es suficiente para dominar el juego, dejando margen para utilizar métodos más sofisticados en etapas posteriores.
 
+### DQN
+#### Desempeño general
+
+Si comparamos los modelos entrenados con este algoritmo y los de Q-Learning, podemos determinar que DQN es mejor en varios aspectos: eficiencia, desempeño y complejidad espacial, pero a costo de mayor potencia de hardware. 
+
+En ambos enfoques planteados durante los experimentos (con y sin Wrapper de recompensas) supera ampliamente al algoritmo anterior, pudiendo ganar más episodios, teniendo mejores recompensas y mejor estabilidad.
+
+Ambos modelos muestran un buen desempeño, aunque el superador es el modelo con Reward Clipping ya que el entrenamiento es más estable y el agente puede aprender una regla muy importante: todos los enemigos tienen la misma importancia.
+
+Bajo esta regla, el agente trata a todos por igual, por lo tanto no se centra en los enemigos de más alto nivel (que dan mayor puntaje) y es menos probable que los enemigos de menor nivel lleguen a la base provocando la finalización del episodio.
+
+#### Desempeño por modo
+
+En ambos casos, el mejor desempeño lo tuvieron en el modo 0, que es el modo predeterminado del entorno y con el que se los entrenó, por lo tanto tiene sentido que su desempeño sea significativamente mejor que en los demás modos.
+
+En los otros modos el desempeño se reduce significativamente, es curioso que en el modo 8, donde los enemigos son invisibles la mayor parte del tiempo, tuvo mejor desempeño que en los modos 3 y 4, que los enemigos sí son visibles.
+
+De igual forma tiene sentido ya que el modo 8, aunque no pueda ver a los enemigos la mayor parte del tiempo, es el más parecido al modo 0 porque no se alteran los disparos ni los escudos que ofrecen el entorno. Mientras que en los otros dos, los disparos cambian, entonces las reglas aprendidas sobre disparos no se asemejan a los disparos de estos modos.
+
+#### Winrate
+
+El winrate en ambos modelos es bueno, aunque con el segundo enfoque es mejor, esto se debe a que, al tener más estabilidad, se pudo reentrenar el modelo con más pasos, por lo que tuvo oportunidad a aprender mejores políticas. 
+
+El modelo con Wrapper de recompensa tuvo 5 veces más winrate en el modo 0 que el otro modelo sin Wrapper, y en los otros modos tuvo un rendimiento significativamente mayor.
+
+### PPO
+#### Desempeño general
+
+Como se mencionó anteriormente, se entrenaron modelos con este algoritmo sólo con los Wrapper de recompensas ya que sin ellos, el entrenamiento era inestable y no valía la pena continuarlo porque se quedaba estancado en una política muy inferior y no se movía más allá de ella.
+
+Con respecto al desempeño, en general superó ampliamente a todos los modelos anteriores, salvo en algunos modos que ya se discutirá sobre eso en la sección siguiente.
+
+El entrenamiento fue más estable y el reentrenamiento de modelos fue más productivo que en el algoritmo anterior, ya que incluso lograba el doble de winrate al reentrenar, hecho que no ocurrió con DQN.
+
+Con respecto a las políticas, aprendió mejores políticas que los modelos anteriores, ya que esquiva mejor los disparos y sólo dispara si hay enemigos: no dispara por disparar.
+
+#### Desempeño por modo
+
+En donde mejor tuvo desempeño fue en el modo 0, ganando en un 85% de los test aplicados, donde la media de puntos fue 1304.23, cuando el puntaje mínimo para ganar es de 630. Por lo tanto, en promedio ganaba la partida.
+
+En el modo 3 bajó el desempeño, pero aún así fue mejor que en los otros algoritmos, esto se debe a lo mencionado con los disparos, esquiva bien los disparos y ataca exitosamente a los enemigos.
+
+Donde bajó significativamente el desempeño fue en los modos 4 y 0, con respecto al modo 4 se puede explicar por la velocidad de disparos del enemigo, el agente no alcanza a esquivarlos y pierde vidas rápidamente.
+
+Por último, con el modo 8, es entendible que no haya ganado partidas y no haya tenido un buen puntaje, esto se debe a lo mencionado anteriormente: no dispara si no ve enemigos. En este caso esta regla le juega en contra ya que prácticamente todo el episodio es así, los enemigos no son visibles. Por lo tanto, en estos episodios lo que más hacía era esquivar disparos en vez de intentar alcanzar enemigos.
+
+#### Winrate
+
+En este caso, fue superador el winrate, por lo menos en los modos 0 y 3. El hecho que haya ganado 850 partidas de 1000 es muy positivo, si comparamos el modo 0 de los algoritmos anteriores, supera hasta 16 veces esta métrica en algunos casos.
+
+#### Conclusión
+
+Los modelos implementados con PPO fueron mejores que los modelos con los algoritmos anteriores con respecto al modo 0 y 3. La estabilidad de entrenamiento fue mucho mayor y el reentrenamiento fue más eficiente, permitiendo mejorar significativamente el modelo. Se considera que si se sigue entrenando, puede superar el 85% de winrate en el modo 0.
+
+## Conclusiones finales
+Tras comparar los resultados de testeo entre los distintos modos y teniendo en cuenta los datos obtenidos durante los entrenamientos, se puede concluir que los algoritmos DQN y PPO son superiores a Q-learning y definitivamente mejores que el algoritmo aleatorio. Ambos algoritmos tuvieron un desempeño superior y un entrenamiento mucho más estable, lo que permitió que ganasen más episodios y tuvieran recompensas mayores.
+
+Aunque los 2 algoritmos superiores fueron superadores, valió la pena implementar tanto Q-learning como el algoritmo aleatorio, ya que permitió tener mejor entendimiento del entorno y tener un punto de comparación de qué era bueno y qué no.
+
+Con respecto a Q-Learning, es bastante fácil de entender, lo que sirve de base para comprender DQN, el principal problema de este algoritmo es que no sirve para espacios continuos o con múltiples y estados o acciones, por lo que no se logró un modelo superior a los obtenidos.
+
+Si nos basamos sólo en el modo (modo 0) en que se entrenó, se puede decir que el mejor algoritmo fue PPO, ya que el winrate superó casi 4 veces a DQN en el mismo modo. Pero si se cambia el entorno, su rendimiento baja, esto quiere decir que si el entorno de prueba se aleja con respecto al que se entrenó, el rendimiento baja. Luego, DQN, con modos distintos al default, tuvo un mejor rendimiento que PPO, por lo que se podría decir que en entornos distintos al que se entrenó tiene un mejor rendimiento al PPO.
+
+Algunas mejoras que se podrían realizar son variantes de los algoritmos implementados como Double DQN o Rainbow DQN para mejorar el desempeño. Pero de igual forma se obtuvieron buenos resultados tanto en DQN y PPO, por lo que no se indagó en variantes.
+
+Por último, se concluye que el hecho de haber elegido DQN y PPO para resolver el problema fue una buena elección, ya que tuvieron un muy buen rendimiento y los tests fueron muy satisfactorios. Aunque toman bastante tiempo para entrenar y se requiere un mayor poder de cómputo, sobre todo disponibilidad de una GPU.
 
 ## Bibliografía
 ---
