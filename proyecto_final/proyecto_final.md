@@ -324,6 +324,144 @@ Al observar inestabilidad (rangos de recompensas muy variados, que podían ir de
 Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gran inestabilidad, los valores de pérdida también eran muy inestables y a partir de unos pocos episodios de entrenamiento se estancaba en valores muy pequeños. Por lo que se decidió sólo entrenar con los wrappers de recompensa ya implementados.
 
 #### Resultados
+
+**Agente Random**
+
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+
+| Modo | Winrate | Puntaje mínimo | Puntaje máximo | Media   | Desviación Estándar |
+|------|---------|----------------|----------------|---------|----------------------|
+| 0    | 0.001       | 0.00           | 640.00         | 154.12  | 99.50               |
+| 3    | 0.002       | 0.00           | 715.00         | 122.89  | 98.27               |
+| 4    | 0       | 5.00           | 460.00         | 88.52   | 59.04               |
+| 8    | 0.001       | 5.00           | 685.00         | 148.53  | 101.74              |
+
+</div>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/random/graficos/histograma_random_eval_mode_0.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/random/graficos/histograma_random_eval_mode_3.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/random/graficos/histograma_random_eval_mode_4.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/random/graficos/histograma_random_eval_mode_8.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+
+**Q-learning**
+
+**Mejor modelo con Reward Shaping Personalizado**
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/reward_average_q_learning.png" width="500"><br>
+      <em>[Figura] Promedio de recompensas en 10 mil episodios</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/length_average_q_learning.png" width="500"><br>
+      <em>[Figura] Promedio de pasos en 10 mil episodios</em>
+    </td>
+  </tr>
+</table>
+
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+
+| Modo | Winrate | Puntaje mínimo | Puntaje máximo | Media   | Desviación Estándar |
+|------|---------|----------------|----------------|---------|----------------------|
+| 0    | 0.013      | 90.00          | 800.00         | 270.32  | 92.08               |
+| 3    | 0.001       | 25.00          | 735.00         | 175.91  | 89.78               |
+| 4    | 0       | 0.00           | 430.00         | 62.91   | 51.82               |
+| 8    | 0.011      | 55.00          | 820.00         | 282.76  | 103.19              |
+
+</div>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_0.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_3.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_4.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_8.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+
+
+**Mejor modelo con Reward Clipping**
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/reward_average_q_learning.png" width="500"><br>
+      <em>[Figura] Promedio de recompensas en 10 mil episodios</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/length_average_q_learning.png" width="500"><br>
+      <em>[Figura] Promedio de pasos en 10 mil episodios</em>
+    </td>
+  </tr>
+</table>
+
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+
+| Modo | Winrate | Puntaje mínimo | Puntaje máximo | Media | Desviación Estándar |
+|------|---------|----------------|----------------|--------|----------------------|
+| 0    | 0.013      | 80.00          | 800.00         | 268.37 | 89.49               |
+| 3    | 0.003       | 25.00          | 670.00         | 179.43 | 94.52               |
+| 4    | 0       | 0.00           | 610.00         | 61.75  | 55.11               |
+| 8    | 0.011      | 5.00           | 750.00         | 281.51 | 103.75              |
+
+</div>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_0.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_3.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_4.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_8.png" width="500"><br>
+      <em>[Figura] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+
 **DQN**
 
 Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrarán los resultados de los tests de los mejores agentes de cada enfoque.
@@ -485,6 +623,49 @@ Como se mencionó al inicio de la sección de experimentos, sólo se entrenó co
   </tr>
 </table>
 
+### Análisis y Discusión de Resultados
+#### Random
+##### Métrica integradora
+
+El desempeño promedio es bajo en todos los modos, con valores entre 88.52 (modo 4) y 154.12 (modo 0), reflejando que la mayor parte del tiempo el agente muere rápidamente sin destruir una cantidad relevante de enemigos. Además los máximos puntajes que se alcanzan no reflejan un patrón en el comportamiento, sino simplemente episodios afortunados donde los disparos aleatorios conectan contra los enemigos y el agente sobrevive un poco mas de tiempo.
+
+##### Desempeño por modo
+
+En términos generales, el modo normal (modo 0) y el modo con enemigos que se hacen invisibles (modo 8) presentan los mejores promedios, aunque esto no implica un desempeño sólido, sino simplemente que en esos contextos el azar le permite sobrevivir ligeramente más y conectar algunos disparos. Los modos 3 y 4, que introducen dinámicas más complejas como paredes móviles, disparos que no son rectos o un mayor volumen de disparos enemigos, muestran peores resultados, evidenciando que cualquier incremento en la dificultad afecta negativamente al agente, ya que este no aprende a sobrevivir mientras elimina a los enemigos.
+
+##### Winrate
+
+El winrate del agente random es prácticamente insignificante, con menos del 0,2% de victorias en todos los modos. Las pocas partidas ganadas son producto del azar y no reflejan ningún tipo de estrategia ni comportamiento intencional por parte del agente.
+
+##### Conclusión
+El agente random presenta un comportamiento totalmente limitado y sin capacidad de adaptación. Sus acciones carecen de propósito, por lo que su desempeño depende únicamente del azar. Aunque ocasionalmente obtiene buenos puntajes, estos episodios aislados no se deben a una estrategia, sino coincidencias estadísticas.
+
+#### Q-learning
+##### Métrica integradora
+
+Los modelos entrenados con Q-learning muestran un desempeño considerablemente superior al del agente aleatorio. En los modos más simples (0 y 8), ambos modelos alcanzan promedios de recompensa que superan los 260–280 puntos, lo que evidencia que lograron aprender patrones de supervivencia y ataque más estables. Si bien los puntajes máximos no difieren demasiado de los obtenidos por el agente random, los puntajes mínimos son más altos en los modos 0, 3 y 4 (especialmente en el modelo con reward shaping) indican que el agente aprendió a garantizar un nivel mínimo de efectividad, eliminando al menos algunos enemigos antes de morir incluso en sus peores episodios.
+
+Una diferencia clave entre los dos modelos aparece en la evolución del aprendizaje: el agente con Reward Shaping continúa mejorando su recompensa hasta los 20 000 episodios, mientras que el modelo con Reward Clipping se estanca alrededor del episodio 2000, mostrando poca progresión posterior. Esto sugiere que el shaping ofrece señales de entrenamiento más útiles que el clipping.
+
+En cuanto a la duración de los episodios, el shaping presenta un crecimiento inicial coherente con la mejora en la recompensa, mientras que en el clipping los episodios se vuelven más largos sin que eso se traduzca en un desempeño ofensivo mejor. Esto indica que el clipping permite sobrevivir más tiempo, pero no fomenta decisiones más efectivas, en parte por la pérdida de información que provoca la acotación de recompensas.
+
+Finalmente, las desviaciones estándar relativamente altas en ambos modelos reflejan la presencia de variabilidad considerable entre episodios, especialmente en los modos más exigentes. Esto es coherente con la naturaleza del entorno, donde el ruido y la aleatoriedad de los disparos enemigos afectan significativamente la estabilidad del desempeño.
+
+##### Desempeño por modo
+
+En general, ambos modelos de Q-learning muestran un desempeño significativamente mejor que el agente aleatorio en todos los modos evaluados. Los modos 0 y 8 presentan las mayores recompensas promedio, lo que sugiere que el agente logra adaptarse mejor a configuraciones donde las dinámicas del entorno son más predecibles o estables. El modo 8, aun con enemigos invisibles, ofrece un entorno donde las posiciones de los enemigos y la estructura del nivel permiten que el agente desarrolle patrones útiles sin depender exclusivamente de la visibilidad.
+
+A diferencia del resto de los modos, el modo 4 muestra un comportamiento particular: el agente aleatorio obtiene un promedio de recompensa (88.52) superior al de ambos modelos de Q-learning (62.91 con reward shaping y 61.75 con reward clipping). Esto sugiere que las dinámicas propias de este modo, donde los enemigos generan una mayor cantidad o frecuencia de disparos, producen un entorno tan caótico que la supervivencia depende más del azar que de una estrategia aprendida. En estas condiciones, las políticas derivadas de Q-learning no logran generalizar correctamente y, al seguir patrones más estructurados, pueden quedar más expuestas a los ataques enemigos que un comportamiento completamente aleatorio.
+
+##### Winrate
+
+El winrate de ambos modelos se mantiene bajo, con valores que no superan el 1–1.3% según el modo. Si bien esto representa una mejora real frente al agente aleatorio, sigue siendo insuficiente para considerar que el agente domine el juego. Las victorias obtenidas indican que el agente es capaz de completar una partida ocasionalmente, pero la baja frecuencia evidencia que el comportamiento aprendido no es lo suficientemente sólido ni consistente como para garantizar un desempeño robusto en escenarios complejos.
+
+##### Conclusión
+
+Los modelos entrenados con Q-learning muestran una mejora clara respecto del agente aleatorio, logrando promedios de recompensa más altos y un comportamiento más estable en todos los modos. Ambos agentes aprenden patrones básicos de supervivencia y ataque, pero el modelo con Reward Shaping Personalizado destaca por presentar un progreso sostenido a lo largo del entrenamiento y por alcanzar mejores mínimos y mayor consistencia entre episodios. En contraste, el modelo con Reward Clipping tiende a estancarse de forma prematura, lo que sugiere que las recompensas acotadas limitan la capacidad del agente para seguir refinando su estrategia.
+
+A pesar de estas mejoras, el algoritmo mantiene un winrate bajo y su desempeño disminuye en modos más complejos, reflejando las limitaciones propias de Q-learning tabular en entornos de alta variabilidad y gran espacio de estados. En conjunto, los resultados muestran que Q-learning permite superar ampliamente al agente random, pero no es suficiente para dominar el juego, dejando margen para utilizar métodos más sofisticados en etapas posteriores.
 
 
 ## Bibliografía
