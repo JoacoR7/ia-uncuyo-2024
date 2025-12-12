@@ -70,7 +70,7 @@ A lo largo de este proyecto, se explicarán los fundamentos de los algoritmos Q-
 
 ### Reinforcement Learning
 
-El **Reinforcement Learning (RL)** o **aprendizaje por refuerzo** es un paradigma del aprendizaje automático en el que un agente aprende a tomar decisiones en un entorno para maximizar una recompensa acumulada. En RL, el agente interactúa con el entorno siguiendo un proceso de prueba y error, utilizando una política que define qué acción tomar en cada estado.  
+El **Reinforcement Learning (RL)** o **aprendizaje por refuerzo** es un paradigma del aprendizaje automático en el que un agente aprende a tomar decisiones en un entorno para maximizar una recompensa acumulada. En RL, el agente interactúa con el entorno siguiendo un proceso de prueba y error, utilizando una política que define qué acción tomar en cada estado. [[2](#ref2)] [[3](#ref3)] 
 
 El aprendizaje en RL se basa en los siguientes elementos clave:  
 
@@ -84,11 +84,11 @@ El aprendizaje en RL se basa en los siguientes elementos clave:
 El objetivo del agente es aprender una política óptima $π^*$ que maximice la suma de recompensas a lo largo del tiempo. Para lograrlo, se utilizan diferentes algoritmos de aprendizaje, como **Q-learning, DQN y PPO**.
 
 ### Q-learning
-**Q-learning** es un algoritmo de aprendizaje por refuerzo basado en valores, cuyo objetivo es aprender una función de acción-valor **Q(s, a)** , que representa la recompensa esperada si el agente toma la acción **a** en el estado **s** y sigue la política óptima a partir de ahí.  
+**Q-learning** es un algoritmo de aprendizaje por refuerzo basado en valores, cuyo objetivo es aprender una función de acción-valor **Q(s, a)** , que representa la recompensa esperada si el agente toma la acción **a** en el estado **s** y sigue la política óptima a partir de ahí. [[4](#ref4)] 
 
 El algoritmo actualiza iterativamente la función **Q(s, a)** mediante la ecuación de Bellman: 
 
-Q(s, a) ← Q(s, a) + α [ R + γ max_{a'} Q(s', a') − Q(s, a) ]
+Q(s, a) ← Q(s, a) + α [ R + γ max_{a'} Q(s', a') − Q(s, a) ] [[4](#ref4)] 
 
 
 Donde:  
@@ -106,13 +106,13 @@ El algoritmo de Q-learning, bajo ciertas condiciones (como una tasa de aprendiza
 
 El **Deep Q-Network** es una extensión del algoritmo clásico Q-learning que utiliza redes neuronales profundas para aproximar la función de valores **Q(s, a)** en entornos de alta dimensión y con espacios de estados complejos. A diferencia de Q-learning, que emplea una tabla explícita para almacenar los valores de Q, **Deep Q-Network** utiliza una red neuronal para predecir estos valores, lo que permite manejar escenarios donde los estados no son discretos o son demasiado numerosos para almacenar en una tabla.
 
-El **Deep Q-Network (DQN)** es una implementación específica de **Deep Q-Learning** que introduce mejoras clave para garantizar la estabilidad y eficiencia del aprendizaje.
+El **Deep Q-Network (DQN)** es una implementación específica de **Q-Learning** que introduce mejoras clave para garantizar la estabilidad y eficiencia del aprendizaje. [[3](#ref3)] 
 
 DQN ha sido una de las innovaciones más importantes en **Reinforcement Learning**, permitiendo aplicar **Q-learning** en entornos con espacios de estados continuos y de alta dimensión.
 
 ### Proximal Policy Optimization (PPO)
 
-**Proximal Policy Optimization (PPO)** es un algoritmo de aprendizaje por refuerzo basado en políticas (*policy-based*) que optimiza directamente la política del agente sin recurrir a una tabla de valores Q. A diferencia de Q-Learning o DQN, PPO utiliza una red neuronal que produce una distribución de acciones para cada estado.
+**Proximal Policy Optimization (PPO)** es un algoritmo de aprendizaje por refuerzo basado en políticas (*policy-based*) que optimiza directamente la política del agente (policy gradient [[5](#ref5)] ) sin recurrir a una tabla de valores Q. A diferencia de Q-Learning o DQN, PPO utiliza una red neuronal que produce una distribución de acciones para cada estado.
 
 PPO pertenece a la familia de métodos **actor–critic**, donde dos redes trabajan en conjunto:
 
@@ -152,7 +152,7 @@ Para evaluar el rendimiento de los algoritmos Q-learning, DQN y PPO se utilizaro
 
 ### Herramientas
 
-Para el desarrollo de este proyecto, se utilizó Stable Baselines 3, el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[2](#ref2)], con la emulación de ALE[[3](#ref3)].
+Para el desarrollo de este proyecto, se utilizó Stable Baselines 3, el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[1](#ref1)], con la emulación de ALE[[7](#ref7)].
 
 Con respecto a hardware, se utilizó una computadora del equipo de trabajo y entornos de Google Colab:
 - Computadora:
@@ -173,12 +173,12 @@ Gymnasium incluye una variedad de entornos predefinidos, como tareas clásicas d
 
 ##### Modos y dificultades
 
-El entorno Space Invaders permite configurar distintos *modos* (16 en total) y *dificultades* (2 niveles) [[4](#ref4)].  
-Las dificultades modifican el tamaño del cañón del jugador, mientras que los modos alteran el comportamiento del entorno, como el movimiento de las barreras, la trayectoria de las balas o la visibilidad de los enemigos (ver ejemplos en [[8](#ref8)]).
+El entorno Space Invaders permite configurar distintos *modos* (16 en total) y *dificultades* (2 niveles) [[8](#ref8)].  
+Las dificultades modifican el tamaño del cañón del jugador, mientras que los modos alteran el comportamiento del entorno, como el movimiento de las barreras, la trayectoria de las balas o la visibilidad de los enemigos (ver ejemplos en [[12](#ref12)]).
 
 #### Stable Baselines 3
 
-Stable Baselines 3 (SB3) [[9](#ref9)] es un conjunto de implementaciones confiables y estandarizadas de algoritmos de aprendizaje profundo, desarrollado sobre PyTorch. Está orientado a la reproducibilidad, la estabilidad del entrenamiento y la facilidad de uso.
+Stable Baselines 3 (SB3) [[13](#ref13)] es un conjunto de implementaciones confiables y estandarizadas de algoritmos de aprendizaje profundo, desarrollado sobre PyTorch. Está orientado a la reproducibilidad, la estabilidad del entrenamiento y la facilidad de uso.
 
 Además de proporcionar las bases de los algoritmos a implementar en el proyecto, también proporcionan herramientas que son necesarias para este trabajo como las de vectorización y stacking de entornos.
 
@@ -205,7 +205,7 @@ Por ello, es necesario reducir el espacio de estados mediante un preprocesamient
 El espacio de observación que posee Gymnasium en el juego Space Invaders es Box(0, 255, (210, 160, 3), uint8) [[1](#ref1)],
 es decir, son observaciones de 3 canales (RGB), de 210 x 160 píxeles, con valores entre 0 y 255.
 
-Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [[5](#ref5)].
+Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [[9](#ref9)].
 
 Siguiendo las recomendaciones, se recortan las secciones de la imagen que no aportan información (ver Figura 1). Después del recorte, la imagen se redimensiona a 84×84 píxeles y, finalmente, se convierte a escala de grises (ver figura 2).
 
@@ -256,7 +256,7 @@ La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace m
 
 #### Estructura de la red neuronal
 
-La red está compuesta por un extractor convolucional de características y una cabeza final que predice los valores Q [[6](#ref6)].
+La red está compuesta por un extractor convolucional de características y una cabeza final que predice los valores Q [[10](#ref10)].
 
 **1. Extractor convolucional (NatureCNN)**  
 La entrada del modelo consiste en un stack de **n_stack** de tamaño **84×84**. El extractor convolucional se compone de:
@@ -291,7 +291,7 @@ Durante el entrenamiento, se extraen lotes aleatorios desde este buffer. Este mu
 A diferencia de DQN que utiliza Q-learning, PPO es un algoritmo de gradiente de política que optimiza directamente la política del agente. Este enfoque es más estable y eficiente para muchos entornos.
 
 ##### Estructura de la red neuronal
-PPO utiliza una arquitectura de Actor-Crítico con extractores de características separados para la política (actor) y la función de valor (crítico). Esta separación permite que cada componente aprenda representaciones especializadas de manera independiente, optimizando tanto la selección de acciones como la estimación de valores [[7](#ref7)].
+PPO utiliza una arquitectura de Actor-Crítico con extractores de características separados para la política (actor) y la función de valor (crítico). Esta separación permite que cada componente aprenda representaciones especializadas de manera independiente, optimizando tanto la selección de acciones como la estimación de valores [[11](#ref11)].
 
 **1. Extractores convolucionales independientes (NatureCNN)**  
 La arquitectura implementa tres extractores NatureCNN con pesos independientes:
@@ -338,6 +338,58 @@ El modo 0 es el entorno base del juego: las barreras están fijas, las balas ene
 | PPO        | 10 millones de pasos (Aproximadamente 7 horas)      |
 </div>
 
+Con el fin identificar los modelos entrenados, se asignó a cada uno un identificador secuencial (por ejemplo, DQN1), de esta manera se facilita la referencia a los modelos y se mantiene un registro claro de sus parámetros, pruebas y métricas. Estos identificadores, utilizados en los resultados (DQN1–DQN9 y PPO1–PPO5), corresponden a diferentes instancias de los algoritmos DQN y PPO generadas durante el estudio. Cada número representa un modelo entrenado con un conjunto específico de hiperparámetros. Su función es únicamente distinguir las variantes evaluadas, sin implicar cambios en la definición del algoritmo.
+
+A continuación se especificarán los hiperparámetros utilizados para los modelos cuyos resultados se encuentran expuestos en la siguiente sección:
+- DQN2:
+```
+policy="CnnPolicy",
+env=env,
+learning_rate=1e-4,
+buffer_size=100_000,
+learning_starts=10_000,
+batch_size=128,
+tau=1.0,
+gamma=0.99,
+train_freq=4,
+gradient_steps=1,
+target_update_interval=10_000,
+exploration_fraction=0.15,
+exploration_final_eps=0.05,
+verbose=1
+```
+- DQN9:
+```
+policy="CnnPolicy",
+env=env,
+learning_rate=1e-5,
+buffer_size=100_000,
+learning_starts=100_000,
+batch_size=132,
+tau=1.0,
+gamma=0.99,
+train_freq=4,
+gradient_steps=1,
+target_update_interval=10_000,
+exploration_fraction=0.3,
+exploration_final_eps=0.05,
+verbose=1
+```
+- PPO5:
+```
+policy="CnnPolicy",
+env=env,
+verbose=1,
+tensorboard_log=tensorboard_log,
+learning_rate=1e-6,
+n_steps=512,
+batch_size=256,
+n_epochs=4,
+gamma=0.99,
+ent_coef=0.01,
+device="cuda"
+```
+
 Para evaluar la capacidad de generalización de los agentes, además del modo visto en entrenamiento, se realizaron pruebas en los *modos 3, 4 y 8* (todos con dificultad 0), que introducen variaciones significativas en el entorno:
 
 - *Modo 0:* entorno base (igual al utilizado durante el entrenamiento).
@@ -356,7 +408,7 @@ $\text{seed}_{\text{episodio}} = 123 + \text{índice del episodio}$
 
 Si bien en Space Invaders tanto la posición inicial del jugador como la disposición inicial de enemigos y barreras se mantienen fijas —tal como ocurre en el juego original—, la semilla sí afecta todos los eventos no deterministas del entorno. Entre ellos se encuentran los patrones de disparo de los enemigos, la selección de qué enemigo dispara, variaciones internas asociadas al frame-skip y otros comportamientos aleatorios propios de ciertos modos. Esto permite que cada episodio sea distinto aun cuando las posiciones iniciales no cambien. De este modo, todos los agentes fueron evaluados bajo una misma secuencia de variaciones controladas, manteniendo comparabilidad entre algoritmos sin repetir episodios idénticos.
 
-Al observar inestabilidad (rangos de recompensas muy variados, que podían ir de 0 a alrededor de 1000) a la hora de entrenar agentes de Q-learning y DQN, se decidió implementar Wrappers [[10](#ref10)] de recompensa para fijar 2 reglas más al entorno:
+Al observar inestabilidad (rangos de recompensas muy variados, que podían ir de 0 a alrededor de 1000) a la hora de entrenar agentes de Q-learning y DQN, se decidió implementar Wrappers [[14](#ref14)] de recompensa para fijar 2 reglas más al entorno:
 - Si pierde una vida, pierde puntaje.
 - Puntos uniformes:
   - Si obtiene recompensa positiva, sólo se suma un punto (ya sea que el agente gane 10 o 200 puntos por una acción).
@@ -777,22 +829,31 @@ Por último, se concluye que el hecho de haber elegido DQN y PPO para resolver e
 
 ## Bibliografía
 ---
+
 <a id="ref1"></a> [1] Farama Foundation. (2025). Space Invaders Environment. Disponible en: https://ale.farama.org/environments/space_invaders/. Última vez accedido: Noviembre de 2025.
 
-<a id="ref2"></a> [2] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html. Última vez accedido: Febrero de 2025.
+<a id="ref2"></a> [2] R. S. Sutton & A. G. Barto. (2020). Reinforcement Learning: An Introduction, Second Edition. The MIT Press. Última vez accedido: Noviembre de 2025.
+ 
+<a id="ref3"></a> [3] Alexander Amini. (2024). MIT 6.S191: Reinforcement Learning. Disponible en: https://youtu.be/8JVRbHAVCws. Ultima vez accedido: Febrero de 2025.
+ 
+<a id="ref4"></a> [4] DataCamp. (2024). Introducción al Q-Learning: Tutorial para principiantes. Disponible en: https://www.datacamp.com/es/tutorial/introduction-q-learning-beginner-tutorial. Última vez accedido: Noviembre de 2025. 
 
-<a id="ref3"></a> [3] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.
+<a id="ref5"></a> [5] GeeksforGeeks. (2025). A Brief Introduction to Proximal Policy Optimization. Disponible en: https://www.geeksforgeeks.org/machine-learning/a-brief-introduction-to-proximal-policy-optimization/. Última vez accedido: Noviembre de 2025. 
 
-<a id="ref4"></a> [4] Farama Foundation. (2025). Flavors. Disponible en: https://gymnasium.farama.org/v0.28.0/environments/atari/#flavors. Última vez accedido: Noviembre de 2025.
+<a id="ref6"></a> [6] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html. Última vez accedido: Febrero de 2025.
 
-<a id="ref5"></a> [5] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
+<a id="ref7"></a> [7] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.
 
-<a id="ref6"></a> [6] Estructura de la red DQN. Disponible en: .\code\dqn\network_structure.md. Última vez accedido: Noviembre de 2025.
+<a id="ref8"></a> [8] Farama Foundation. (2025). Flavors. Disponible en: https://gymnasium.farama.org/v0.28.0/environments/atari/#flavors. Última vez accedido: Noviembre de 2025.
 
-<a id="ref7"></a> [7] Estructura de la red PPO. Disponible en: .\code\ppo\network_structure.md. Última vez accedido: Noviembre de 2025.
+<a id="ref9"></a> [9] V. Mnih & K. Kavukcuoglu & D. Silver & A. Graves & I. Antonoglou D. Wierstra & M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.
 
-<a id="ref8"></a> [8] Modos de space invaders. Disponible en: .\code\modos_de_juego. Última vez accedido: Diciembre de 2025.
+<a id="ref10"></a> [10] Estructura de la red DQN. Disponible en: .\code\dqn\network_structure.md. Última vez accedido: Noviembre de 2025.
 
-<a id="ref2"></a> [9] Hill, A., Raffin, A., Ernestus, M., Gleave, A., Kanervisto, A., & Dormann, N. (2025). Stable Baselines3: Reliable Reinforcement Learning Implementations. Disponible en: https://stable-baselines3.readthedocs.io/. Última vez accedido: Diciembre de 2025.
+<a id="ref11"></a> [11] Estructura de la red PPO. Disponible en: .\code\ppo\network_structure.md. Última vez accedido: Noviembre de 2025.
 
-<a id="ref10"></a> [10] Farama Foundation. (2023). Wrappers. Disponible en: https://gymnasium.farama.org/api/wrappers/. Última vez accedido: Noviembre de 2025.
+<a id="ref12"></a> [12] Modos de space invaders. Disponible en: .\code\modos_de_juego. Última vez accedido: Diciembre de 2025.
+
+<a id="ref13"></a> [13] Hill, A., Raffin, A., Ernestus, M., Gleave, A., Kanervisto, A., & Dormann, N. (2025). Stable Baselines3: Reliable Reinforcement Learning Implementations. Disponible en: https://stable-baselines3.readthedocs.io/. Última vez accedido: Diciembre de 2025.
+
+<a id="ref14"></a> [14] Farama Foundation. (2023). Wrappers. Disponible en: https://gymnasium.farama.org/api/wrappers/. Última vez accedido: Noviembre de 2025.
