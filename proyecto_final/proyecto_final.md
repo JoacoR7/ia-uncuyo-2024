@@ -390,6 +390,8 @@ ent_coef=0.01,
 device="cuda"
 ```
 
+Algunos de estos modelos son resultado de una continuación de entrenamiento, es decir, se tomó el modelo ya entrenado con los mismos pesos y se retomó el entrenamiento con 10 millones de pasos para observar si seguía aprendiendo o se estancaba. Como los resultados fueron satisfactorios, se decidieron dejar estos modelos como modelos aparte, por ejemplo el modelo DQN9 surge de haber continuado el entrenamiento del modelo DQN5.
+
 Para evaluar la capacidad de generalización de los agentes, además del modo visto en entrenamiento, se realizaron pruebas en los *modos 3, 4 y 8* (todos con dificultad 0), que introducen variaciones significativas en el entorno:
 
 - *Modo 0:* entorno base (igual al utilizado durante el entrenamiento).
@@ -402,7 +404,6 @@ Estos modos adicionales permiten evaluar cómo se adapta cada algoritmo frente a
 En cuanto a la metodología de evaluación, para cada algoritmo se entrenaron varios modelos y cada uno fue evaluado mediante 1000 episodios por modo. Sin embargo, para cada configuración de hiperparámetros se realizó un único entrenamiento por algoritmo; es decir, no se repitió el proceso de entrenamiento varias veces para promediar resultados, sino que se evaluó directamente el modelo obtenido en esa única ejecución.
 
 Para garantizar reproducibilidad sin reutilizar exactamente las mismas condiciones aleatorias, se utilizó una semilla base fija (123) al reiniciar el entorno. En cada episodio, la semilla se actualizó siguiendo:
-
 
 $\text{seed}_{\text{episodio}} = 123 + \text{índice del episodio}$
 
@@ -781,7 +782,7 @@ De igual forma tiene sentido ya que el modo 8, aunque no pueda ver a los enemigo
 
 #### Winrate
 
-El winrate en ambos modelos es bueno, aunque con el segundo enfoque es mejor, esto se debe a que, al tener más estabilidad, se pudo reentrenar el modelo con más pasos, por lo que tuvo oportunidad a aprender mejores políticas. 
+El winrate en ambos modelos es bueno, aunque con el segundo enfoque es mejor, esto se debe a que, al tener más estabilidad, se pudo continuar el entrenamiento del modelo con más pasos, por lo que tuvo oportunidad a aprender mejores políticas. 
 
 El modelo con Wrapper de recompensa tuvo 5 veces más winrate en el modo 0 que el otro modelo sin Wrapper, y en los otros modos tuvo un rendimiento significativamente mayor.
 
@@ -792,7 +793,7 @@ Como se mencionó anteriormente, se entrenaron modelos con este algoritmo sólo 
 
 Con respecto al desempeño, en general superó ampliamente a todos los modelos anteriores, salvo en algunos modos que ya se discutirá sobre eso en la sección siguiente.
 
-El entrenamiento fue más estable y el reentrenamiento de modelos fue más productivo que en el algoritmo anterior, ya que incluso lograba el doble de winrate al reentrenar, hecho que no ocurrió con DQN.
+El entrenamiento fue más estable, lo que permitió agarrar modelos entrenados y continuar su entrenamiento para que siga evolucionando, gracias a esto se logró incrementar el winrate.
 
 Con respecto a las políticas, aprendió mejores políticas que los modelos anteriores, ya que esquiva mejor los disparos y sólo dispara si hay enemigos: no dispara por disparar.
 
@@ -812,7 +813,7 @@ En este caso, fue superador el winrate, por lo menos en los modos 0 y 3. El hech
 
 #### Conclusión
 
-Los modelos implementados con PPO fueron mejores que los modelos con los algoritmos anteriores con respecto al modo 0 y 3. La estabilidad de entrenamiento fue mucho mayor y el reentrenamiento fue más eficiente, permitiendo mejorar significativamente el modelo. Se considera que si se sigue entrenando, puede superar el 85% de winrate en el modo 0.
+Los modelos implementados con PPO fueron mejores que los modelos con los algoritmos anteriores con respecto al modo 0 y 3. La estabilidad de entrenamiento fue mucho mayor y la continuación del entrenamiento fue más eficiente, permitiendo mejorar significativamente el modelo. Se considera que si se sigue entrenando, puede superar el 85% de winrate en el modo 0.
 
 ## Conclusiones finales
 Tras comparar los resultados de testeo entre los distintos modos y teniendo en cuenta los datos obtenidos durante los entrenamientos, se puede concluir que los algoritmos DQN y PPO son superiores a Q-learning y definitivamente mejores que el algoritmo aleatorio. Ambos algoritmos tuvieron un desempeño superior y un entrenamiento mucho más estable, lo que permitió que ganasen más episodios y tuvieran recompensas mayores.
