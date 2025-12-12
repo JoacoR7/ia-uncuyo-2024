@@ -347,6 +347,15 @@ Para evaluar la capacidad de generalización de los agentes, además del modo vi
 
 Estos modos adicionales permiten evaluar cómo se adapta cada algoritmo frente a dinámicas nuevas que no fueron observadas durante el entrenamiento.
 
+En cuanto a la metodología de evaluación, para cada algoritmo se entrenaron varios modelos y cada uno fue evaluado mediante 1000 episodios por modo. Sin embargo, para cada configuración de hiperparámetros se realizó un único entrenamiento por algoritmo; es decir, no se repitió el proceso de entrenamiento varias veces para promediar resultados, sino que se evaluó directamente el modelo obtenido en esa única ejecución.
+
+Para garantizar reproducibilidad sin reutilizar exactamente las mismas condiciones aleatorias, se utilizó una semilla base fija (123) al reiniciar el entorno. En cada episodio, la semilla se actualizó siguiendo:
+
+
+$\text{seed}_{\text{episodio}} = 123 + \text{índice del episodio}$
+
+Si bien en Space Invaders tanto la posición inicial del jugador como la disposición inicial de enemigos y barreras se mantienen fijas —tal como ocurre en el juego original—, la semilla sí afecta todos los eventos no deterministas del entorno. Entre ellos se encuentran los patrones de disparo de los enemigos, la selección de qué enemigo dispara, variaciones internas asociadas al frame-skip y otros comportamientos aleatorios propios de ciertos modos. Esto permite que cada episodio sea distinto aun cuando las posiciones iniciales no cambien. De este modo, todos los agentes fueron evaluados bajo una misma secuencia de variaciones controladas, manteniendo comparabilidad entre algoritmos sin repetir episodios idénticos.
+
 Al observar inestabilidad (rangos de recompensas muy variados, que podían ir de 0 a alrededor de 1000) a la hora de entrenar agentes de Q-learning y DQN, se decidió implementar Wrappers [[10](#ref10)] de recompensa para fijar 2 reglas más al entorno:
 - Si pierde una vida, pierde puntaje.
 - Puntos uniformes:
