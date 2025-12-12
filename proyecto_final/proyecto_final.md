@@ -20,9 +20,9 @@ Código de proyecto: SPACEAI
       - [Modos y dificultades](#modos-y-dificultades)
     - [Stable Baselines 3](#stable-baselines-3)
   - [Implementación](#implementación)
+    - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
     - [Preprocesamiento de entorno](#preprocesamiento-de-entorno)
     - [Implementación con Q-learning](#implementación-con-q-learning)
-      - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
       - [Representación Discreta del Estado](#representación-discreta-del-estado)
       - [Tamaño final de la Q table](#tamaño-final-de-la-q-table)
     - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
@@ -172,8 +172,9 @@ Gymnasium es una librería diseñada para desarrollar y evaluar algoritmos de ap
 Gymnasium incluye una variedad de entornos predefinidos, como tareas clásicas de control, simulaciones físicas, y escenarios similares a videojuegos. También permite crear entornos personalizados para aplicaciones específicas, manteniendo la misma estructura API. Se utilizará para obtener el entorno de Space Invaders.
 
 ##### Modos y dificultades
-Para el caso del entorno a trabajar, la librería ofrece modos y dificultades [[4](#ref4)]. Ofrece 16 modos distintos y 2 dificultades distintas, en cuanto a la dificultad, simplemente agranda o achica el cañón, por defecto empieza con el cañón más chico (menos probabilidad de ser golpeado). Con respecto a los modos, hay distintas posibilidades como escudos que se mueven, balas que se mueven horizontalmente, invisibilidad de enemigos, entre otros (ejemplos completos en [[8](#ref8)]).
 
+El entorno Space Invaders permite configurar distintos *modos* (16 en total) y *dificultades* (2 niveles) [[4](#ref4)].  
+Las dificultades modifican el tamaño del cañón del jugador, mientras que los modos alteran el comportamiento del entorno, como el movimiento de las barreras, la trayectoria de las balas o la visibilidad de los enemigos (ver ejemplos en [[8](#ref8)]).
 
 #### Stable Baselines 3
 
@@ -325,6 +326,8 @@ Finalmente, cada rama tiene su propia cabeza de salida:
 ### Experimentos
 Se realizaron experimentos empleando cuatro enfoques: un agente con comportamiento aleatorio y tres algoritmos de aprendizaje por refuerzo (Q-Learning, DQN y PPO). Todos los modelos fueron entrenados utilizando la configuración por defecto del entorno, correspondiente al modo 0 y dificultad 0.
 
+El modo 0 es el entorno base del juego: las barreras están fijas, las balas enemigas tienen trayectoria recta y los enemigos mantienen un comportamiento estándar. La dificultad 0 utiliza el cañón pequeño (menor probabilidad de ser golpeado).
+
 <div align="center">
 
 | Algoritmo  | Cantidad de entrenamiento por modelo |
@@ -335,7 +338,14 @@ Se realizaron experimentos empleando cuatro enfoques: un agente con comportamien
 | PPO        | 10 millones de pasos (Aproximadamente 7 horas)      |
 </div>
 
-Se decidió utilizar el modo por defecto y la dificultad 0 ya que es el entorno más sencillo para entrenar un modelo. Luego, a la hora de testear, se utilizaron los modos 0, 3, 4 y 8 para evaluar no sólo su desempeño en un entorno ya conocido, sino también entornos nuevos para evalúar qué tan bien se adapta a los cambios que estos modos proponen.
+Para evaluar la capacidad de generalización de los agentes, además del modo visto en entrenamiento, se realizaron pruebas en los *modos 3, 4 y 8* (todos con dificultad 0), que introducen variaciones significativas en el entorno:
+
+- *Modo 0:* entorno base (igual al utilizado durante el entrenamiento).
+- *Modo 3:* las balas enemigas presentan desviaciones y las barreras de protección se mueven.
+- *Modo 4:* las balas enemigas son más rápidas.
+- *Modo 8:* los enemigos se vuelven invisibles durante intervalos de tiempo.
+
+Estos modos adicionales permiten evaluar cómo se adapta cada algoritmo frente a dinámicas nuevas que no fueron observadas durante el entrenamiento.
 
 Al observar inestabilidad (rangos de recompensas muy variados, que podían ir de 0 a alrededor de 1000) a la hora de entrenar agentes de Q-learning y DQN, se decidió implementar Wrappers [[10](#ref10)] de recompensa para fijar 2 reglas más al entorno:
 - Si pierde una vida, pierde puntaje.
