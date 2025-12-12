@@ -183,6 +183,23 @@ Además de proporcionar las bases de los algoritmos a implementar en el proyecto
 
 ### Implementación
 
+#### Reducción del Espacio de Estados y Acciones
+
+El entorno Space Invaders en Gymnasium entrega observaciones en formato de imagen RGB de tamaño 210×160 píxeles con 3 canales, lo que genera un espacio de estados extremadamente grande. Utilizar estas observaciones directamente en una Q-table sería impracticable, ya que la cantidad de estados posibles crece exponencialmente con el número de píxeles.
+
+La dimensión general de una Q-table es:
+
+$|Q\text{-table size}| = \text{Número de estados} × \text{Número de acciones}$
+
+
+Si se trabajara con la imagen completa, el número de estados sería:
+
+$|Q\text{-table size}| = 256^{(210×160×3)} × 6$
+
+
+lo cual es computacionalmente inviable.\
+Por ello, es necesario reducir el espacio de estados mediante un preprocesamiento visual que simplifique la observación sin perder información relevante para la toma de decisiones.
+
 #### Preprocesamiento de entorno
 El espacio de observación que posee Gymnasium en el juego Space Invaders es Box(0, 255, (210, 160, 3), uint8) [[1](#ref1)],
 es decir, son observaciones de 3 canales (RGB), de 210 x 160 píxeles, con valores entre 0 y 255.
@@ -206,23 +223,6 @@ Siguiendo las recomendaciones, se recortan las secciones de la imagen que no apo
 
 
 #### Implementación con Q-learning
-##### Reducción del Espacio de Estados y Acciones
-
-El entorno Space Invaders en Gymnasium entrega observaciones en formato de imagen RGB de tamaño 210×160×3, lo cual resulta impracticable para Q-learning tabular debido a la dimensionalidad extremadamente alta del espacio de estados.
-Para que la tabla Q fuera manejable, se implementó un proceso de reducción, compresión y discretización de los fotogramas del juego.
-
-La dimensión general de una Q-table es:
-
-|Q-table size| = Número de estados × Número de acciones
-
-
-Si se utilizara la imagen completa sin procesamiento, el número de estados sería:
-
-|Q-table size| = 256^(210×160×3) × 6
-
-
-lo cual es computacionalmente inviable.\
-Por ello, se desarrolló un pipeline de reducción progresiva del estado visual, introduciendo recorte, escalado y discretización en tiras verticales.
 
 ##### Representación Discreta del Estado
 A partir de la imagen ya preprocesada (recortada, redimensionada y convertida a escala de grises), se aplica un esquema de agregación y discretización que transforma cada frame en un vector pequeño y manejable:
