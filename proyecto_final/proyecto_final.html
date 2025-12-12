@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>proyecto_final.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="aprendizaje-por-refuerzo-para-atari---space-invaders----omit-in-toc">Aprendizaje por refuerzo para ATARI - Space Invaders <!-- omit in toc --></h1>
+<hr>
+<p>Código de proyecto: SPACEAI</p>
+<hr>
+<h2 id="%C3%ADndice----omit-in-toc">Índice <!-- omit in toc --></h2>
+<ul>
+<li><a href="#introducci%C3%B3n">Introducción</a></li>
+<li><a href="#marco-te%C3%B3rico">Marco teórico</a>
+<ul>
+<li><a href="#reinforcement-learning">Reinforcement Learning</a></li>
+<li><a href="#q-learning">Q-learning</a></li>
+<li><a href="#deep-q-network">Deep Q-Network</a></li>
+<li><a href="#proximal-policy-optimization-ppo">Proximal Policy Optimization (PPO)</a></li>
+<li><a href="#justificaci%C3%B3n">Justificación</a></li>
+</ul>
+</li>
+<li><a href="#dise%C3%B1o-experimental">Diseño experimental</a>
+<ul>
+<li><a href="#m%C3%A9tricas">Métricas</a></li>
+<li><a href="#herramientas">Herramientas</a>
+<ul>
+<li><a href="#openai-gymnasium-api">OpenAI Gymnasium API</a>
+<ul>
+<li><a href="#modos-y-dificultades">Modos y dificultades</a></li>
+</ul>
+</li>
+<li><a href="#stable-baselines-3">Stable Baselines 3</a></li>
+</ul>
+</li>
+<li><a href="#implementaci%C3%B3n">Implementación</a>
+<ul>
+<li><a href="#reducci%C3%B3n-del-espacio-de-estados-y-acciones">Reducción del Espacio de Estados y Acciones</a></li>
+<li><a href="#preprocesamiento-de-entorno">Preprocesamiento de entorno</a></li>
+<li><a href="#implementaci%C3%B3n-con-q-learning">Implementación con Q-learning</a>
+<ul>
+<li><a href="#representaci%C3%B3n-discreta-del-estado">Representación Discreta del Estado</a></li>
+<li><a href="#tama%C3%B1o-final-de-la-q-table">Tamaño final de la Q table</a></li>
+</ul>
+</li>
+<li><a href="#implementaci%C3%B3n-con-deep-q-network">Implementación con Deep Q-Network</a></li>
+<li><a href="#estructura-de-la-red-neuronal">Estructura de la red neuronal</a>
+<ul>
+<li><a href="#estrategia-de-aprendizaje">Estrategia de aprendizaje</a></li>
+</ul>
+</li>
+<li><a href="#almacenamiento-y-muestreo-de-experiencias">Almacenamiento y muestreo de experiencias</a></li>
+<li><a href="#implementaci%C3%B3n-con-ppo">Implementación con PPO</a>
+<ul>
+<li><a href="#estructura-de-la-red-neuronal-1">Estructura de la red neuronal</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#experimentos">Experimentos</a>
+<ul>
+<li><a href="#resultados">Resultados</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#an%C3%A1lisis-y-discusi%C3%B3n-de-resultados">Análisis y Discusión de Resultados</a>
+<ul>
+<li><a href="#random">Random</a>
+<ul>
+<li><a href="#desempe%C3%B1o-general">Desempeño general</a></li>
+<li><a href="#desempe%C3%B1o-por-modo">Desempeño por modo</a></li>
+<li><a href="#winrate">Winrate</a></li>
+<li><a href="#conclusi%C3%B3n">Conclusión</a></li>
+</ul>
+</li>
+<li><a href="#q-learning-1">Q-learning</a>
+<ul>
+<li><a href="#desempe%C3%B1o-general-1">Desempeño general</a></li>
+<li><a href="#desempe%C3%B1o-por-modo-1">Desempeño por modo</a></li>
+<li><a href="#winrate-1">Winrate</a></li>
+<li><a href="#conclusi%C3%B3n-1">Conclusión</a></li>
+</ul>
+</li>
+<li><a href="#dqn">DQN</a>
+<ul>
+<li><a href="#desempe%C3%B1o-general-2">Desempeño general</a></li>
+<li><a href="#desempe%C3%B1o-por-modo-2">Desempeño por modo</a></li>
+<li><a href="#winrate-2">Winrate</a></li>
+</ul>
+</li>
+<li><a href="#ppo">PPO</a>
+<ul>
+<li><a href="#desempe%C3%B1o-general-3">Desempeño general</a></li>
+<li><a href="#desempe%C3%B1o-por-modo-3">Desempeño por modo</a></li>
+<li><a href="#winrate-3">Winrate</a></li>
+<li><a href="#conclusi%C3%B3n-2">Conclusión</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#conclusiones-finales">Conclusiones finales</a></li>
+<li><a href="#bibliograf%C3%ADa">Bibliografía</a></li>
+</ul>
+<h2 id="introducci%C3%B3n">Introducción</h2>
+<p>En el videojuego Space Invaders, versión de Atari 2600, lanzado en 1978, el jugador controla un cañón que debe desplazarse horizontalmente para destruir oleadas de enemigos que descienden gradualmente. El entorno plantea un escenario de acción en tiempo real donde cada disparo, movimiento y cobertura detrás de los escudos debe gestionarse con precisión.</p>
+<p>Gymnasium, una biblioteca de python, ofrece una réplica de este juego [<a href="#ref1">1</a>], aportándo un entorno y la posibilidad de editar el mismo con distintos &quot;flavours&quot; y otras opciones para personalizarlo. El hecho de resolver este juego de forma automática implica enfrentar distintos desafíos como anticipar los proyectiles enemigos, adaptarse al incremento de velocidad de los invasores a medida que disminuye su número y optimizar la posición del cañón para maximizar los puntos mientras se minimiza el riesgo (perder vidas).</p>
+<p>El uso de aprendizaje por refuerzo es una excelente opción para este tipo de problemas, ya que se enfoca en la capacidad de un agente para aprender a través de la interacción con su entorno, optimizando sus decisiones en función de las recompensas obtenidas. En el caso de Space Invaders, el agente aprende a seleccionar acciones basadas en el estado del entorno para maximizar su puntuación y sobrevivir el mayor tiempo posible.</p>
+<p>A lo largo de este proyecto, se explicarán los fundamentos de los algoritmos Q-Learning, Deep Q-Network (DQN), y Proximal Policy Optimization (PPO) su implementación, y las métricas utilizadas para evaluar el desempeño del agente en el entorno de juego. Además, se presentarán las herramientas empleadas para la implementación, los experimentos realizados, los resultados obtenidos y su análisis. Finalmente, se ofrecerán conclusiones sobre la efectividad del enfoque utilizado y las posibles direcciones para futuros trabajos en el campo del aprendizaje por refuerzo aplicado a juegos clásicos.</p>
+<h2 id="marco-te%C3%B3rico">Marco teórico</h2>
+<h3 id="reinforcement-learning">Reinforcement Learning</h3>
+<p>El <strong>Reinforcement Learning (RL)</strong> o <strong>aprendizaje por refuerzo</strong> es un paradigma del aprendizaje automático en el que un agente aprende a tomar decisiones en un entorno para maximizar una recompensa acumulada. En RL, el agente interactúa con el entorno siguiendo un proceso de prueba y error, utilizando una política que define qué acción tomar en cada estado. [<a href="#ref2">2</a>] [<a href="#ref3">3</a>]</p>
+<p>El aprendizaje en RL se basa en los siguientes elementos clave:</p>
+<ul>
+<li><strong>Agente:</strong> Es el sistema que toma acciones.</li>
+<li><strong>Entorno:</strong> Es el espacio en el que opera el agente.</li>
+<li><strong>Estado (S):</strong> Representa la situación actual del agente en el entorno.</li>
+<li><strong>Acciones (A):</strong> Conjunto de decisiones que el agente puede tomar.</li>
+<li><strong>Recompensa (R):</strong> Es un valor que recibe el agente al realizar una acción, nos indica que tan buena fue la decisión del agente.</li>
+<li><strong>Política (π):</strong> Estrategia que define que acción tomar en cada estado.</li>
+</ul>
+<p>El objetivo del agente es aprender una política óptima $π^*$ que maximice la suma de recompensas a lo largo del tiempo. Para lograrlo, se utilizan diferentes algoritmos de aprendizaje, como <strong>Q-learning, DQN y PPO</strong>.</p>
+<h3 id="q-learning">Q-learning</h3>
+<p><strong>Q-learning</strong> es un algoritmo de aprendizaje por refuerzo basado en valores, cuyo objetivo es aprender una función de acción-valor <strong>Q(s, a)</strong> , que representa la recompensa esperada si el agente toma la acción <strong>a</strong> en el estado <strong>s</strong> y sigue la política óptima a partir de ahí. [<a href="#ref4">4</a>]</p>
+<p>El algoritmo actualiza iterativamente la función <strong>Q(s, a)</strong> mediante la ecuación de Bellman:</p>
+<p>Q(s, a) ← Q(s, a) + α [ R + γ max_{a'} Q(s', a') − Q(s, a) ] [<a href="#ref4">4</a>]</p>
+<p>Donde:</p>
+<ul>
+<li>α es la tasa de aprendizaje (<em>learning rate</em>).</li>
+<li>γ es el factor de descuento, que pondera la importancia de futuras recompensas.</li>
+<li>R es la recompensa recibida al ejecutar la acción a.</li>
+<li>s' es el nuevo estado tras la acción a .</li>
+<li>$( max_{a'} Q(s', a') )$ representa el valor máximo esperado desde el nuevo estado.</li>
+</ul>
+<p>El algoritmo de Q-learning, bajo ciertas condiciones (como una tasa de aprendizaje adecuada y la exploración suficiente), converge a una <strong>política óptima</strong>. La política óptima es la que maximiza la recompensa esperada a largo plazo para el agente. Es importante notar que Q-learning es un algoritmo <strong>off-policy</strong>, lo que significa que el agente puede aprender la política óptima sin tener que seguir exactamente la política que está aprendiendo.</p>
+<h3 id="deep-q-network">Deep Q-Network</h3>
+<p>El <strong>Deep Q-Network</strong> es una extensión del algoritmo clásico Q-learning que utiliza redes neuronales profundas para aproximar la función de valores <strong>Q(s, a)</strong> en entornos de alta dimensión y con espacios de estados complejos. A diferencia de Q-learning, que emplea una tabla explícita para almacenar los valores de Q, <strong>Deep Q-Network</strong> utiliza una red neuronal para predecir estos valores, lo que permite manejar escenarios donde los estados no son discretos o son demasiado numerosos para almacenar en una tabla.</p>
+<p>El <strong>Deep Q-Network (DQN)</strong> es una implementación específica de <strong>Q-Learning</strong> que introduce mejoras clave para garantizar la estabilidad y eficiencia del aprendizaje. [<a href="#ref3">3</a>]</p>
+<p>DQN ha sido una de las innovaciones más importantes en <strong>Reinforcement Learning</strong>, permitiendo aplicar <strong>Q-learning</strong> en entornos con espacios de estados continuos y de alta dimensión.</p>
+<h3 id="proximal-policy-optimization-ppo">Proximal Policy Optimization (PPO)</h3>
+<p><strong>Proximal Policy Optimization (PPO)</strong> es un algoritmo de aprendizaje por refuerzo basado en políticas (<em>policy-based</em>) que optimiza directamente la política del agente (policy gradient [<a href="#ref5">5</a>] ) sin recurrir a una tabla de valores Q. A diferencia de Q-Learning o DQN, PPO utiliza una red neuronal que produce una distribución de acciones para cada estado.</p>
+<p>PPO pertenece a la familia de métodos <strong>actor–critic</strong>, donde dos redes trabajan en conjunto:</p>
+<ul>
+<li><strong>Actor</strong>: genera la política π(a|s), es decir, la probabilidad de ejecutar cada acción.</li>
+<li><strong>Critic</strong>: estima el valor V(s), que se utiliza para calcular la <em>ventaja</em> y guiar la actualización del actor.</li>
+</ul>
+<p>La principal innovación de PPO es la función objetivo <strong>clipped surrogate objective</strong>, diseñada para evitar cambios bruscos en la política y mantener el entrenamiento estable. El algoritmo controla cuánto puede cambiar la política nueva respecto a la anterior mediante el ratio.</p>
+<p>Este mecanismo impide actualizaciones inestables, PPO utiliza <strong>batches</strong> de experiencias y realiza varias épocas de optimización por cada batch para maximizar eficiencia.</p>
+<h3 id="justificaci%C3%B3n">Justificación</h3>
+<p>Para la realización de este proyecto se optó por utilizar los algoritmos de Q-Learning, Deep Q-Learning y PPO por los siguientes motivos:</p>
+<ul>
+<li>
+<p>En primer lugar, se empleó Q-Learning por su simplicidad y facilidad a la hora de entender el algoritmo. Si bien presenta baja eficiencia en entornos con una gran cantidad de estados, resulta útil para comprender los conceptos fundamentales de estado, acción y recompensa, así como la dinámica entre exploración y explotación. Además, sirve como punto de referencia para contrastar posteriormente los resultados con algoritmos más avanzados como DQN y PPO.</p>
+</li>
+<li>
+<p>Por su parte, DQN se incorporó como una extensión natural de Q-Learning para manejar observaciones de alta dimensionalidad, como las imágenes del juego. Al utilizar redes neuronales profundas para aproximar la función Q, evita la necesidad de discretizar el entorno y ofrece un rendimiento significativamente superior en escenarios complejos.</p>
+</li>
+<li>
+<p>Por último, PPO también tiene la ventaja de poder manejar observaciones continuas o de muchas dimensiones sin necesidad de discretizar, además, el entrenamiento es muy estable ya que aprende políticas de forma suave, y consistente. Tiene también la propiedad de converger más rápido y con mayor robustez.</p>
+</li>
+</ul>
+<h2 id="dise%C3%B1o-experimental">Diseño experimental</h2>
+<h3 id="m%C3%A9tricas">Métricas</h3>
+<p>Para evaluar el rendimiento de los algoritmos Q-learning, DQN y PPO se utilizaron varias métricas clave que permiten comparar su desempeño frente a un agente aleatorio. Las métricas seleccionadas son las siguientes:</p>
+<ol>
+<li>
+<p><strong>Recompensa Promedio</strong><br>
+Se calculó la recompensa promedio en intervalos regulares de episodios para analizar la evolución del aprendizaje del agente. Este análisis permite observar si el agente mejora con el tiempo y si su desempeño se estabiliza en valores óptimos.</p>
+</li>
+<li>
+<p><strong>Pasos Promedio</strong><br>
+Se registró la cantidad promedio de pasos tomados por el agente en distintos intervalos de episodios. Esta métrica ayuda a evaluar si el agente está aprendiendo estrategias más eficientes para completar la tarea en menos tiempo.</p>
+</li>
+<li>
+<p><strong>Winrate</strong><br>
+Se midió el porcentaje de episodios en los que el agente logró una recompensa igual superior a 630, umbral necesario para pasar el primer nivel. Este indicador refleja la capacidad del agente para alcanzar su objetivo de manera consistente.</p>
+</li>
+<li>
+<p><strong>Gráfico de Frecuencia</strong><br>
+Se construyó un histograma de frecuencias que muestra con qué frecuencia el agente alcanzó determinadas recompensas dentro de intervalos predefinidos. Este análisis permite identificar patrones en la distribución de las recompensas y evaluar la estabilidad del agente en la obtención de buenos resultados. Una distribución sesgada hacia valores más altos indicaría un agente con un rendimiento más consistente y efectivo.</p>
+</li>
+</ol>
+<h3 id="herramientas">Herramientas</h3>
+<p>Para el desarrollo de este proyecto, se utilizó Stable Baselines 3, el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [<a href="#ref1">1</a>], con la emulación de ALE[<a href="#ref3">3</a>].</p>
+<p>Con respecto a hardware, se utilizó una computadora del equipo de trabajo y entornos de Google Colab:</p>
+<ul>
+<li>Computadora:
+<ul>
+<li>GPU: RTX 3080 ti</li>
+<li>Memoria RAM: 32GB  DDR5</li>
+<li>Almacenamiento: 1TB SSD</li>
+<li>Procesador: AMD Ryzen 7 7700X</li>
+</ul>
+</li>
+<li>Google Colab:
+<ul>
+<li>Memoria RAM: ~13 GB</li>
+<li>Almacenamiento: ~108 GB</li>
+<li>Procesador: Intel Xeon E5-26xx v4 (Broadwell, virtualizado – Google Colab)</li>
+</ul>
+</li>
+</ul>
+<h4 id="openai-gymnasium-api">OpenAI Gymnasium API</h4>
+<p>Gymnasium es una librería diseñada para desarrollar y evaluar algoritmos de aprendizaje por refuerzo (RL). Proporciona una interfaz estandarizada que facilita la creación de agentes de RL y su entrenamiento.</p>
+<p>Gymnasium incluye una variedad de entornos predefinidos, como tareas clásicas de control, simulaciones físicas, y escenarios similares a videojuegos. También permite crear entornos personalizados para aplicaciones específicas, manteniendo la misma estructura API. Se utilizará para obtener el entorno de Space Invaders.</p>
+<h5 id="modos-y-dificultades">Modos y dificultades</h5>
+<p>El entorno Space Invaders permite configurar distintos <em>modos</em> (16 en total) y <em>dificultades</em> (2 niveles) [<a href="#ref4">4</a>].<br>
+Las dificultades modifican el tamaño del cañón del jugador, mientras que los modos alteran el comportamiento del entorno, como el movimiento de las barreras, la trayectoria de las balas o la visibilidad de los enemigos (ver ejemplos en [<a href="#ref8">8</a>]).</p>
+<h4 id="stable-baselines-3">Stable Baselines 3</h4>
+<p>Stable Baselines 3 (SB3) [<a href="#ref9">9</a>] es un conjunto de implementaciones confiables y estandarizadas de algoritmos de aprendizaje profundo, desarrollado sobre PyTorch. Está orientado a la reproducibilidad, la estabilidad del entrenamiento y la facilidad de uso.</p>
+<p>Además de proporcionar las bases de los algoritmos a implementar en el proyecto, también proporcionan herramientas que son necesarias para este trabajo como las de vectorización y stacking de entornos.</p>
+<h3 id="implementaci%C3%B3n">Implementación</h3>
+<h4 id="reducci%C3%B3n-del-espacio-de-estados-y-acciones">Reducción del Espacio de Estados y Acciones</h4>
+<p>El entorno Space Invaders en Gymnasium entrega observaciones en formato de imagen RGB de tamaño 210×160 píxeles con 3 canales, lo que genera un espacio de estados extremadamente grande. Utilizar estas observaciones directamente en una Q-table sería impracticable, ya que la cantidad de estados posibles crece exponencialmente con el número de píxeles.</p>
+<p>La dimensión general de una Q-table es:</p>
+<p>$|Q\text{-table size}| = \text{Número de estados} × \text{Número de acciones}$</p>
+<p>Si se trabajara con la imagen completa, el número de estados sería:</p>
+<p>$|Q\text{-table size}| = 256^{(210×160×3)} × 6$</p>
+<p>lo cual es computacionalmente inviable.<br>
+Por ello, es necesario reducir el espacio de estados mediante un preprocesamiento visual que simplifique la observación sin perder información relevante para la toma de decisiones.</p>
+<h4 id="preprocesamiento-de-entorno">Preprocesamiento de entorno</h4>
+<p>El espacio de observación que posee Gymnasium en el juego Space Invaders es Box(0, 255, (210, 160, 3), uint8) [<a href="#ref1">1</a>],
+es decir, son observaciones de 3 canales (RGB), de 210 x 160 píxeles, con valores entre 0 y 255.</p>
+<p>Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [<a href="#ref5">5</a>].</p>
+<p>Siguiendo las recomendaciones, se recortan las secciones de la imagen que no aportan información (ver Figura 1). Después del recorte, la imagen se redimensiona a 84×84 píxeles y, finalmente, se convierte a escala de grises (ver figura 2).</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="images/area_recortada.jpeg" width="421"><br>
+      <em>[Figura 1] Área visible para el modelo</em>
+    </td>
+    <td align="center">
+      <img src="images/imagen_final.png" width="300"><br>
+      <em>[Figura 2] Imagen luego del preprocesamiento</em>
+    </td>
+  </tr>
+</table>
+<h4 id="implementaci%C3%B3n-con-q-learning">Implementación con Q-learning</h4>
+<h5 id="representaci%C3%B3n-discreta-del-estado">Representación Discreta del Estado</h5>
+<p>A partir de la imagen ya preprocesada (recortada, redimensionada y convertida a escala de grises), se aplica un esquema de agregación y discretización que transforma cada frame en un vector pequeño y manejable:</p>
+<ol>
+<li>
+<p><strong>División de la imagen en N columnas</strong><br>
+Cada columna representa una franja vertical del entorno de juego.</p>
+</li>
+<li>
+<p><strong>Extracción de una característica por columna</strong><br>
+Se calcula la media de intensidad de los píxeles dentro de cada columna.</p>
+</li>
+<li>
+<p><strong>Discretización en K niveles</strong><br>
+Cada valor de media se asigna a uno de K bins, obteniendo así un vector discreto de tamaño N.</p>
+</li>
+</ol>
+<p>Este vector captura información esencial sobre la distribución visual en pantalla, pero en una forma suficientemente reducida como para permitir su uso en una Q-table.</p>
+<h5 id="tama%C3%B1o-final-de-la-q-table">Tamaño final de la Q table</h5>
+<p>Tras el preprocesamiento y discretización, el número total de estados posibles pasa a ser:</p>
+<p>$\text{Número de estados} = K^{N}$</p>
+<p>Por lo tanto, la dimensión final de la Q-table queda:</p>
+<p>$|Q \text{-table size}| = [K^{N} \times 6]$
+donde:</p>
+<ul>
+<li>N = número de columnas en que se divide la imagen,</li>
+<li>K = número de niveles de discretización,</li>
+</ul>
+<h4 id="implementaci%C3%B3n-con-deep-q-network">Implementación con Deep Q-Network</h4>
+<p>La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace muy grande debido a la cantidad de estados y acciones. Con este algoritmo (DQN) podemos definir una red neuronal para procesar el entorno y entrenar un modelo que pueda tener un buen desempeño en el juego.</p>
+<h4 id="estructura-de-la-red-neuronal">Estructura de la red neuronal</h4>
+<p>La red está compuesta por un extractor convolucional de características y una cabeza final que predice los valores Q [<a href="#ref6">6</a>].</p>
+<p><strong>1. Extractor convolucional (NatureCNN)</strong><br>
+La entrada del modelo consiste en un stack de <strong>n_stack</strong> de tamaño <strong>84×84</strong>. El extractor convolucional se compone de:</p>
+<ul>
+<li><strong>Conv1:</strong> 32 filtros, kernel 8×8, stride 4, activación ReLU.</li>
+<li><strong>Conv2:</strong> 64 filtros, kernel 4×4, stride 2, activación ReLU.</li>
+<li><strong>Conv3:</strong> 64 filtros, kernel 3×3, stride 1, activación ReLU.</li>
+<li><strong>Flatten:</strong> conversión de la salida tridimensional a un vector unidimensional.</li>
+<li><strong>Linear:</strong> capa completamente conectada de <strong>3136 → 512</strong>, activación ReLU.</li>
+</ul>
+<p><strong>2. Cabeza de valores Q (Q-Network)</strong><br>
+Tras el extractor de características, la red final que produce los valores Q está formada por:</p>
+<ul>
+<li><strong>Capa final:</strong> lineal de <strong>512 → n_actions</strong>, sin activación, que genera los valores Q para cada acción posible en el entorno.</li>
+</ul>
+<p>La misma arquitectura se replica tanto en la red principal (<em>q_net</em>) como en la red objetivo (<em>q_net_target</em>).</p>
+<h5 id="estrategia-de-aprendizaje">Estrategia de aprendizaje</h5>
+<p>Con el objetivo de lograr un balance entre exploración y explotación, se ha elegido una estrategia ε-greedy donde:</p>
+<ul>
+<li>Con probabilidad ε, se elige una acción aleatoria (exploración)</li>
+<li>Con probabilidad 1-ε, se elige la acción con el mayor valor Q (explotación).</li>
+<li>ε decae exponencialmente con los pasos de entrenamiento.</li>
+</ul>
+<h4 id="almacenamiento-y-muestreo-de-experiencias">Almacenamiento y muestreo de experiencias</h4>
+<p>El entorno se vectoriza y se aplica un apilado de frames, por lo que cada estado observado por el agente está compuesto por una secuencia de n imágenes consecutivas. Esto permite que la red neuronal disponga de información temporal, que es muy importante para este entorno ya que el movimiento de los objetos no puede inferirse a partir de un solo frame.</p>
+<p>Cada transición generada durante la interacción con el entorno (que incluye el estado apilado actual, la acción ejecutada, la recompensa recibida, el siguiente estado apilado y la señal de finalización) se almacena en un buffer de memoria.</p>
+<p>Durante el entrenamiento, se extraen lotes aleatorios desde este buffer. Este muestreo aleatorio rompe la correlación temporal entre transiciones consecutivas y utiliza de forma más eficiente la experiencia almacenada, mejorando la estabilidad del aprendizaje y la convergencia del modelo.</p>
+<h4 id="implementaci%C3%B3n-con-ppo">Implementación con PPO</h4>
+<p>A diferencia de DQN que utiliza Q-learning, PPO es un algoritmo de gradiente de política que optimiza directamente la política del agente. Este enfoque es más estable y eficiente para muchos entornos.</p>
+<h5 id="estructura-de-la-red-neuronal">Estructura de la red neuronal</h5>
+<p>PPO utiliza una arquitectura de Actor-Crítico con extractores de características separados para la política (actor) y la función de valor (crítico). Esta separación permite que cada componente aprenda representaciones especializadas de manera independiente, optimizando tanto la selección de acciones como la estimación de valores [<a href="#ref7">7</a>].</p>
+<p><strong>1. Extractores convolucionales independientes (NatureCNN)</strong><br>
+La arquitectura implementa tres extractores NatureCNN con pesos independientes:</p>
+<ul>
+<li><strong>features_extractor:</strong> Extractor base de respaldo.</li>
+<li><strong>pi_features_extractor:</strong> Extractor dedicado para la red de política (actor).</li>
+<li><strong>vf_features_extractor:</strong> Extractor dedicado para la red de valor (crítico).</li>
+</ul>
+<p>La entrada de cada extractor consiste en un stack de <strong>n_stack</strong> frames de tamaño 84×84. Cada NatureCNN se compone de:</p>
+<ul>
+<li><strong>Conv1:</strong> 32 filtros, kernel 8×8, stride 4, activación ReLU.</li>
+<li><strong>Conv2:</strong> 64 filtros, kernel 4×4, stride 2, activación ReLU.</li>
+<li><strong>Conv3:</strong> 64 filtros, kernel 3×3, stride 1, activación ReLU.</li>
+<li><strong>Flatten:</strong> conversión de la salida tridimensional a un vector unidimensional.</li>
+<li><strong>Linear:</strong> capa completamente conectada de 3136 → 512, activación ReLU.</li>
+</ul>
+<p><strong>2. Extractor MLP (MlpExtractor)</strong><br>
+Después de los extractores convolucionales, existe un componente MlpExtractor que contiene dos ramas:</p>
+<ul>
+<li><strong>policy_net:</strong> Sequential vacío (las características de 512 dimensiones van directamente a la cabeza de acción).</li>
+<li><strong>value_net:</strong> Sequential vacío (las características de 512 dimensiones van directamente a la cabeza de valor).</li>
+</ul>
+<p>En esta configuración, el MlpExtractor no agrega capas adicionales, funcionando como un pass-through que mantiene la separación entre las dos ramas.</p>
+<p><strong>3. Cabezas de salida</strong></p>
+<p>Finalmente, cada rama tiene su propia cabeza de salida:</p>
+<ul>
+<li><strong>action_net (Actor):</strong> capa lineal de 512 → 6, que genera logits para la distribución de probabilidad sobre las 6 acciones posibles del entorno. Durante la inferencia, estos logits se convierten en probabilidades mediante softmax.</li>
+<li><strong>value_net (Crítico):</strong> capa lineal de 512 → 1, sin activación, que estima el valor del estado actual V(s). Esta estimación se utiliza para calcular las ventajas durante el entrenamiento.</li>
+</ul>
+<h3 id="experimentos">Experimentos</h3>
+<p>Se realizaron experimentos empleando cuatro enfoques: un agente con comportamiento aleatorio y tres algoritmos de aprendizaje por refuerzo (Q-Learning, DQN y PPO). Todos los modelos fueron entrenados utilizando la configuración por defecto del entorno, correspondiente al modo 0 y dificultad 0.</p>
+<p>El modo 0 es el entorno base del juego: las barreras están fijas, las balas enemigas tienen trayectoria recta y los enemigos mantienen un comportamiento estándar. La dificultad 0 utiliza el cañón pequeño (menor probabilidad de ser golpeado).</p>
+<div align="center">
+<table>
+<thead>
+<tr>
+<th>Algoritmo</th>
+<th>Cantidad de entrenamiento por modelo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Q-Learning</td>
+<td>20000 episodios (Aproximadamente 4 horas)</td>
+</tr>
+<tr>
+<td>DQN</td>
+<td>10 millones de pasos (Aproximadamente 7 horas)</td>
+</tr>
+<tr>
+<td>PPO</td>
+<td>10 millones de pasos (Aproximadamente 7 horas)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Para evaluar la capacidad de generalización de los agentes, además del modo visto en entrenamiento, se realizaron pruebas en los <em>modos 3, 4 y 8</em> (todos con dificultad 0), que introducen variaciones significativas en el entorno:</p>
+<ul>
+<li><em>Modo 0:</em> entorno base (igual al utilizado durante el entrenamiento).</li>
+<li><em>Modo 3:</em> las balas enemigas presentan desviaciones y las barreras de protección se mueven.</li>
+<li><em>Modo 4:</em> las balas enemigas son más rápidas.</li>
+<li><em>Modo 8:</em> los enemigos se vuelven invisibles durante intervalos de tiempo.</li>
+</ul>
+<p>Estos modos adicionales permiten evaluar cómo se adapta cada algoritmo frente a dinámicas nuevas que no fueron observadas durante el entrenamiento.</p>
+<p>En cuanto a la metodología de evaluación, para cada algoritmo se entrenaron varios modelos y cada uno fue evaluado mediante 1000 episodios por modo. Sin embargo, para cada configuración de hiperparámetros se realizó un único entrenamiento por algoritmo; es decir, no se repitió el proceso de entrenamiento varias veces para promediar resultados, sino que se evaluó directamente el modelo obtenido en esa única ejecución.</p>
+<p>Para garantizar reproducibilidad sin reutilizar exactamente las mismas condiciones aleatorias, se utilizó una semilla base fija (123) al reiniciar el entorno. En cada episodio, la semilla se actualizó siguiendo:</p>
+<p>$\text{seed}_{\text{episodio}} = 123 + \text{índice del episodio}$</p>
+<p>Si bien en Space Invaders tanto la posición inicial del jugador como la disposición inicial de enemigos y barreras se mantienen fijas —tal como ocurre en el juego original—, la semilla sí afecta todos los eventos no deterministas del entorno. Entre ellos se encuentran los patrones de disparo de los enemigos, la selección de qué enemigo dispara, variaciones internas asociadas al frame-skip y otros comportamientos aleatorios propios de ciertos modos. Esto permite que cada episodio sea distinto aun cuando las posiciones iniciales no cambien. De este modo, todos los agentes fueron evaluados bajo una misma secuencia de variaciones controladas, manteniendo comparabilidad entre algoritmos sin repetir episodios idénticos.</p>
+<p>Al observar inestabilidad (rangos de recompensas muy variados, que podían ir de 0 a alrededor de 1000) a la hora de entrenar agentes de Q-learning y DQN, se decidió implementar Wrappers [<a href="#ref10">10</a>] de recompensa para fijar 2 reglas más al entorno:</p>
+<ul>
+<li>Si pierde una vida, pierde puntaje.</li>
+<li>Puntos uniformes:
+<ul>
+<li>Si obtiene recompensa positiva, sólo se suma un punto (ya sea que el agente gane 10 o 200 puntos por una acción).</li>
+<li>Si obtiene recompensa negativa, sólo pierde un punto.</li>
+</ul>
+</li>
+</ul>
+<p>Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gran inestabilidad, los valores de pérdida también eran muy inestables y a partir de unos pocos episodios de entrenamiento se estancaba en valores muy pequeños. Por lo que se decidió sólo entrenar con los wrappers de recompensa ya implementados.</p>
+<h4 id="resultados">Resultados</h4>
+<p><strong>Agente Random</strong></p>
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+<table>
+<thead>
+<tr>
+<th>Modo</th>
+<th>Winrate</th>
+<th>Puntaje mínimo</th>
+<th>Puntaje máximo</th>
+<th>Media</th>
+<th>Desviación Estándar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.001</td>
+<td>0.00</td>
+<td>640.00</td>
+<td>154.12</td>
+<td>99.50</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.002</td>
+<td>0.00</td>
+<td>715.00</td>
+<td>122.89</td>
+<td>98.27</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>5.00</td>
+<td>460.00</td>
+<td>88.52</td>
+<td>59.04</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.001</td>
+<td>5.00</td>
+<td>685.00</td>
+<td>148.53</td>
+<td>101.74</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/random/graficos/histograma_random_eval_mode_0.png" width="500"><br>
+      <em>[Figura 3] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/random/graficos/histograma_random_eval_mode_3.png" width="500"><br>
+      <em>[Figura 4] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/random/graficos/histograma_random_eval_mode_4.png" width="500"><br>
+      <em>[Figura 5] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/random/graficos/histograma_random_eval_mode_8.png" width="500"><br>
+      <em>[Figura 6] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+<p><strong>Q-learning</strong></p>
+<p><strong>Mejor modelo con Reward Shaping Personalizado</strong></p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/reward_average_q_learning.png" width="500"><br>
+      <em>[Figura 7] Promedio de recompensas en 20 mil episodios</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/length_average_q_learning.png" width="500"><br>
+      <em>[Figura 8] Promedio de pasos en 20 mil episodios</em>
+    </td>
+  </tr>
+</table>
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+<table>
+<thead>
+<tr>
+<th>Modo</th>
+<th>Winrate</th>
+<th>Puntaje mínimo</th>
+<th>Puntaje máximo</th>
+<th>Media</th>
+<th>Desviación Estándar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.013</td>
+<td>90.00</td>
+<td>800.00</td>
+<td>270.32</td>
+<td>92.08</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.001</td>
+<td>25.00</td>
+<td>735.00</td>
+<td>175.91</td>
+<td>89.78</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>0.00</td>
+<td>430.00</td>
+<td>62.91</td>
+<td>51.82</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.011</td>
+<td>55.00</td>
+<td>820.00</td>
+<td>282.76</td>
+<td>103.19</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_0.png" width="500"><br>
+      <em>[Figura 9] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_3.png" width="500"><br>
+      <em>[Figura 10] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_4.png" width="500"><br>
+      <em>[Figura 11] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_custom_reward_v1/histograma_eval_mode_8.png" width="500"><br>
+      <em>[Figura 12] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+<p><strong>Mejor modelo con Reward Clipping</strong></p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/reward_average_q_learning.png" width="500"><br>
+      <em>[Figura 13] Promedio de recompensas en 20 mil episodios</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/length_average_q_learning.png" width="500"><br>
+      <em>[Figura 14] Promedio de pasos en 20 mil episodios</em>
+    </td>
+  </tr>
+</table>
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+<table>
+<thead>
+<tr>
+<th>Modo</th>
+<th>Winrate</th>
+<th>Puntaje mínimo</th>
+<th>Puntaje máximo</th>
+<th>Media</th>
+<th>Desviación Estándar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.013</td>
+<td>80.00</td>
+<td>800.00</td>
+<td>268.37</td>
+<td>89.49</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.003</td>
+<td>25.00</td>
+<td>670.00</td>
+<td>179.43</td>
+<td>94.52</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>0.00</td>
+<td>610.00</td>
+<td>61.75</td>
+<td>55.11</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.011</td>
+<td>5.00</td>
+<td>750.00</td>
+<td>281.51</td>
+<td>103.75</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_0.png" width="500"><br>
+      <em>[Figura 15] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_3.png" width="500"><br>
+      <em>[Figura 16] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_4.png" width="500"><br>
+      <em>[Figura 17] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/q_learning/graphics/modelo_clipped_v3/histograma_eval_mode_8.png" width="500"><br>
+      <em>[Figura 18] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+<p><strong>DQN</strong></p>
+<p>Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrarán los resultados de los tests de los mejores agentes de cada enfoque.</p>
+<p><strong>Mejor modelo sin Wrapper de recompensa (agente DQN2)</strong></p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/dqn/graphics/reward_average_dqn2.png" width="500"><br>
+      <em>[Figura 19] Promedio de recompensas en 10 millones de pasos para DQN2</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/length_average_dqn2.png" width="500"><br>
+      <em>[Figura 20] Promedio de pasos por episodio en 10 millones de pasos para DQN2</em>
+    </td>
+  </tr>
+</table>
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+<table>
+<thead>
+<tr>
+<th>Modo</th>
+<th>Winrate</th>
+<th>Puntaje mínimo</th>
+<th>Puntaje máximo</th>
+<th>Media</th>
+<th>Desviación Estándar</th>
+<th>Video de ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0,050</td>
+<td>120</td>
+<td>1005</td>
+<td>406.03</td>
+<td>112.08</td>
+<td><a href="https://drive.google.com/file/d/1JSmCvx1zgXEkoMQ578XnchLg-dyd7kT9/view?usp=sharing">DQN2_MODO0</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>0,001</td>
+<td>5</td>
+<td>685</td>
+<td>135.34</td>
+<td>98.95</td>
+<td><a href="https://drive.google.com/file/d/1IijHQN9J9SwuiSW6cGdNXKCykKVWkJKW/view?usp=sharing">DQN2_MODO3</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.001</td>
+<td>35</td>
+<td>630</td>
+<td>213.91</td>
+<td>93.12</td>
+<td><a href="https://drive.google.com/file/d/15QS_VutP0w5fmF3A1ykYPSSqLiIwyqyG/view?usp=sharing">DQN2_MODO4</a></td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.0</td>
+<td>0</td>
+<td>440</td>
+<td>20.36</td>
+<td>29.54</td>
+<td><a href="https://drive.google.com/file/d/1Uhm7H_1mZfCNqX-MrMRh8-3P2YKKQqkc/view?usp=sharing">DQN2_MODO8</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_dqn2.png" width="500"><br>
+      <em>[Figura 21] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN2_modo3_test.png" width="500"><br>
+      <em>[Figura 22] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN2_modo4_test.png" width="500"><br>
+      <em>[Figura 23] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN2_modo8_test.png" width="500"><br>
+      <em>[Figura 24] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+<hr>
+<p><strong>Mejor modelo con Wrapper de recompensa (agente DQN9)</strong></p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/dqn/graphics/reward_average_dqn9.png" width="500"><br>
+      <em>[Figura 25] Promedio de recompensas en 10 millones de pasos para DQN9</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/length_average_dqn9.png" width="500"><br>
+      <em>[Figura 26] Promedio de pasos por episodio en 10 millones de pasos para DQN9</em>
+    </td>
+  </tr>
+</table>
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+<table>
+<thead>
+<tr>
+<th>Modo</th>
+<th>Winrate</th>
+<th>Puntaje mínimo</th>
+<th>Puntaje máximo</th>
+<th>Media</th>
+<th>Desviación Estándar</th>
+<th>Video de ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0,269</td>
+<td>280</td>
+<td>1555</td>
+<td>646.41</td>
+<td>166.34</td>
+<td><a href="https://drive.google.com/file/d/1UlGfo6eKGTnzr2wtIhh2A_ky9octcHd8/view?usp=sharing">DQN9_MODO0</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>0,024</td>
+<td>0</td>
+<td>985</td>
+<td>222.725</td>
+<td>170.52</td>
+<td><a href="https://drive.google.com/file/d/1IijHQN9J9SwuiSW6cGdNXKCykKVWkJKW/view?usp=sharing">DQN9_MODO3</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.057</td>
+<td>30</td>
+<td>905</td>
+<td>392.66</td>
+<td>152.43</td>
+<td><a href="https://drive.google.com/file/d/1VG_M7-tSZpeLfGrcuzuwNAfJZDeSNfx-/view?usp=sharing">DQN9_MODO4</a></td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.076</td>
+<td>10</td>
+<td>1025</td>
+<td>350.44</td>
+<td>170.06</td>
+<td><a href="https://drive.google.com/file/d/1HQOnbnM38JoxFz6A_8pvNpe7K7D1XkkM/view?usp=sharing">DQN9_MODO8</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_dqn9.png" width="500"><br>
+      <em>[Figura 27] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN9_modo3_test.png" width="500"><br>
+      <em>[Figura 28] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN9_modo4_test.png" width="500"><br>
+      <em>[Figura 29] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/dqn/graphics/histograma_DQN9_modo8_test.png" width="500"><br>
+      <em>[Figura 30] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+<p><strong>PPO</strong></p>
+<p>Como se mencionó al inicio de la sección de experimentos, sólo se entrenó con Wrapper de recompensas ya que sin Wrapper no entrenaba adecuadamente y a los pocos episodios se estancaba en una política que utilizaría durante el resto de los 10 millones de pasos.</p>
+<p><strong>Mejor modelo (agente PPO5)</strong></p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/ppo/graphics/reward_average_ppo5.png" width="500"><br>
+      <em>[Figura 31] Promedio de recompensas en 10 millones de pasos para PPO5</em>
+    </td>
+    <td align="center">
+      <img src="code/ppo/graphics/length_average_ppo5.png" width="500"><br>
+      <em>[Figura 32] Promedio de pasos por episodio en 10 millones de pasos para PPO5</em>
+    </td>
+  </tr>
+</table>
+<div align="center">
+<h2> Resumen de resultados de tests (1000 episodios por test)</h2>
+<table>
+<thead>
+<tr>
+<th>Modo</th>
+<th>Winrate</th>
+<th>Puntaje mínimo</th>
+<th>Puntaje máximo</th>
+<th>Media</th>
+<th>Desviación Estándar</th>
+<th>Video de ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0,850</td>
+<td>245</td>
+<td>2660</td>
+<td>1304.23</td>
+<td>500.74</td>
+<td><a href="https://drive.google.com/file/d/1sA3cDy1DR3tplbaYk6dyQSpOZHj_UV5P/view?usp=sharing">PPO5_MODO0</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>0,123</td>
+<td>35</td>
+<td>1835</td>
+<td>341.94</td>
+<td>264.17</td>
+<td><a href="https://drive.google.com/file/d/1FVBgHBGrE2HUO0T0h0hKwUR4GAPxkPZX/view?usp=sharing">PPO5_MODO3</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.004</td>
+<td>15</td>
+<td>840</td>
+<td>43.34</td>
+<td>67.69</td>
+<td><a href="https://drive.google.com/file/d/1Yu1ndn6tffvat56VQ-z2xQn-ydIEklN9/view?usp=sharing">PPO5_MODO4</a></td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.0</td>
+<td>0</td>
+<td>140</td>
+<td>0.9</td>
+<td>7.35</td>
+<td><a href="https://drive.google.com/file/d/15IDOVXpsruXjhgEo84UOmT30yL-gFPA3/view?usp=sharing">PPO5_MODO8</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/ppo/graphics/histograma_ppo5.png" width="500"><br>
+      <em>[Figura 33] Histograma de frecuencia para modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/ppo/graphics/histograma_PPO5_modo3_test.png" width="500"><br>
+      <em>[Figura 34] Histograma de frecuencia para modo 3</em>
+    </td>
+  </tr>
+  <tr>  
+    <td align="center">
+      <img src="code/ppo/graphics/histograma_PPO5_modo4_test.png" width="500"><br>
+      <em>[Figura 35] Histograma de frecuencia para modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/ppo/graphics/histograma_PPO5_modo8_test.png" width="500"><br>
+      <em>[Figura 36] Histograma de frecuencia para modo 8</em>
+    </td>
+  </tr>
+</table>
+<h2 id="an%C3%A1lisis-y-discusi%C3%B3n-de-resultados">Análisis y Discusión de Resultados</h2>
+<h3 id="random">Random</h3>
+<h4 id="desempe%C3%B1o-general">Desempeño general</h4>
+<p>El desempeño promedio es bajo en todos los modos, con valores entre 88.52 (modo 4) y 154.12 (modo 0), reflejando que la mayor parte del tiempo el agente muere rápidamente sin destruir una cantidad relevante de enemigos. Además los máximos puntajes que se alcanzan no reflejan un patrón en el comportamiento, sino simplemente episodios afortunados donde los disparos aleatorios conectan contra los enemigos y el agente sobrevive un poco mas de tiempo.</p>
+<h4 id="desempe%C3%B1o-por-modo">Desempeño por modo</h4>
+<p>En términos generales, el modo normal (modo 0) y el modo con enemigos que se hacen invisibles (modo 8) presentan los mejores promedios, aunque esto no implica un desempeño sólido, sino simplemente que en esos contextos el azar le permite sobrevivir ligeramente más y conectar algunos disparos. Los modos 3 y 4, que introducen dinámicas más complejas como paredes móviles, disparos que no son rectos o un mayor volumen de disparos enemigos, muestran peores resultados, evidenciando que cualquier incremento en la dificultad afecta negativamente al agente, ya que este no aprende a sobrevivir mientras elimina a los enemigos.</p>
+<h4 id="winrate">Winrate</h4>
+<p>El winrate del agente random es prácticamente insignificante, con menos del 0,2% de victorias en todos los modos. Las pocas partidas ganadas son producto del azar y no reflejan ningún tipo de estrategia ni comportamiento intencional por parte del agente.</p>
+<h4 id="conclusi%C3%B3n">Conclusión</h4>
+<p>El agente random presenta un comportamiento totalmente limitado y sin capacidad de adaptación. Sus acciones carecen de propósito, por lo que su desempeño depende únicamente del azar. Aunque ocasionalmente obtiene buenos puntajes, estos episodios aislados no se deben a una estrategia, sino coincidencias estadísticas.</p>
+<h3 id="q-learning">Q-learning</h3>
+<h4 id="desempe%C3%B1o-general">Desempeño general</h4>
+<p>Los modelos entrenados con Q-learning muestran un desempeño considerablemente superior al del agente aleatorio. En los modos más simples (0 y 8), ambos modelos alcanzan promedios de recompensa que superan los 260–280 puntos, lo que evidencia que lograron aprender patrones de supervivencia y ataque más estables. Si bien los puntajes máximos no difieren demasiado de los obtenidos por el agente random, los puntajes mínimos son más altos en los modos 0, 3 y 4 (especialmente en el modelo con reward shaping) indican que el agente aprendió a garantizar un nivel mínimo de efectividad, eliminando al menos algunos enemigos antes de morir incluso en sus peores episodios.</p>
+<p>Una diferencia clave entre los dos modelos aparece en la evolución del aprendizaje: el agente con Reward Shaping continúa mejorando su recompensa hasta los 20 000 episodios, mientras que el modelo con Reward Clipping se estanca alrededor del episodio 2000, mostrando poca progresión posterior. Esto sugiere que el shaping ofrece señales de entrenamiento más útiles que el clipping.</p>
+<p>En cuanto a la duración de los episodios, el shaping presenta un crecimiento inicial coherente con la mejora en la recompensa, mientras que en el clipping los episodios se vuelven más largos sin que eso se traduzca en un desempeño ofensivo mejor. Esto indica que el clipping permite sobrevivir más tiempo, pero no fomenta decisiones más efectivas, en parte por la pérdida de información que provoca la acotación de recompensas.</p>
+<p>Finalmente, las desviaciones estándar relativamente altas en ambos modelos reflejan la presencia de variabilidad considerable entre episodios, especialmente en los modos más exigentes. Esto es coherente con la naturaleza del entorno, donde el ruido y la aleatoriedad de los disparos enemigos afectan significativamente la estabilidad del desempeño.</p>
+<h4 id="desempe%C3%B1o-por-modo">Desempeño por modo</h4>
+<p>En general, ambos modelos de Q-learning muestran un desempeño significativamente mejor que el agente aleatorio en todos los modos evaluados. Los modos 0 y 8 presentan las mayores recompensas promedio, lo que sugiere que el agente logra adaptarse mejor a configuraciones donde las dinámicas del entorno son más predecibles o estables. El modo 8, aun con enemigos invisibles, ofrece un entorno donde las posiciones de los enemigos y la estructura del nivel permiten que el agente desarrolle patrones útiles sin depender exclusivamente de la visibilidad.</p>
+<p>A diferencia del resto de los modos, el modo 4 muestra un comportamiento particular: el agente aleatorio obtiene un promedio de recompensa (88.52) superior al de ambos modelos de Q-learning (62.91 con reward shaping y 61.75 con reward clipping). Esto sugiere que las dinámicas propias de este modo, donde los enemigos generan una mayor cantidad o frecuencia de disparos, producen un entorno tan caótico que la supervivencia depende más del azar que de una estrategia aprendida. En estas condiciones, las políticas derivadas de Q-learning no logran generalizar correctamente y, al seguir patrones más estructurados, pueden quedar más expuestas a los ataques enemigos que un comportamiento completamente aleatorio.</p>
+<h4 id="winrate">Winrate</h4>
+<p>El winrate de ambos modelos se mantiene bajo, con valores que no superan el 1–1.3% según el modo. Si bien esto representa una mejora real frente al agente aleatorio, sigue siendo insuficiente para considerar que el agente domine el juego. Las victorias obtenidas indican que el agente es capaz de completar una partida ocasionalmente, pero la baja frecuencia evidencia que el comportamiento aprendido no es lo suficientemente sólido ni consistente como para garantizar un desempeño robusto en escenarios complejos.</p>
+<h4 id="conclusi%C3%B3n">Conclusión</h4>
+<p>Los modelos entrenados con Q-learning muestran una mejora clara respecto del agente aleatorio, logrando promedios de recompensa más altos y un comportamiento más estable en todos los modos. Ambos agentes aprenden patrones básicos de supervivencia y ataque, pero el modelo con Reward Shaping Personalizado destaca por presentar un progreso sostenido a lo largo del entrenamiento y por alcanzar mejores mínimos y mayor consistencia entre episodios. En contraste, el modelo con Reward Clipping tiende a estancarse de forma prematura, lo que sugiere que las recompensas acotadas limitan la capacidad del agente para seguir refinando su estrategia.</p>
+<p>A pesar de estas mejoras, el algoritmo mantiene un winrate bajo y su desempeño disminuye en modos más complejos, reflejando las limitaciones propias de Q-learning tabular en entornos de alta variabilidad y gran espacio de estados. En conjunto, los resultados muestran que Q-learning permite superar ampliamente al agente random, pero no es suficiente para dominar el juego, dejando margen para utilizar métodos más sofisticados en etapas posteriores.</p>
+<h3 id="dqn">DQN</h3>
+<h4 id="desempe%C3%B1o-general">Desempeño general</h4>
+<p>Si comparamos los modelos entrenados con este algoritmo y los de Q-Learning, podemos determinar que DQN es mejor en varios aspectos: eficiencia, desempeño y complejidad espacial, pero a costo de mayor potencia de hardware.</p>
+<p>En ambos enfoques planteados durante los experimentos (con y sin Wrapper de recompensas) supera ampliamente al algoritmo anterior, pudiendo ganar más episodios, teniendo mejores recompensas y mejor estabilidad.</p>
+<p>Ambos modelos muestran un buen desempeño, aunque el superador es el modelo con Reward Clipping ya que el entrenamiento es más estable y el agente puede aprender una regla muy importante: todos los enemigos tienen la misma importancia.</p>
+<p>Bajo esta regla, el agente trata a todos por igual, por lo tanto no se centra en los enemigos de más alto nivel (que dan mayor puntaje) y es menos probable que los enemigos de menor nivel lleguen a la base provocando la finalización del episodio.</p>
+<h4 id="desempe%C3%B1o-por-modo">Desempeño por modo</h4>
+<p>En ambos casos, el mejor desempeño lo tuvieron en el modo 0, que es el modo predeterminado del entorno y con el que se los entrenó, por lo tanto tiene sentido que su desempeño sea significativamente mejor que en los demás modos.</p>
+<p>En los otros modos el desempeño se reduce significativamente, es curioso que en el modo 8, donde los enemigos son invisibles la mayor parte del tiempo, tuvo mejor desempeño que en los modos 3 y 4, que los enemigos sí son visibles.</p>
+<p>De igual forma tiene sentido ya que el modo 8, aunque no pueda ver a los enemigos la mayor parte del tiempo, es el más parecido al modo 0 porque no se alteran los disparos ni los escudos que ofrecen el entorno. Mientras que en los otros dos, los disparos cambian, entonces las reglas aprendidas sobre disparos no se asemejan a los disparos de estos modos.</p>
+<h4 id="winrate">Winrate</h4>
+<p>El winrate en ambos modelos es bueno, aunque con el segundo enfoque es mejor, esto se debe a que, al tener más estabilidad, se pudo reentrenar el modelo con más pasos, por lo que tuvo oportunidad a aprender mejores políticas.</p>
+<p>El modelo con Wrapper de recompensa tuvo 5 veces más winrate en el modo 0 que el otro modelo sin Wrapper, y en los otros modos tuvo un rendimiento significativamente mayor.</p>
+<h3 id="ppo">PPO</h3>
+<h4 id="desempe%C3%B1o-general">Desempeño general</h4>
+<p>Como se mencionó anteriormente, se entrenaron modelos con este algoritmo sólo con los Wrapper de recompensas ya que sin ellos, el entrenamiento era inestable y no valía la pena continuarlo porque se quedaba estancado en una política muy inferior y no se movía más allá de ella.</p>
+<p>Con respecto al desempeño, en general superó ampliamente a todos los modelos anteriores, salvo en algunos modos que ya se discutirá sobre eso en la sección siguiente.</p>
+<p>El entrenamiento fue más estable y el reentrenamiento de modelos fue más productivo que en el algoritmo anterior, ya que incluso lograba el doble de winrate al reentrenar, hecho que no ocurrió con DQN.</p>
+<p>Con respecto a las políticas, aprendió mejores políticas que los modelos anteriores, ya que esquiva mejor los disparos y sólo dispara si hay enemigos: no dispara por disparar.</p>
+<h4 id="desempe%C3%B1o-por-modo">Desempeño por modo</h4>
+<p>En donde mejor tuvo desempeño fue en el modo 0, ganando en un 85% de los tests aplicados, donde la media de puntos fue 1304.23, cuando el puntaje mínimo para ganar es de 630. Por lo tanto, en promedio ganaba la partida.</p>
+<p>En el modo 3 bajó el desempeño, pero aún así fue mejor que en los otros algoritmos, esto se debe a lo mencionado con los disparos ya que los esquiva bien y ataca exitosamente a los enemigos.</p>
+<p>Donde bajó significativamente el desempeño fue en los modos 4 y 8. Con respecto al modo 4, se puede explicar por la velocidad de disparos del enemigo, el agente no alcanza a esquivarlos y pierde vidas rápidamente, teniendo una recompensa promedio inferior a la del agente random y a los modelos de Q-learning, aunque alcanza puntajes máximos más altos en algunos episodios.</p>
+<p>Por último, en el modo 8, es entendible que no haya ganado partidas y no haya tenido un buen puntaje, esto se debe a lo mencionado anteriormente: no dispara si no ve enemigos. En este caso esta regla le juega en contra ya que prácticamente todo el episodio es así, los enemigos no son visibles. Por lo tanto, en estos episodios lo que más hacía era esquivar disparos en lugar de intentar alcanzar enemigos, haciendo que sea el algoritmo con peor desempeño para este modo.</p>
+<h4 id="winrate">Winrate</h4>
+<p>En este caso, fue superador el winrate, por lo menos en los modos 0 y 3. El hecho que haya ganado 850 partidas de 1000 es muy positivo, si comparamos el modo 0 de los algoritmos anteriores, supera hasta 16 veces esta métrica en algunos casos.</p>
+<h4 id="conclusi%C3%B3n">Conclusión</h4>
+<p>Los modelos implementados con PPO fueron mejores que los modelos con los algoritmos anteriores con respecto al modo 0 y 3. La estabilidad de entrenamiento fue mucho mayor y el reentrenamiento fue más eficiente, permitiendo mejorar significativamente el modelo. Se considera que si se sigue entrenando, puede superar el 85% de winrate en el modo 0.</p>
+<h2 id="conclusiones-finales">Conclusiones finales</h2>
+<p>Tras comparar los resultados de testeo entre los distintos modos y teniendo en cuenta los datos obtenidos durante los entrenamientos, se puede concluir que los algoritmos DQN y PPO son superiores a Q-learning y definitivamente mejores que el algoritmo aleatorio. Ambos algoritmos tuvieron un desempeño superior y un entrenamiento mucho más estable, lo que permitió que ganasen más episodios y tuvieran recompensas mayores.</p>
+<p>Aunque los 2 algoritmos superiores fueron superadores, valió la pena implementar tanto Q-learning como el algoritmo aleatorio, ya que permitió tener mejor entendimiento del entorno y tener un punto de comparación de qué era bueno y qué no.</p>
+<p>Con respecto a Q-Learning, es bastante fácil de entender, lo que sirve de base para comprender DQN, el principal problema de este algoritmo es que no sirve para espacios continuos ni para entornos con un número elevado de estados o acciones, por lo que no se logró un modelo superior a los obtenidos.</p>
+<p>Si nos basamos sólo en el modo (modo 0) en que se entrenó, se puede decir que el mejor algoritmo fue PPO, ya que el winrate superó casi 4 veces a DQN en el mismo modo. Pero si se cambia el entorno, su rendimiento baja, esto quiere decir que si el entorno de prueba se aleja con respecto al que se entrenó, el rendimiento baja. Luego, DQN, con modos distintos al default, tuvo un mejor rendimiento que PPO, por lo que se podría decir que en entornos distintos al que se entrenó tiene un mejor rendimiento al PPO.</p>
+<p>Algunas mejoras que se podrían realizar son variantes de los algoritmos implementados como Double DQN o Rainbow DQN para mejorar el desempeño. Pero de igual forma se obtuvieron buenos resultados tanto en DQN y PPO, por lo que no se indagó en variantes.</p>
+<p>Por último, se concluye que el hecho de haber elegido DQN y PPO para resolver el problema fue una buena elección, ya que tuvieron un muy buen rendimiento y los tests fueron muy satisfactorios. Aunque toman bastante tiempo para entrenar y se requiere un mayor poder de cómputo, sobre todo disponibilidad de una GPU.</p>
+<h2 id="bibliograf%C3%ADa">Bibliografía</h2>
+<hr>
+<p><a id="ref1"></a> [1] Farama Foundation. (2025). Space Invaders Environment. Disponible en: https://ale.farama.org/environments/space_invaders/. Última vez accedido: Noviembre de 2025.</p>
+<p><a id="ref2"></a> [2] R. S. Sutton &amp; A. G. Barto. (2020). Reinforcement Learning: An Introduction, Second Edition. The MIT Press. Última vez accedido: Noviembre de 2025.</p>
+<p><a id="ref3"></a> [3] Alexander Amini. (2024). MIT 6.S191: Reinforcement Learning. Disponible en: https://youtu.be/8JVRbHAVCws. Ultima vez accedido: Febrero de 2025.</p>
+<p><a id="ref4"></a> [4] DataCamp. (2024). Introducción al Q-Learning: Tutorial para principiantes. Disponible en: https://www.datacamp.com/es/tutorial/introduction-q-learning-beginner-tutorial. Última vez accedido: Noviembre de 2025.</p>
+<p><a id="ref5"></a> [5] GeeksforGeeks. (2025). A Brief Introduction to Proximal Policy Optimization. Disponible en: https://www.geeksforgeeks.org/machine-learning/a-brief-introduction-to-proximal-policy-optimization/. Última vez accedido: Noviembre de 2025.</p>
+<p><a id="ref6"></a> [6] Farama Foundation. (2025). Gymnasium Documentation. Disponible en: https://gymnasium.farama.org/index.html. Última vez accedido: Febrero de 2025.</p>
+<p><a id="ref7"></a> [7] Farama Foundation. (2023). ALE Documentation. Disponible en: https://ale.farama.org/index.html. Última vez accedido: Febrero de 2025.</p>
+<p><a id="ref8"></a> [8] Farama Foundation. (2025). Flavors. Disponible en: https://gymnasium.farama.org/v0.28.0/environments/atari/#flavors. Última vez accedido: Noviembre de 2025.</p>
+<p><a id="ref9"></a> [9] V. Mnih &amp; K. Kavukcuoglu &amp; D. Silver &amp; A. Graves &amp; I. Antonoglou D. Wierstra &amp; M. Riedmiller. (2013). Playing Atari with Deep Reinforcement Learning. Deepmind.</p>
+<p><a id="ref10"></a> [10] Estructura de la red DQN. Disponible en: .\code\dqn\network_structure.md. Última vez accedido: Noviembre de 2025.</p>
+<p><a id="ref11"></a> [11] Estructura de la red PPO. Disponible en: .\code\ppo\network_structure.md. Última vez accedido: Noviembre de 2025.</p>
+<p><a id="ref12"></a> [12] Modos de space invaders. Disponible en: .\code\modos_de_juego. Última vez accedido: Diciembre de 2025.</p>
+<p><a id="ref13"></a> [13] Hill, A., Raffin, A., Ernestus, M., Gleave, A., Kanervisto, A., &amp; Dormann, N. (2025). Stable Baselines3: Reliable Reinforcement Learning Implementations. Disponible en: https://stable-baselines3.readthedocs.io/. Última vez accedido: Diciembre de 2025.</p>
+<p><a id="ref14"></a> [14] Farama Foundation. (2023). Wrappers. Disponible en: https://gymnasium.farama.org/api/wrappers/. Última vez accedido: Noviembre de 2025.</p>
+
+</body>
+</html>
