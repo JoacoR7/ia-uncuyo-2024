@@ -20,6 +20,9 @@ Código de proyecto: SPACEAI
       - [Modos y dificultades](#modos-y-dificultades)
     - [Stable Baselines 3](#stable-baselines-3)
   - [Implementación](#implementación)
+    - [Modificación de la función de recompensa](#modificación-de-la-función-de-recompensa)
+      - [Reward Shaping personalizado](#reward-shaping-personalizado)
+      - [Reward Clipping](#reward-clipping)
     - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
     - [Preprocesamiento de entorno](#preprocesamiento-de-entorno)
     - [Implementación con Q-learning](#implementación-con-q-learning)
@@ -198,7 +201,6 @@ En este esquema se introdujeron las siguientes penalizaciones:
 - Disparos desperdiciados: se penaliza al agente cuando dispara sin obtener recompensa positiva.
 - Inactividad: se penalizan secuencias prolongadas de acciones que no implican disparar.
 
-
 ##### Reward Clipping
 El reward clipping es una técnica que limita la magnitud de la recompensa original del entorno a un conjunto reducido de valores discretos.
 
@@ -350,7 +352,11 @@ Finalmente, cada rama tiene su propia cabeza de salida:
 - **value_net (Crítico):** capa lineal de 512 → 1, sin activación, que estima el valor del estado actual V(s). Esta estimación se utiliza para calcular las ventajas durante el entrenamiento.
 
 ### Experimentos
-Se realizaron experimentos empleando cuatro enfoques: un agente con comportamiento aleatorio y tres algoritmos de aprendizaje por refuerzo (Q-Learning, DQN y PPO). Todos los modelos fueron entrenados utilizando la configuración por defecto del entorno, correspondiente al modo 0 y dificultad 0.
+Se realizaron experimentos empleando cuatro enfoques: un agente con comportamiento aleatorio y tres algoritmos de aprendizaje por refuerzo (Q-Learning, DQN y PPO). En el caso de los algoritmos de aprendizaje por refuerzo, los modelos fueron entrenados utilizando la configuración por defecto del entorno, correspondiente al modo 0 y dificultad 0.
+
+En el caso del agente con comportamiento aleatorio (Random), no se realizó ningún proceso de entrenamiento. Este agente selecciona sus acciones de forma uniforme al azar en cada paso del entorno, sin utilizar información del estado ni mecanismos de aprendizaje.
+
+Su objetivo es servir como línea base (*baseline*) para contextualizar el desempeño de los algoritmos de aprendizaje por refuerzo. El agente Random fue evaluado ejecutándose durante 1000 episodios por modo (modos 0, 3, 4 y 8, todos con dificultad 0), bajo las mismas condiciones de evaluación que los demás agentes.
 
 El modo 0 es el entorno base del juego: las barreras están fijas, las balas enemigas tienen trayectoria recta y los enemigos mantienen un comportamiento estándar. La dificultad 0 utiliza el cañón pequeño (menor probabilidad de ser golpeado).
 
@@ -366,7 +372,11 @@ El modo 0 es el entorno base del juego: las barreras están fijas, las balas ene
 
 Con el fin identificar los modelos entrenados, se asignó a cada uno un identificador secuencial (por ejemplo, DQN1), de esta manera se facilita la referencia a los modelos y se mantiene un registro claro de sus parámetros, pruebas y métricas. Estos identificadores, utilizados en los resultados (DQN1–DQN9 y PPO1–PPO5), corresponden a diferentes instancias de los algoritmos DQN y PPO generadas durante el estudio. Cada número representa un modelo entrenado con un conjunto específico de hiperparámetros. Su función es únicamente distinguir las variantes evaluadas, sin implicar cambios en la definición del algoritmo.
 
-En relación con la modificación de la función de recompensa, el reward shaping personalizado se utilizó únicamente en un modelo de Q-learning, mientras que el reward clipping se empleó en un modelo de Q-learning y en todos los modelos de DQN y PPO. Esta decisión permitió evaluar el impacto de una señal de recompensa más informativa en Q-learning, y al mismo tiempo asegurar una señal de recompensa estable y comparable en los algoritmos basados en redes neuronales.
+En relación con la modificación de la función de recompensa, se entrenaron modelos con distintas configuraciones según el algoritmo considerado. En el caso de Q-learning, se evaluaron dos enfoques: un modelo con reward shaping personalizado y un modelo con reward clipping.
+
+Para DQN, se entrenaron múltiples modelos explorando distintas configuraciones de hiperparámetros, tanto utilizando la recompensa original del entorno como incorporando reward clipping. A partir de estos entrenamientos, se seleccionaron dos agentes representativos: el mejor modelo entrenado sin wrappers de recompensa y el mejor modelo entrenado con reward clipping, los cuales fueron utilizados para la comparación de resultados.
+
+Finalmente, el modelo de PPO fue entrenado únicamente utilizando reward clipping, debido a la inestabilidad observada al emplear la recompensa original del entorno, que provocaba un estancamiento temprano del aprendizaje.
 
 A continuación se especificarán los hiperparámetros utilizados para los modelos cuyos resultados se encuentran expuestos en la siguiente sección:
 
@@ -662,7 +672,7 @@ Al haber entrenado con y sin Wrapper de recompensa, a continuación se mostrará
 
 ---
 
-**Mejor modelo con Wrapper de recompensa (agente DQN9)**
+**Mejor modelo con Reward Clipping (agente DQN9)**
 
 <table align="center">
   <tr>
