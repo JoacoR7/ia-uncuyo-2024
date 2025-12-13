@@ -147,9 +147,6 @@ Para evaluar el rendimiento de los algoritmos Q-learning, DQN y PPO se utilizaro
 3. **Winrate**  
    Se midió el porcentaje de episodios en los que el agente logró una recompensa igual superior a 630, umbral necesario para pasar el primer nivel. Este indicador refleja la capacidad del agente para alcanzar su objetivo de manera consistente.
 
-4. **Gráfico de Frecuencia**  
-   Se construyó un histograma de frecuencias que muestra con qué frecuencia el agente alcanzó determinadas recompensas dentro de intervalos predefinidos. Este análisis permite identificar patrones en la distribución de las recompensas y evaluar la estabilidad del agente en la obtención de buenos resultados. Una distribución sesgada hacia valores más altos indicaría un agente con un rendimiento más consistente y efectivo.
-
 ### Herramientas
 
 Para el desarrollo de este proyecto, se utilizó Stable Baselines 3, el entorno sobre el que se trabajó proviene de OpenAI Gymnasium [[1](#ref1)], con la emulación de ALE[[7](#ref7)].
@@ -183,6 +180,35 @@ Stable Baselines 3 (SB3) [[13](#ref13)] es un conjunto de implementaciones confi
 Además de proporcionar las bases de los algoritmos a implementar en el proyecto, también proporcionan herramientas que son necesarias para este trabajo como las de vectorización y stacking de entornos.
 
 ### Implementación
+
+#### Modificación de la función de recompensa
+Con el objetivo de mejorar la estabilidad del aprendizaje y reducir la alta variabilidad de recompensas presente en el entorno Space Invaders, se realizaron modificaciones sobre la señal de recompensa original del entorno. Estas modificaciones se aplicaron mediante wrappers [[14](#ref14)], permitiendo alterar la recompensa sin modificar la dinámica base del juego.
+
+Un wrapper es un mecanismo que envuelve al entorno original y permite interceptar y modificar elementos como las observaciones, las acciones o las recompensas, manteniendo intacta la lógica interna del entorno.
+
+Se utilizaron dos enfoques distintos: reward shaping personalizado y reward clipping.
+
+##### Reward Shaping personalizado
+El reward shaping es una técnica que consiste en modificar la señal de recompensa con el fin de guiar el comportamiento del agente hacia acciones deseables durante el aprendizaje.
+
+En este trabajo, el reward shaping se utilizó únicamente en uno de los modelos de Q-learning, con el objetivo de analizar si una señal de recompensa más informativa permitía mejorar el desempeño del algoritmo en un entorno complejo.
+
+En este esquema se introdujeron las siguientes penalizaciones:
+- Pérdida de vida: se aplica una penalización negativa cuando el agente pierde una vida.
+- Disparos desperdiciados: se penaliza al agente cuando dispara sin obtener recompensa positiva.
+- Inactividad: se penalizan secuencias prolongadas de acciones que no implican disparar.
+
+
+##### Reward Clipping
+El reward clipping es una técnica que limita la magnitud de la recompensa original del entorno a un conjunto reducido de valores discretos.
+
+El reward clipping se utilizó en uno de los modelos de Q-learning y en todos los modelos restantes (DQN y PPO). En este enfoque, la recompensa se transformó según las siguientes reglas:
+- +1 ante cualquier recompensa positiva.
+- −1 cuando el agente pierde una vida.
+- 0 en el resto de los casos.
+
+Este mecanismo reduce la variabilidad de la señal de recompensa, evitando saltos abruptos en los valores acumulados y favoreciendo un entrenamiento más estable, especialmente en algoritmos basados en redes neuronales.
+
 
 #### Reducción del Espacio de Estados y Acciones
 
@@ -340,7 +366,39 @@ El modo 0 es el entorno base del juego: las barreras están fijas, las balas ene
 
 Con el fin identificar los modelos entrenados, se asignó a cada uno un identificador secuencial (por ejemplo, DQN1), de esta manera se facilita la referencia a los modelos y se mantiene un registro claro de sus parámetros, pruebas y métricas. Estos identificadores, utilizados en los resultados (DQN1–DQN9 y PPO1–PPO5), corresponden a diferentes instancias de los algoritmos DQN y PPO generadas durante el estudio. Cada número representa un modelo entrenado con un conjunto específico de hiperparámetros. Su función es únicamente distinguir las variantes evaluadas, sin implicar cambios en la definición del algoritmo.
 
+En relación con la modificación de la función de recompensa, el reward shaping personalizado se utilizó únicamente en un modelo de Q-learning, mientras que el reward clipping se empleó en un modelo de Q-learning y en todos los modelos de DQN y PPO. Esta decisión permitió evaluar el impacto de una señal de recompensa más informativa en Q-learning, y al mismo tiempo asegurar una señal de recompensa estable y comparable en los algoritmos basados en redes neuronales.
+
 A continuación se especificarán los hiperparámetros utilizados para los modelos cuyos resultados se encuentran expuestos en la siguiente sección:
+
+- Q-learning con Reward Shaping personalizado:
+
+```
+num_episodes=20000,
+num_state_variables= 6,
+num_levels= 6,
+alpha=1e-5,
+gamma=0.95,
+epsilon=1.0,
+min_epsilon = 0.05,
+decay = 0.9995,
+use_clipped=False,
+exploration_mode="decay",
+```
+- Q-learning con Reward Clipping:
+
+```
+num_episodes=20000,
+num_state_variables= 8,
+num_levels= 4,
+alpha=1e-5,
+gamma=0.95,
+epsilon=1.0,
+min_epsilon = 0.2,
+decay = 0.999,
+use_clipped=True,
+exploration_mode="decay"
+```
+
 - DQN2:
 ```
 policy="CnnPolicy",
@@ -408,14 +466,6 @@ Para garantizar reproducibilidad sin reutilizar exactamente las mismas condicion
 $\text{seed}_{\text{episodio}} = 123 + \text{índice del episodio}$
 
 Si bien en Space Invaders tanto la posición inicial del jugador como la disposición inicial de enemigos y barreras se mantienen fijas —tal como ocurre en el juego original—, la semilla sí afecta todos los eventos no deterministas del entorno. Entre ellos se encuentran los patrones de disparo de los enemigos, la selección de qué enemigo dispara, variaciones internas asociadas al frame-skip y otros comportamientos aleatorios propios de ciertos modos. Esto permite que cada episodio sea distinto aun cuando las posiciones iniciales no cambien. De este modo, todos los agentes fueron evaluados bajo una misma secuencia de variaciones controladas, manteniendo comparabilidad entre algoritmos sin repetir episodios idénticos.
-
-Al observar inestabilidad (rangos de recompensas muy variados, que podían ir de 0 a alrededor de 1000) a la hora de entrenar agentes de Q-learning y DQN, se decidió implementar Wrappers [[14](#ref14)] de recompensa para fijar 2 reglas más al entorno:
-- Si pierde una vida, pierde puntaje.
-- Puntos uniformes:
-  - Si obtiene recompensa positiva, sólo se suma un punto (ya sea que el agente gane 10 o 200 puntos por una acción).
-  - Si obtiene recompensa negativa, sólo pierde un punto.
-
-Para PPO se intentó entrenar sin los wrappers mencionados, pero debido a la gran inestabilidad, los valores de pérdida también eran muy inestables y a partir de unos pocos episodios de entrenamiento se estancaba en valores muy pequeños. Por lo que se decidió sólo entrenar con los wrappers de recompensa ya implementados.
 
 #### Resultados
 
