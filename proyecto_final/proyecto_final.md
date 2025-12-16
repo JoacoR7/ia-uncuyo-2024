@@ -29,7 +29,7 @@ Código de proyecto: SPACEAI
       - [Representación Discreta del Estado](#representación-discreta-del-estado)
       - [Tamaño final de la Q table](#tamaño-final-de-la-q-table)
     - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
-    - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
+      - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
       - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
     - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
     - [Implementación con PPO](#implementación-con-ppo)
@@ -282,7 +282,7 @@ donde:
 #### Implementación con Deep Q-Network
 La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace muy grande debido a la cantidad de estados y acciones. Con este algoritmo (DQN) podemos definir una red neuronal para procesar el entorno y entrenar un modelo que pueda tener un buen desempeño en el juego.
 
-#### Estructura de la red neuronal
+##### Estructura de la red neuronal
 
 La red está compuesta por un extractor convolucional de características y una cabeza final que predice los valores Q [[10](#ref10)].
 
