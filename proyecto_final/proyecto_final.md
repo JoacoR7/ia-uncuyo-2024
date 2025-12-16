@@ -295,7 +295,7 @@ La entrada del modelo consiste en un stack de **n_stack** de tamaño **84×84**.
 - **Flatten:** conversión de la salida tridimensional a un vector unidimensional.  
 - **Linear:** capa completamente conectada de **3136 → 512**, activación ReLU.
 
-**2. Cabeza de valores Q (Q-Network)**  
+**2. Capa de salida**  
 Tras el extractor de características, la red final que produce los valores Q está formada por:
 
 - **Capa final:** lineal de **512 → n_actions**, sin activación, que genera los valores Q para cada acción posible en el entorno.
@@ -344,7 +344,7 @@ Después de los extractores convolucionales, existe un componente MlpExtractor q
 
 En esta configuración, el MlpExtractor no agrega capas adicionales, funcionando como un pass-through que mantiene la separación entre las dos ramas.
 
-**3. Cabezas de salida**
+**3. Capa de salida**
 
 Finalmente, cada rama tiene su propia cabeza de salida:
 
@@ -781,15 +781,26 @@ Como se mencionó al inicio de la sección de experimentos, sólo se entrenó co
 ### Random
 #### Desempeño general
 
-El desempeño promedio es bajo en todos los modos, con valores entre 88.52 (modo 4) y 154.12 (modo 0), reflejando que la mayor parte del tiempo el agente muere rápidamente sin destruir una cantidad relevante de enemigos. Además los máximos puntajes que se alcanzan no reflejan un patrón en el comportamiento, sino simplemente episodios afortunados donde los disparos aleatorios conectan contra los enemigos y el agente sobrevive un poco mas de tiempo.
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_Random.png" width="500"><br>
+      <em>[Figura 37] Recompensa de test por modo en algoritmo Random</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_Random.png" width="500"><br>
+      <em>[Figura 38] Winrate de test por modo en algoritmo Random</em>
+    </td>
+  </tr>
+</table>
+
+Como se puede observar en la figura 37, el promedio de puntos es bastante bajo teniendo en cuenta que se necesita por lo menos 630 puntos para ganar, esto se refleja en la figura 38, donde se puede observar que el winrate es muy bajo en todos los modos, reflejando que la mayor parte del tiempo el agente muere rápidamente sin destruir una cantidad relevante de enemigos. Además los máximos puntajes que se alcanzan no reflejan un patrón en el comportamiento, sino simplemente episodios afortunados donde los disparos aleatorios conectan contra los enemigos y el agente sobrevive un poco mas de tiempo.
 
 #### Desempeño por modo
-
 En términos generales, el modo normal (modo 0) y el modo con enemigos que se hacen invisibles (modo 8) presentan los mejores promedios, aunque esto no implica un desempeño sólido, sino simplemente que en esos contextos el azar le permite sobrevivir ligeramente más y conectar algunos disparos. Los modos 3 y 4, que introducen dinámicas más complejas como paredes móviles, disparos que no son rectos o un mayor volumen de disparos enemigos, muestran peores resultados, evidenciando que cualquier incremento en la dificultad afecta negativamente al agente, ya que este no aprende a sobrevivir mientras elimina a los enemigos.
 
 #### Winrate
-
-El winrate del agente random es prácticamente insignificante, con menos del 0,2% de victorias en todos los modos. Las pocas partidas ganadas son producto del azar y no reflejan ningún tipo de estrategia ni comportamiento intencional por parte del agente.
+Como se puede observar en la figura 38, el winrate del agente random es prácticamente insignificante, con menos del 0,2% de victorias en todos los modos. Las pocas partidas ganadas son producto del azar y no reflejan ningún tipo de estrategia ni comportamiento intencional por parte del agente.
 
 #### Conclusión
 El agente random presenta un comportamiento totalmente limitado y sin capacidad de adaptación. Sus acciones carecen de propósito, por lo que su desempeño depende únicamente del azar. Aunque ocasionalmente obtiene buenos puntajes, estos episodios aislados no se deben a una estrategia, sino coincidencias estadísticas.
@@ -797,9 +808,32 @@ El agente random presenta un comportamiento totalmente limitado y sin capacidad 
 ### Q-learning
 #### Desempeño general
 
-Los modelos entrenados con Q-learning muestran un desempeño considerablemente superior al del agente aleatorio. En los modos más simples (0 y 8), ambos modelos alcanzan promedios de recompensa que superan los 260–280 puntos, lo que evidencia que lograron aprender patrones de supervivencia y ataque más estables. Si bien los puntajes máximos no difieren demasiado de los obtenidos por el agente random, los puntajes mínimos son más altos en los modos 0, 3 y 4 (especialmente en el modelo con reward shaping) indican que el agente aprendió a garantizar un nivel mínimo de efectividad, eliminando al menos algunos enemigos antes de morir incluso en sus peores episodios.
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_Q-Learning_(Clipping).png" width="500"><br>
+      <em>[Figura 39] Recompensa de test por modo en algoritmo Q-Learning con Clipping Reward</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_Q-Learning_(Clipping).png" width="500"><br>
+      <em>[Figura 40] Winrate de test por modo en algoritmo Q-Learning con Clipping Reward</em>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_Q-Learning_(Custom).png" width="500"><br>
+      <em>[Figura 41] Recompensa de test por modo en algoritmo Q-Learning con Reward Shapping</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_Q-Learning_(Custom).png" width="500"><br>
+      <em>[Figura 42] Winrate de test por modo en algoritmo Q-Learning con Custom Reward Shapping</em>
+    </td>
+  </tr>
+</table>
 
-Una diferencia clave entre los dos modelos aparece en la evolución del aprendizaje: el agente con Reward Shaping continúa mejorando su recompensa hasta los 20 000 episodios, mientras que el modelo con Reward Clipping se estanca alrededor del episodio 2000, mostrando poca progresión posterior. Esto sugiere que el shaping ofrece señales de entrenamiento más útiles que el clipping.
+Los modelos entrenados con Q-learning muestran un desempeño considerablemente superior al del agente aleatorio. Como se puede observar en las figuras 39 y 41, en los modelos más simples (0 y 8), ambos modelos alcanzan promedios de recompensa que superan los 260–280 puntos, lo que evidencia que lograron aprender patrones de supervivencia y ataque más estables. Si bien los puntajes máximos no difieren demasiado de los obtenidos por el agente random, los puntajes mínimos son más altos en los modos 0, 3 y 4 (especialmente en el modelo con reward shapping) indican que el agente aprendió a garantizar un nivel mínimo de efectividad, eliminando al menos algunos enemigos antes de morir incluso en sus peores episodios.
+
+Una diferencia clave entre los dos modelos aparece en la evolución del aprendizaje: el agente con Reward Shapping continúa mejorando su recompensa hasta los 20 000 episodios, mientras que el modelo con Reward Clipping se estanca alrededor del episodio 2000, mostrando poca progresión posterior. Esto sugiere que el shaping ofrece señales de entrenamiento más útiles que el clipping.
 
 En cuanto a la duración de los episodios, el shaping presenta un crecimiento inicial coherente con la mejora en la recompensa, mientras que en el clipping los episodios se vuelven más largos sin que eso se traduzca en un desempeño ofensivo mejor. Esto indica que el clipping permite sobrevivir más tiempo, pero no fomenta decisiones más efectivas, en parte por la pérdida de información que provoca la acotación de recompensas.
 
@@ -813,7 +847,7 @@ A diferencia del resto de los modos, el modo 4 muestra un comportamiento particu
 
 #### Winrate
 
-El winrate de ambos modelos se mantiene bajo, con valores que no superan el 1–1.3% según el modo. Si bien esto representa una mejora real frente al agente aleatorio, sigue siendo insuficiente para considerar que el agente domine el juego. Las victorias obtenidas indican que el agente es capaz de completar una partida ocasionalmente, pero la baja frecuencia evidencia que el comportamiento aprendido no es lo suficientemente sólido ni consistente como para garantizar un desempeño robusto en escenarios complejos.
+El winrate de ambos modelos se mantiene bajo, con valores que no superan el 1–1.3% según el modo (ver figuras 40 y 42). Si bien esto representa una mejora real frente al agente aleatorio, sigue siendo insuficiente para considerar que el agente domine el juego. Las victorias obtenidas indican que el agente es capaz de completar una partida ocasionalmente, pero la baja frecuencia evidencia que el comportamiento aprendido no es lo suficientemente sólido ni consistente como para garantizar un desempeño robusto en escenarios complejos.
 
 #### Conclusión
 
@@ -824,9 +858,32 @@ A pesar de estas mejoras, el algoritmo mantiene un winrate bajo y su desempeño 
 ### DQN
 #### Desempeño general
 
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_DQN2.png" width="500"><br>
+      <em>[Figura 43] Recompensa de test por modo en modelo DQN2</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_DQN2.png" width="500"><br>
+      <em>[Figura 44] Winrate de test por modo en modelo DQN2</em>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_DQN9.png" width="500"><br>
+      <em>[Figura 45] Recompensa de test por modo en modelo DQN9</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_DQN9.png" width="500"><br>
+      <em>[Figura 46] Winrate de test por modo en modelo DQN9</em>
+    </td>
+  </tr>
+</table>
+
 Si comparamos los modelos entrenados con este algoritmo y los de Q-Learning, podemos determinar que DQN es mejor en varios aspectos: eficiencia, desempeño y complejidad espacial, pero a costo de mayor potencia de hardware. 
 
-En ambos enfoques planteados durante los experimentos (con y sin Wrapper de recompensas) supera ampliamente al algoritmo anterior, pudiendo ganar más episodios, teniendo mejores recompensas y mejor estabilidad.
+En general, ambos enfoques planteados durante los experimentos (con y sin Wrapper de recompensas) supera al algoritmo anterior, pudiendo ganar más episodios, teniendo mejores recompensas y mejor estabilidad.
 
 Ambos modelos muestran un buen desempeño, aunque el superador es el modelo con Reward Clipping ya que el entrenamiento es más estable y el agente puede aprender una regla muy importante: todos los enemigos tienen la misma importancia.
 
@@ -834,24 +891,34 @@ Bajo esta regla, el agente trata a todos por igual, por lo tanto no se centra en
 
 #### Desempeño por modo
 
-En ambos casos, el mejor desempeño lo tuvieron en el modo 0, que es el modo predeterminado del entorno y con el que se los entrenó, por lo tanto tiene sentido que su desempeño sea significativamente mejor que en los demás modos.
+En ambos casos, el mejor desempeño lo tuvieron en el modo 0 (ver figuras 43 y 45), que es el modo predeterminado del entorno y con el que se los entrenó, por lo tanto tiene sentido que su desempeño sea significativamente mejor que en los demás modos.
 
-En los otros modos el desempeño se reduce significativamente, es curioso que en el modo 8, donde los enemigos son invisibles la mayor parte del tiempo, tuvo mejor desempeño que en los modos 3 y 4, que los enemigos sí son visibles.
-
-De igual forma tiene sentido ya que el modo 8, aunque no pueda ver a los enemigos la mayor parte del tiempo, es el más parecido al modo 0 porque no se alteran los disparos ni los escudos que ofrecen el entorno. Mientras que en los otros dos, los disparos cambian, entonces las reglas aprendidas sobre disparos no se asemejan a los disparos de estos modos.
+En los otros modos el la recompensa promedio se reduce significativamente (ver figura 45), aunque en la mayoría de los casos sigue superando al algoritmo de Q-Learning.
 
 #### Winrate
 
-El winrate en ambos modelos es bueno, aunque con el segundo enfoque es mejor, esto se debe a que, al tener más estabilidad, se pudo continuar el entrenamiento del modelo con más pasos, por lo que tuvo oportunidad a aprender mejores políticas. 
+El winrate en ambos modelos es bueno, aunque con el segundo enfoque es mejor (ver figuras 44 y 46), esto se debe a que, al tener más estabilidad, se pudo continuar el entrenamiento del modelo con más pasos, por lo que tuvo oportunidad a aprender mejores políticas. 
 
-El modelo con Wrapper de recompensa tuvo 5 veces más winrate en el modo 0 que el otro modelo sin Wrapper, y en los otros modos tuvo un rendimiento significativamente mayor.
+El modelo con Wrapper de recompensa tuvo 5 veces más winrate en el modo 0 que el otro modelo sin Wrapper (ver figuras 44 y 46), y en los otros modos tuvo un rendimiento significativamente mayor.
 
 ### PPO
 #### Desempeño general
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_PPO5.png" width="500"><br>
+      <em>[Figura 47] Recompensa de test por modo en modelo PPO5</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_PPO5.png" width="500"><br>
+      <em>[Figura 48] Winrate de test por modo en modelo PPO5</em>
+    </td>
+  </tr>
+</table>
 
 Como se mencionó anteriormente, se entrenaron modelos con este algoritmo sólo con los Wrapper de recompensas ya que sin ellos, el entrenamiento era inestable y no valía la pena continuarlo porque se quedaba estancado en una política muy inferior y no se movía más allá de ella.
 
-Con respecto al desempeño, en general superó ampliamente a todos los modelos anteriores, salvo en algunos modos que ya se discutirá sobre eso en la sección siguiente.
+Con respecto al desempeño, en los modos 0 y 3 superó ampliamente a todos los modelos anteriores.
 
 El entrenamiento fue más estable, lo que permitió agarrar modelos entrenados y continuar su entrenamiento para que siga evolucionando, gracias a esto se logró incrementar el winrate.
 
@@ -859,7 +926,7 @@ Con respecto a las políticas, aprendió mejores políticas que los modelos ante
 
 #### Desempeño por modo
 
-En donde mejor tuvo desempeño fue en el modo 0, ganando en un 85% de los tests aplicados, donde la media de puntos fue 1304.23, cuando el puntaje mínimo para ganar es de 630. Por lo tanto, en promedio ganaba la partida.
+En donde mejor tuvo desempeño fue en el modo 0 (ver figura 47), ganando en un 85% de los tests aplicados (ver figura 48), donde la media de puntos fue 1304.23, cuando el puntaje mínimo para ganar es de 630. Por lo tanto, en promedio ganaba la partida.
 
 En el modo 3 bajó el desempeño, pero aún así fue mejor que en los otros algoritmos, esto se debe a lo mencionado con los disparos ya que los esquiva bien y ataca exitosamente a los enemigos.
 
@@ -869,20 +936,77 @@ Por último, en el modo 8, es entendible que no haya ganado partidas y no haya t
 
 #### Winrate
 
-En este caso, fue superador el winrate, por lo menos en los modos 0 y 3. El hecho que haya ganado 850 partidas de 1000 es muy positivo, si comparamos el modo 0 de los algoritmos anteriores, supera hasta 16 veces esta métrica en algunos casos.
+Como se puede observar en la figura 48 en los modos 0 y 3 el winrate fue ampliamente mejor que en los otros algoritmos. El hecho que haya ganado 850 partidas de 1000 es muy positivo, si comparamos el modo 0 de los algoritmos anteriores, supera hasta 16 veces esta métrica en algunos casos.
 
 #### Conclusión
 
 Los modelos implementados con PPO fueron mejores que los modelos con los algoritmos anteriores con respecto al modo 0 y 3. La estabilidad de entrenamiento fue mucho mayor y la continuación del entrenamiento fue más eficiente, permitiendo mejorar significativamente el modelo. Se considera que si se sigue entrenando, puede superar el 85% de winrate en el modo 0.
 
 ## Conclusiones finales
-Tras comparar los resultados de testeo entre los distintos modos y teniendo en cuenta los datos obtenidos durante los entrenamientos, se puede concluir que los algoritmos DQN y PPO son superiores a Q-learning y definitivamente mejores que el algoritmo aleatorio. Ambos algoritmos tuvieron un desempeño superior y un entrenamiento mucho más estable, lo que permitió que ganasen más episodios y tuvieran recompensas mayores.
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_by_algorithm.png" width="500"><br>
+      <em>[Figura 49] Recompensa de test por modo y algoritmo</em>
+    </td>
+  </tr>
+</table>
+
+Tras comparar los resultados de testeo entre los distintos modos (observar figura 49) y teniendo en cuenta los datos obtenidos durante los entrenamientos, se puede concluir que los algoritmos DQN y PPO en modo 0 (en el que se entrenaron) son superiores a Q-learning y definitivamente mejores que el algoritmo aleatorio. Ambos algoritmos tuvieron un desempeño superior y un entrenamiento mucho más estable, lo que permitió que ganasen más episodios y tuvieran recompensas mayores.
 
 Aunque los 2 algoritmos superiores fueron superadores, valió la pena implementar tanto Q-learning como el algoritmo aleatorio, ya que permitió tener mejor entendimiento del entorno y tener un punto de comparación de qué era bueno y qué no.
 
 Con respecto a Q-Learning, es bastante fácil de entender, lo que sirve de base para comprender DQN, el principal problema de este algoritmo es que no sirve para espacios continuos ni para entornos con un número elevado de estados o acciones, por lo que no se logró un modelo superior a los obtenidos.
 
-Si nos basamos sólo en el modo (modo 0) en que se entrenó, se puede decir que el mejor algoritmo fue PPO, ya que el winrate superó casi 4 veces a DQN en el mismo modo. Pero si se cambia el entorno, su rendimiento baja, esto quiere decir que si el entorno de prueba se aleja con respecto al que se entrenó, el rendimiento baja. Luego, DQN, con modos distintos al default, tuvo un mejor rendimiento que PPO, por lo que se podría decir que en entornos distintos al que se entrenó tiene un mejor rendimiento al PPO.
+Si nos basamos sólo en el modo 0, en el que se entrenó, se puede decir que el mejor algoritmo fue PPO, ya que el winrate superó casi 4 veces a DQN en el mismo modo (ver figura 51), y la recompensa promedio se duplicó (ver figura 50). 
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_mode_0.png" width="500"><br>
+      <em>[Figura 50] Recompensa de test por modelo en modo 0</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_mode_0.png" width="500"><br>
+      <em>[Figura 51] Winrate de test por modelo en modo 0</em>
+    </td>
+  </tr>
+</table>
+
+Pero si se cambia el entorno, el winrate baja significativamente, en el modo 3 sigue superando a los demás enfoques (ver figura 53), pero en los demás modos el winrate es muy bajo, incluso llegando a no ganar ninguna partida (ver figuras 55 y 57) esto quiere decir que si el entorno de prueba se aleja con respecto al que se entrenó, el rendimiento baja. Luego, DQN, con modos distintos al default, tuvo un mejor rendimiento que PPO (ver figuras 54 a 57), por lo que se podría decir que en entornos distintos al que se entrenó tiene un mejor rendimiento al PPO.
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_mode_3.png" width="500"><br>
+      <em>[Figura 52] Recompensa de test por modelo en modo 3</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_mode_3.png" width="500"><br>
+      <em>[Figura 53] Winrate de test por modelo en modo 3</em>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_mode_4.png" width="500"><br>
+      <em>[Figura 54] Recompensa de test por modelo en modo 4</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_mode_4.png" width="500"><br>
+      <em>[Figura 55] Winrate de test por modelo en modo 4</em>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="code/test_images/avg_reward_mode_8.png" width="500"><br>
+      <em>[Figura 56] Recompensa de test por modelo en modo 8</em>
+    </td>
+    <td align="center">
+      <img src="code/test_images/winrate_mode_8.png" width="500"><br>
+      <em>[Figura 57] Winrate de test por modelo en modo 8</em>
+    </td>
+  </tr>
+</table>
 
 Algunas mejoras que se podrían realizar son variantes de los algoritmos implementados como Double DQN o Rainbow DQN para mejorar el desempeño. Pero de igual forma se obtuvieron buenos resultados tanto en DQN y PPO, por lo que no se indagó en variantes.
 
