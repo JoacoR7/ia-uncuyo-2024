@@ -13,29 +13,30 @@ Código de proyecto: SPACEAI
   - [Deep Q-Network](#deep-q-network)
   - [Proximal Policy Optimization (PPO)](#proximal-policy-optimization-ppo)
   - [Justificación](#justificación)
+- [Implementación](#implementación)
+  - [Modificación de la función de recompensa](#modificación-de-la-función-de-recompensa)
+    - [Reward Shaping personalizado](#reward-shaping-personalizado)
+    - [Reward Clipping](#reward-clipping)
+  - [Preprocesamiento de entorno](#preprocesamiento-de-entorno)
+  - [Implementación con Q-learning](#implementación-con-q-learning)
+    - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
+    - [Representación Discreta del Estado](#representación-discreta-del-estado)
+    - [Tamaño final de la Q table](#tamaño-final-de-la-q-table)
+  - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
+  - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
+    - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
+    - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
+  - [Implementación con PPO](#implementación-con-ppo)
+    - [Estructura de la red neuronal](#estructura-de-la-red-neuronal-1)
+
 - [Diseño experimental](#diseño-experimental)
   - [Métricas](#métricas)
   - [Herramientas](#herramientas)
     - [OpenAI Gymnasium API](#openai-gymnasium-api)
       - [Modos y dificultades](#modos-y-dificultades)
     - [Stable Baselines 3](#stable-baselines-3)
-  - [Implementación](#implementación)
-    - [Modificación de la función de recompensa](#modificación-de-la-función-de-recompensa)
-      - [Reward Shaping personalizado](#reward-shaping-personalizado)
-      - [Reward Clipping](#reward-clipping)
-    - [Preprocesamiento de entorno](#preprocesamiento-de-entorno)
-    - [Implementación con Q-learning](#implementación-con-q-learning)
-      - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
-      - [Representación Discreta del Estado](#representación-discreta-del-estado)
-      - [Tamaño final de la Q table](#tamaño-final-de-la-q-table)
-    - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
-    - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
-      - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
-      - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
-    - [Implementación con PPO](#implementación-con-ppo)
-      - [Estructura de la red neuronal](#estructura-de-la-red-neuronal-1)
-  - [Experimentos](#experimentos)
-    - [Resultados](#resultados)
+- [Experimentos](#experimentos)
+  - [Resultados](#resultados)
 - [Análisis y Discusión de Resultados](#análisis-y-discusión-de-resultados)
   - [Random](#random)
     - [Desempeño general](#desempeño-general)
@@ -135,6 +136,176 @@ Para la realización de este proyecto se optó por utilizar los algoritmos de Q-
 
 - Por último, PPO también tiene la ventaja de poder manejar observaciones continuas o de muchas dimensiones sin necesidad de discretizar, además, el entrenamiento es muy estable ya que aprende políticas de forma suave, y consistente. Tiene también la propiedad de converger más rápido y con mayor robustez.
 
+## Implementación
+
+### Modificación de la función de recompensa
+Con el objetivo de mejorar la estabilidad del aprendizaje y reducir la alta variabilidad de recompensas presente en el entorno Space Invaders, se realizaron modificaciones sobre la señal de recompensa original del entorno. Estas modificaciones se aplicaron mediante wrappers [[14](#ref14)], permitiendo alterar la recompensa sin modificar la dinámica base del juego.
+
+Un wrapper es un mecanismo que envuelve al entorno original y permite interceptar y modificar elementos como las observaciones, las acciones o las recompensas, manteniendo intacta la lógica interna del entorno.
+
+Se utilizaron dos enfoques distintos: reward shaping personalizado y reward clipping.
+
+#### Reward Shaping personalizado
+El reward shaping es una técnica que consiste en modificar la señal de recompensa con el fin de guiar el comportamiento del agente hacia acciones deseables durante el aprendizaje.
+
+En este trabajo, el reward shaping se utilizó únicamente en uno de los modelos de Q-learning, con el objetivo de analizar si una señal de recompensa más informativa permitía mejorar el desempeño del algoritmo en un entorno complejo.
+
+En este esquema se introdujeron las siguientes penalizaciones:
+- Pérdida de vida: se aplica una penalización negativa cuando el agente pierde una vida.
+- Disparos desperdiciados: se penaliza al agente cuando dispara sin obtener recompensa positiva.
+- Inactividad: se penalizan secuencias prolongadas de acciones que no implican disparar.
+
+#### Reward Clipping
+El reward clipping es una técnica que limita la magnitud de la recompensa original del entorno a un conjunto reducido de valores discretos.
+
+El reward clipping se utilizó en uno de los modelos de Q-learning y en todos los modelos restantes (DQN y PPO). En este enfoque, la recompensa se transformó según las siguientes reglas:
+- +1 ante cualquier recompensa positiva.
+- −1 cuando el agente pierde una vida.
+- 0 en el resto de los casos.
+
+Este mecanismo reduce la variabilidad de la señal de recompensa, evitando saltos abruptos en los valores acumulados y favoreciendo un entrenamiento más estable, especialmente en algoritmos basados en redes neuronales.
+
+### Preprocesamiento de entorno
+El espacio de observación que posee Gymnasium en el juego Space Invaders es Box(0, 255, (210, 160, 3), uint8) [[1](#ref1)],
+es decir, son observaciones de 3 canales (RGB), de 210 x 160 píxeles, con valores entre 0 y 255.
+
+Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [[9](#ref9)].
+
+Siguiendo las recomendaciones, se recortan las secciones de la imagen que no aportan información (ver Figura 1). Después del recorte, la imagen se redimensiona a 84×84 píxeles y, finalmente, se convierte a escala de grises (ver figura 2).
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="images/area_recortada.jpeg" width="421"><br>
+      <em>[Figura 1] Área visible para el modelo</em>
+    </td>
+    <td align="center">
+      <img src="images/imagen_final.png" width="300"><br>
+      <em>[Figura 2] Imagen luego del preprocesamiento</em>
+    </td>
+  </tr>
+</table>
+
+### Implementación con Q-learning
+
+#### Reducción del Espacio de Estados y Acciones
+
+El entorno Space Invaders en Gymnasium entrega observaciones en formato de imagen RGB de tamaño 210×160 píxeles con 3 canales, lo que genera un espacio de estados extremadamente grande. Utilizar estas observaciones directamente en una Q-table sería impracticable, ya que la cantidad de estados posibles crece exponencialmente con el número de píxeles.
+
+La dimensión general de una Q-table es:
+
+$|Q\text{-table size}| = \text{Número de estados} × \text{Número de acciones}$
+
+
+Si se trabajara con la imagen completa, el número de estados sería:
+
+$|Q\text{-table size}| = 256^{(210×160×3)} × 6$
+
+
+lo cual es computacionalmente inviable.\
+Por ello, es necesario reducir el espacio de estados mediante un preprocesamiento visual que simplifique la observación sin perder información relevante para la toma de decisiones.
+
+#### Representación Discreta del Estado
+A partir de la imagen ya preprocesada (recortada, redimensionada y convertida a escala de grises), se aplica un esquema de agregación y discretización que transforma cada frame en un vector pequeño y manejable:
+1. **División de la imagen en N columnas**\
+  Cada columna representa una franja vertical del entorno de juego.
+
+2. **Extracción de una característica por columna**  
+  Se calcula la media de intensidad de los píxeles dentro de cada columna.
+
+3. **Discretización en K niveles**  
+  Cada valor de media se asigna a uno de K bins, obteniendo así un vector discreto de tamaño N.
+
+Este vector captura información esencial sobre la distribución visual en pantalla, pero en una forma suficientemente reducida como para permitir su uso en una Q-table.
+
+#### Tamaño final de la Q table
+Tras el preprocesamiento y discretización, el número total de estados posibles pasa a ser:
+
+$\text{Número de estados} = K^{N}$
+
+Por lo tanto, la dimensión final de la Q-table queda:
+
+$|Q \text{-table size}| = [K^{N} \times 6]$
+donde:
+- N = número de columnas en que se divide la imagen,
+- K = número de niveles de discretización,
+
+
+### Almacenamiento y muestreo de experiencias
+Las estrategias de almacenamiento y muestreo de experiencias descritas a continuación se utilizan únicamente en los algoritmos basados en redes neuronales, es decir, Deep Q-Network (DQN) y Proximal Policy Optimization (PPO).
+
+En estos algoritmos, el entorno se vectoriza y se aplica un apilado de frames, por lo que cada estado observado por el agente está compuesto por una secuencia de n imágenes consecutivas. Esto permite que la red neuronal disponga de información temporal, lo cual es fundamental en este entorno, ya que el movimiento de los objetos no puede inferirse a partir de un solo frame.
+
+Cada transición generada durante la interacción con el entorno (que incluye el estado apilado actual, la acción ejecutada, la recompensa recibida, el siguiente estado apilado y la señal de finalización) se almacena en un buffer de memoria.
+
+Durante el entrenamiento, se extraen lotes de transiciones desde este buffer. Este muestreo reduce la correlación temporal entre experiencias consecutivas y permite reutilizar de forma más eficiente la información recolectada, mejorando la estabilidad del aprendizaje y la convergencia del modelo.
+
+### Implementación con Deep Q-Network
+La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace muy grande debido a la cantidad de estados y acciones. Con este algoritmo (DQN) podemos definir una red neuronal para procesar el entorno y entrenar un modelo que pueda tener un buen desempeño en el juego.
+
+#### Estructura de la red neuronal
+
+La red está compuesta por un extractor convolucional de características y una cabeza final que predice los valores Q [[10](#ref10)].
+
+**1. Extractor convolucional (NatureCNN)**  
+La entrada del modelo consiste en un stack de **n_stack** de tamaño **84×84**. El extractor convolucional se compone de:
+
+- **Conv1:** 32 filtros, kernel 8×8, stride 4, activación ReLU.  
+- **Conv2:** 64 filtros, kernel 4×4, stride 2, activación ReLU.  
+- **Conv3:** 64 filtros, kernel 3×3, stride 1, activación ReLU.  
+- **Flatten:** conversión de la salida tridimensional a un vector unidimensional.  
+- **Linear:** capa completamente conectada de **3136 → 512**, activación ReLU.
+
+**2. Capa de salida**  
+Tras el extractor de características, la red final que produce los valores Q está formada por:
+
+- **Capa final:** lineal de **512 → n_actions**, sin activación, que genera los valores Q para cada acción posible en el entorno.
+
+La misma arquitectura se replica tanto en la red principal (*q_net*) como en la red objetivo (*q_net_target*).
+
+#### Estrategia de aprendizaje
+Con el objetivo de lograr un balance entre exploración y explotación, se ha elegido una estrategia ε-greedy donde:
+- Con probabilidad ε, se elige una acción aleatoria (exploración)
+- Con probabilidad 1-ε, se elige la acción con el mayor valor Q (explotación).
+- ε decae exponencialmente con los pasos de entrenamiento.
+  
+
+### Implementación con PPO
+A diferencia de DQN que utiliza Q-learning, PPO es un algoritmo de gradiente de política que optimiza directamente la política del agente. Este enfoque es más estable y eficiente para muchos entornos.
+
+#### Estructura de la red neuronal
+PPO utiliza una arquitectura de Actor-Crítico con extractores de características separados para la política (actor) y la función de valor (crítico). Esta separación permite que cada componente aprenda representaciones especializadas de manera independiente, optimizando tanto la selección de acciones como la estimación de valores [[11](#ref11)].
+
+**1. Extractores convolucionales independientes (NatureCNN)**  
+La arquitectura implementa tres extractores NatureCNN con pesos independientes:
+
+- **features_extractor:** Extractor base de respaldo.
+- **pi_features_extractor:** Extractor dedicado para la red de política (actor).
+- **vf_features_extractor:** Extractor dedicado para la red de valor (crítico).
+
+La entrada de cada extractor consiste en un stack de **n_stack** frames de tamaño 84×84. Cada NatureCNN se compone de:
+
+- **Conv1:** 32 filtros, kernel 8×8, stride 4, activación ReLU.
+- **Conv2:** 64 filtros, kernel 4×4, stride 2, activación ReLU.
+- **Conv3:** 64 filtros, kernel 3×3, stride 1, activación ReLU.
+- **Flatten:** conversión de la salida tridimensional a un vector unidimensional.
+- **Linear:** capa completamente conectada de 3136 → 512, activación ReLU.
+
+**2. Extractor MLP (MlpExtractor)**  
+Después de los extractores convolucionales, existe un componente MlpExtractor que contiene dos ramas:
+
+- **policy_net:** Sequential vacío (las características de 512 dimensiones van directamente a la cabeza de acción).
+- **value_net:** Sequential vacío (las características de 512 dimensiones van directamente a la cabeza de valor).
+
+En esta configuración, el MlpExtractor no agrega capas adicionales, funcionando como un pass-through que mantiene la separación entre las dos ramas.
+
+**3. Capa de salida**
+
+Finalmente, cada rama tiene su propia cabeza de salida:
+
+- **action_net (Actor):** capa lineal de 512 → 6, que genera logits para la distribución de probabilidad sobre las 6 acciones posibles del entorno. Durante la inferencia, estos logits se convierten en probabilidades mediante softmax.
+- **value_net (Crítico):** capa lineal de 512 → 1, sin activación, que estima el valor del estado actual V(s). Esta estimación se utiliza para calcular las ventajas durante el entrenamiento.
+
 ## Diseño experimental
 
 ### Métricas
@@ -182,177 +353,8 @@ Stable Baselines 3 (SB3) [[13](#ref13)] es un conjunto de implementaciones confi
 
 Además de proporcionar las bases de los algoritmos a implementar en el proyecto, también proporcionan herramientas que son necesarias para este trabajo como las de vectorización y stacking de entornos.
 
-### Implementación
 
-#### Modificación de la función de recompensa
-Con el objetivo de mejorar la estabilidad del aprendizaje y reducir la alta variabilidad de recompensas presente en el entorno Space Invaders, se realizaron modificaciones sobre la señal de recompensa original del entorno. Estas modificaciones se aplicaron mediante wrappers [[14](#ref14)], permitiendo alterar la recompensa sin modificar la dinámica base del juego.
-
-Un wrapper es un mecanismo que envuelve al entorno original y permite interceptar y modificar elementos como las observaciones, las acciones o las recompensas, manteniendo intacta la lógica interna del entorno.
-
-Se utilizaron dos enfoques distintos: reward shaping personalizado y reward clipping.
-
-##### Reward Shaping personalizado
-El reward shaping es una técnica que consiste en modificar la señal de recompensa con el fin de guiar el comportamiento del agente hacia acciones deseables durante el aprendizaje.
-
-En este trabajo, el reward shaping se utilizó únicamente en uno de los modelos de Q-learning, con el objetivo de analizar si una señal de recompensa más informativa permitía mejorar el desempeño del algoritmo en un entorno complejo.
-
-En este esquema se introdujeron las siguientes penalizaciones:
-- Pérdida de vida: se aplica una penalización negativa cuando el agente pierde una vida.
-- Disparos desperdiciados: se penaliza al agente cuando dispara sin obtener recompensa positiva.
-- Inactividad: se penalizan secuencias prolongadas de acciones que no implican disparar.
-
-##### Reward Clipping
-El reward clipping es una técnica que limita la magnitud de la recompensa original del entorno a un conjunto reducido de valores discretos.
-
-El reward clipping se utilizó en uno de los modelos de Q-learning y en todos los modelos restantes (DQN y PPO). En este enfoque, la recompensa se transformó según las siguientes reglas:
-- +1 ante cualquier recompensa positiva.
-- −1 cuando el agente pierde una vida.
-- 0 en el resto de los casos.
-
-Este mecanismo reduce la variabilidad de la señal de recompensa, evitando saltos abruptos en los valores acumulados y favoreciendo un entrenamiento más estable, especialmente en algoritmos basados en redes neuronales.
-
-#### Preprocesamiento de entorno
-El espacio de observación que posee Gymnasium en el juego Space Invaders es Box(0, 255, (210, 160, 3), uint8) [[1](#ref1)],
-es decir, son observaciones de 3 canales (RGB), de 210 x 160 píxeles, con valores entre 0 y 255.
-
-Se recomienda simplificar el entorno para tener un entrenamiento más estable y que las relaciones sean menos complejas, para lograr esto se sugiere achicar las imágenes y reducir la cantidad de canales [[9](#ref9)].
-
-Siguiendo las recomendaciones, se recortan las secciones de la imagen que no aportan información (ver Figura 1). Después del recorte, la imagen se redimensiona a 84×84 píxeles y, finalmente, se convierte a escala de grises (ver figura 2).
-
-<table align="center">
-  <tr>
-    <td align="center">
-      <img src="images/area_recortada.jpeg" width="421"><br>
-      <em>[Figura 1] Área visible para el modelo</em>
-    </td>
-    <td align="center">
-      <img src="images/imagen_final.png" width="300"><br>
-      <em>[Figura 2] Imagen luego del preprocesamiento</em>
-    </td>
-  </tr>
-</table>
-
-#### Implementación con Q-learning
-
-##### Reducción del Espacio de Estados y Acciones
-
-El entorno Space Invaders en Gymnasium entrega observaciones en formato de imagen RGB de tamaño 210×160 píxeles con 3 canales, lo que genera un espacio de estados extremadamente grande. Utilizar estas observaciones directamente en una Q-table sería impracticable, ya que la cantidad de estados posibles crece exponencialmente con el número de píxeles.
-
-La dimensión general de una Q-table es:
-
-$|Q\text{-table size}| = \text{Número de estados} × \text{Número de acciones}$
-
-
-Si se trabajara con la imagen completa, el número de estados sería:
-
-$|Q\text{-table size}| = 256^{(210×160×3)} × 6$
-
-
-lo cual es computacionalmente inviable.\
-Por ello, es necesario reducir el espacio de estados mediante un preprocesamiento visual que simplifique la observación sin perder información relevante para la toma de decisiones.
-
-##### Representación Discreta del Estado
-A partir de la imagen ya preprocesada (recortada, redimensionada y convertida a escala de grises), se aplica un esquema de agregación y discretización que transforma cada frame en un vector pequeño y manejable:
-1. **División de la imagen en N columnas**\
-  Cada columna representa una franja vertical del entorno de juego.
-
-2. **Extracción de una característica por columna**  
-  Se calcula la media de intensidad de los píxeles dentro de cada columna.
-
-3. **Discretización en K niveles**  
-  Cada valor de media se asigna a uno de K bins, obteniendo así un vector discreto de tamaño N.
-
-Este vector captura información esencial sobre la distribución visual en pantalla, pero en una forma suficientemente reducida como para permitir su uso en una Q-table.
-
-##### Tamaño final de la Q table
-Tras el preprocesamiento y discretización, el número total de estados posibles pasa a ser:
-
-$\text{Número de estados} = K^{N}$
-
-Por lo tanto, la dimensión final de la Q-table queda:
-
-$|Q \text{-table size}| = [K^{N} \times 6]$
-donde:
-- N = número de columnas en que se divide la imagen,
-- K = número de niveles de discretización,
-
-
-#### Almacenamiento y muestreo de experiencias
-Las estrategias de almacenamiento y muestreo de experiencias descritas a continuación se utilizan únicamente en los algoritmos basados en redes neuronales, es decir, Deep Q-Network (DQN) y Proximal Policy Optimization (PPO).
-
-En estos algoritmos, el entorno se vectoriza y se aplica un apilado de frames, por lo que cada estado observado por el agente está compuesto por una secuencia de n imágenes consecutivas. Esto permite que la red neuronal disponga de información temporal, lo cual es fundamental en este entorno, ya que el movimiento de los objetos no puede inferirse a partir de un solo frame.
-
-Cada transición generada durante la interacción con el entorno (que incluye el estado apilado actual, la acción ejecutada, la recompensa recibida, el siguiente estado apilado y la señal de finalización) se almacena en un buffer de memoria.
-
-Durante el entrenamiento, se extraen lotes de transiciones desde este buffer. Este muestreo reduce la correlación temporal entre experiencias consecutivas y permite reutilizar de forma más eficiente la información recolectada, mejorando la estabilidad del aprendizaje y la convergencia del modelo.
-
-#### Implementación con Deep Q-Network
-La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace muy grande debido a la cantidad de estados y acciones. Con este algoritmo (DQN) podemos definir una red neuronal para procesar el entorno y entrenar un modelo que pueda tener un buen desempeño en el juego.
-
-##### Estructura de la red neuronal
-
-La red está compuesta por un extractor convolucional de características y una cabeza final que predice los valores Q [[10](#ref10)].
-
-**1. Extractor convolucional (NatureCNN)**  
-La entrada del modelo consiste en un stack de **n_stack** de tamaño **84×84**. El extractor convolucional se compone de:
-
-- **Conv1:** 32 filtros, kernel 8×8, stride 4, activación ReLU.  
-- **Conv2:** 64 filtros, kernel 4×4, stride 2, activación ReLU.  
-- **Conv3:** 64 filtros, kernel 3×3, stride 1, activación ReLU.  
-- **Flatten:** conversión de la salida tridimensional a un vector unidimensional.  
-- **Linear:** capa completamente conectada de **3136 → 512**, activación ReLU.
-
-**2. Capa de salida**  
-Tras el extractor de características, la red final que produce los valores Q está formada por:
-
-- **Capa final:** lineal de **512 → n_actions**, sin activación, que genera los valores Q para cada acción posible en el entorno.
-
-La misma arquitectura se replica tanto en la red principal (*q_net*) como en la red objetivo (*q_net_target*).
-
-##### Estrategia de aprendizaje
-Con el objetivo de lograr un balance entre exploración y explotación, se ha elegido una estrategia ε-greedy donde:
-- Con probabilidad ε, se elige una acción aleatoria (exploración)
-- Con probabilidad 1-ε, se elige la acción con el mayor valor Q (explotación).
-- ε decae exponencialmente con los pasos de entrenamiento.
-  
-
-#### Implementación con PPO
-A diferencia de DQN que utiliza Q-learning, PPO es un algoritmo de gradiente de política que optimiza directamente la política del agente. Este enfoque es más estable y eficiente para muchos entornos.
-
-##### Estructura de la red neuronal
-PPO utiliza una arquitectura de Actor-Crítico con extractores de características separados para la política (actor) y la función de valor (crítico). Esta separación permite que cada componente aprenda representaciones especializadas de manera independiente, optimizando tanto la selección de acciones como la estimación de valores [[11](#ref11)].
-
-**1. Extractores convolucionales independientes (NatureCNN)**  
-La arquitectura implementa tres extractores NatureCNN con pesos independientes:
-
-- **features_extractor:** Extractor base de respaldo.
-- **pi_features_extractor:** Extractor dedicado para la red de política (actor).
-- **vf_features_extractor:** Extractor dedicado para la red de valor (crítico).
-
-La entrada de cada extractor consiste en un stack de **n_stack** frames de tamaño 84×84. Cada NatureCNN se compone de:
-
-- **Conv1:** 32 filtros, kernel 8×8, stride 4, activación ReLU.
-- **Conv2:** 64 filtros, kernel 4×4, stride 2, activación ReLU.
-- **Conv3:** 64 filtros, kernel 3×3, stride 1, activación ReLU.
-- **Flatten:** conversión de la salida tridimensional a un vector unidimensional.
-- **Linear:** capa completamente conectada de 3136 → 512, activación ReLU.
-
-**2. Extractor MLP (MlpExtractor)**  
-Después de los extractores convolucionales, existe un componente MlpExtractor que contiene dos ramas:
-
-- **policy_net:** Sequential vacío (las características de 512 dimensiones van directamente a la cabeza de acción).
-- **value_net:** Sequential vacío (las características de 512 dimensiones van directamente a la cabeza de valor).
-
-En esta configuración, el MlpExtractor no agrega capas adicionales, funcionando como un pass-through que mantiene la separación entre las dos ramas.
-
-**3. Capa de salida**
-
-Finalmente, cada rama tiene su propia cabeza de salida:
-
-- **action_net (Actor):** capa lineal de 512 → 6, que genera logits para la distribución de probabilidad sobre las 6 acciones posibles del entorno. Durante la inferencia, estos logits se convierten en probabilidades mediante softmax.
-- **value_net (Crítico):** capa lineal de 512 → 1, sin activación, que estima el valor del estado actual V(s). Esta estimación se utiliza para calcular las ventajas durante el entrenamiento.
-
-### Experimentos
+## Experimentos
 Se realizaron experimentos empleando cuatro enfoques: un agente con comportamiento aleatorio y tres algoritmos de aprendizaje por refuerzo (Q-Learning, DQN y PPO). En el caso de los algoritmos de aprendizaje por refuerzo, los modelos fueron entrenados utilizando la configuración por defecto del entorno, correspondiente al modo 0 y dificultad 0.
 
 En el caso del agente con comportamiento aleatorio (Random), no se realizó ningún proceso de entrenamiento. Este agente selecciona sus acciones de forma uniforme al azar en cada paso del entorno, sin utilizar información del estado ni mecanismos de aprendizaje.
@@ -478,7 +480,7 @@ $\text{seed}_{\text{episodio}} = 123 + \text{índice del episodio}$
 
 Si bien en Space Invaders tanto la posición inicial del jugador como la disposición inicial de enemigos y barreras se mantienen fijas —tal como ocurre en el juego original—, la semilla sí afecta todos los eventos no deterministas del entorno. Entre ellos se encuentran los patrones de disparo de los enemigos, la selección de qué enemigo dispara, variaciones internas asociadas al frame-skip y otros comportamientos aleatorios propios de ciertos modos. Esto permite que cada episodio sea distinto aun cuando las posiciones iniciales no cambien. De este modo, todos los agentes fueron evaluados bajo una misma secuencia de variaciones controladas, manteniendo comparabilidad entre algoritmos sin repetir episodios idénticos.
 
-#### Resultados
+### Resultados
 
 **Agente Random**
 
