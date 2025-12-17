@@ -23,15 +23,15 @@ Código de proyecto: SPACEAI
     - [Modificación de la función de recompensa](#modificación-de-la-función-de-recompensa)
       - [Reward Shaping personalizado](#reward-shaping-personalizado)
       - [Reward Clipping](#reward-clipping)
-    - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
     - [Preprocesamiento de entorno](#preprocesamiento-de-entorno)
     - [Implementación con Q-learning](#implementación-con-q-learning)
+      - [Reducción del Espacio de Estados y Acciones](#reducción-del-espacio-de-estados-y-acciones)
       - [Representación Discreta del Estado](#representación-discreta-del-estado)
       - [Tamaño final de la Q table](#tamaño-final-de-la-q-table)
+    - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
     - [Implementación con Deep Q-Network](#implementación-con-deep-q-network)
       - [Estructura de la red neuronal](#estructura-de-la-red-neuronal)
       - [Estrategia de aprendizaje](#estrategia-de-aprendizaje)
-    - [Almacenamiento y muestreo de experiencias](#almacenamiento-y-muestreo-de-experiencias)
     - [Implementación con PPO](#implementación-con-ppo)
       - [Estructura de la red neuronal](#estructura-de-la-red-neuronal-1)
   - [Experimentos](#experimentos)
@@ -211,24 +211,6 @@ El reward clipping se utilizó en uno de los modelos de Q-learning y en todos lo
 
 Este mecanismo reduce la variabilidad de la señal de recompensa, evitando saltos abruptos en los valores acumulados y favoreciendo un entrenamiento más estable, especialmente en algoritmos basados en redes neuronales.
 
-
-#### Reducción del Espacio de Estados y Acciones
-
-El entorno Space Invaders en Gymnasium entrega observaciones en formato de imagen RGB de tamaño 210×160 píxeles con 3 canales, lo que genera un espacio de estados extremadamente grande. Utilizar estas observaciones directamente en una Q-table sería impracticable, ya que la cantidad de estados posibles crece exponencialmente con el número de píxeles.
-
-La dimensión general de una Q-table es:
-
-$|Q\text{-table size}| = \text{Número de estados} × \text{Número de acciones}$
-
-
-Si se trabajara con la imagen completa, el número de estados sería:
-
-$|Q\text{-table size}| = 256^{(210×160×3)} × 6$
-
-
-lo cual es computacionalmente inviable.\
-Por ello, es necesario reducir el espacio de estados mediante un preprocesamiento visual que simplifique la observación sin perder información relevante para la toma de decisiones.
-
 #### Preprocesamiento de entorno
 El espacio de observación que posee Gymnasium en el juego Space Invaders es Box(0, 255, (210, 160, 3), uint8) [[1](#ref1)],
 es decir, son observaciones de 3 canales (RGB), de 210 x 160 píxeles, con valores entre 0 y 255.
@@ -250,8 +232,24 @@ Siguiendo las recomendaciones, se recortan las secciones de la imagen que no apo
   </tr>
 </table>
 
-
 #### Implementación con Q-learning
+
+##### Reducción del Espacio de Estados y Acciones
+
+El entorno Space Invaders en Gymnasium entrega observaciones en formato de imagen RGB de tamaño 210×160 píxeles con 3 canales, lo que genera un espacio de estados extremadamente grande. Utilizar estas observaciones directamente en una Q-table sería impracticable, ya que la cantidad de estados posibles crece exponencialmente con el número de píxeles.
+
+La dimensión general de una Q-table es:
+
+$|Q\text{-table size}| = \text{Número de estados} × \text{Número de acciones}$
+
+
+Si se trabajara con la imagen completa, el número de estados sería:
+
+$|Q\text{-table size}| = 256^{(210×160×3)} × 6$
+
+
+lo cual es computacionalmente inviable.\
+Por ello, es necesario reducir el espacio de estados mediante un preprocesamiento visual que simplifique la observación sin perder información relevante para la toma de decisiones.
 
 ##### Representación Discreta del Estado
 A partir de la imagen ya preprocesada (recortada, redimensionada y convertida a escala de grises), se aplica un esquema de agregación y discretización que transforma cada frame en un vector pequeño y manejable:
@@ -278,7 +276,16 @@ donde:
 - N = número de columnas en que se divide la imagen,
 - K = número de niveles de discretización,
 
-  
+
+#### Almacenamiento y muestreo de experiencias
+Las estrategias de almacenamiento y muestreo de experiencias descritas a continuación se utilizan únicamente en los algoritmos basados en redes neuronales, es decir, Deep Q-Network (DQN) y Proximal Policy Optimization (PPO).
+
+En estos algoritmos, el entorno se vectoriza y se aplica un apilado de frames, por lo que cada estado observado por el agente está compuesto por una secuencia de n imágenes consecutivas. Esto permite que la red neuronal disponga de información temporal, lo cual es fundamental en este entorno, ya que el movimiento de los objetos no puede inferirse a partir de un solo frame.
+
+Cada transición generada durante la interacción con el entorno (que incluye el estado apilado actual, la acción ejecutada, la recompensa recibida, el siguiente estado apilado y la señal de finalización) se almacena en un buffer de memoria.
+
+Durante el entrenamiento, se extraen lotes de transiciones desde este buffer. Este muestreo reduce la correlación temporal entre experiencias consecutivas y permite reutilizar de forma más eficiente la información recolectada, mejorando la estabilidad del aprendizaje y la convergencia del modelo.
+
 #### Implementación con Deep Q-Network
 La propuesta anterior no es muy eficiente ya que la tabla de decisión se hace muy grande debido a la cantidad de estados y acciones. Con este algoritmo (DQN) podemos definir una red neuronal para procesar el entorno y entrenar un modelo que pueda tener un buen desempeño en el juego.
 
@@ -308,12 +315,6 @@ Con el objetivo de lograr un balance entre exploración y explotación, se ha el
 - Con probabilidad 1-ε, se elige la acción con el mayor valor Q (explotación).
 - ε decae exponencialmente con los pasos de entrenamiento.
   
-#### Almacenamiento y muestreo de experiencias
-El entorno se vectoriza y se aplica un apilado de frames, por lo que cada estado observado por el agente está compuesto por una secuencia de n imágenes consecutivas. Esto permite que la red neuronal disponga de información temporal, que es muy importante para este entorno ya que el movimiento de los objetos no puede inferirse a partir de un solo frame.
-
-Cada transición generada durante la interacción con el entorno (que incluye el estado apilado actual, la acción ejecutada, la recompensa recibida, el siguiente estado apilado y la señal de finalización) se almacena en un buffer de memoria.
-
-Durante el entrenamiento, se extraen lotes aleatorios desde este buffer. Este muestreo aleatorio rompe la correlación temporal entre transiciones consecutivas y utiliza de forma más eficiente la experiencia almacenada, mejorando la estabilidad del aprendizaje y la convergencia del modelo.
 
 #### Implementación con PPO
 A diferencia de DQN que utiliza Q-learning, PPO es un algoritmo de gradiente de política que optimiza directamente la política del agente. Este enfoque es más estable y eficiente para muchos entornos.
@@ -812,28 +813,28 @@ El agente random presenta un comportamiento totalmente limitado y sin capacidad 
   <tr>
     <td align="center">
       <img src="code/test_images/avg_reward_Q-Learning_(Clipping).png" width="500"><br>
-      <em>[Figura 39] Recompensa de test por modo en algoritmo Q-Learning con Clipping Reward</em>
+      <em>[Figura 39] Recompensa de test por modo en algoritmo Q-Learning con Reward Clipping</em>
     </td>
     <td align="center">
       <img src="code/test_images/winrate_Q-Learning_(Clipping).png" width="500"><br>
-      <em>[Figura 40] Winrate de test por modo en algoritmo Q-Learning con Clipping Reward</em>
+      <em>[Figura 40] Winrate de test por modo en algoritmo Q-Learning con Reward Clipping</em>
     </td>
   </tr>
   <tr>
     <td align="center">
       <img src="code/test_images/avg_reward_Q-Learning_(Custom).png" width="500"><br>
-      <em>[Figura 41] Recompensa de test por modo en algoritmo Q-Learning con Reward Shapping</em>
+      <em>[Figura 41] Recompensa de test por modo en algoritmo Q-Learning con Reward Shaping</em>
     </td>
     <td align="center">
       <img src="code/test_images/winrate_Q-Learning_(Custom).png" width="500"><br>
-      <em>[Figura 42] Winrate de test por modo en algoritmo Q-Learning con Custom Reward Shapping</em>
+      <em>[Figura 42] Winrate de test por modo en algoritmo Q-Learning con Custom Reward Shaping</em>
     </td>
   </tr>
 </table>
 
-Los modelos entrenados con Q-learning muestran un desempeño considerablemente superior al del agente aleatorio. Como se puede observar en las figuras 39 y 41, en los modelos más simples (0 y 8), ambos modelos alcanzan promedios de recompensa que superan los 260–280 puntos, lo que evidencia que lograron aprender patrones de supervivencia y ataque más estables. Si bien los puntajes máximos no difieren demasiado de los obtenidos por el agente random, los puntajes mínimos son más altos en los modos 0, 3 y 4 (especialmente en el modelo con reward shapping) indican que el agente aprendió a garantizar un nivel mínimo de efectividad, eliminando al menos algunos enemigos antes de morir incluso en sus peores episodios.
+Los modelos entrenados con Q-learning muestran un desempeño considerablemente superior al del agente aleatorio. Como se puede observar en las figuras 39 y 41, en los modelos más simples (0 y 8), ambos modelos alcanzan promedios de recompensa que superan los 260–280 puntos, lo que evidencia que lograron aprender patrones de supervivencia y ataque más estables. Si bien los puntajes máximos no difieren demasiado de los obtenidos por el agente random, los puntajes mínimos son más altos en los modos 0, 3 y 4 (especialmente en el modelo con reward shaping) indican que el agente aprendió a garantizar un nivel mínimo de efectividad, eliminando al menos algunos enemigos antes de morir incluso en sus peores episodios.
 
-Una diferencia clave entre los dos modelos aparece en la evolución del aprendizaje: el agente con Reward Shapping continúa mejorando su recompensa hasta los 20 000 episodios, mientras que el modelo con Reward Clipping se estanca alrededor del episodio 2000, mostrando poca progresión posterior. Esto sugiere que el shaping ofrece señales de entrenamiento más útiles que el clipping.
+Una diferencia clave entre los dos modelos aparece en la evolución del aprendizaje: el agente con Reward Shaping continúa mejorando su recompensa hasta los 20 000 episodios, mientras que el modelo con Reward Clipping se estanca alrededor del episodio 2000, mostrando poca progresión posterior. Esto sugiere que el shaping ofrece señales de entrenamiento más útiles que el clipping.
 
 En cuanto a la duración de los episodios, el shaping presenta un crecimiento inicial coherente con la mejora en la recompensa, mientras que en el clipping los episodios se vuelven más largos sin que eso se traduzca en un desempeño ofensivo mejor. Esto indica que el clipping permite sobrevivir más tiempo, pero no fomenta decisiones más efectivas, en parte por la pérdida de información que provoca la acotación de recompensas.
 
