@@ -381,6 +381,21 @@ Para DQN, se entrenaron múltiples modelos explorando distintas configuraciones 
 
 Finalmente, el modelo de PPO fue entrenado únicamente utilizando reward clipping, debido a la inestabilidad observada al emplear la recompensa original del entorno, que provocaba un estancamiento temprano del aprendizaje.
 
+<div align="center">
+
+**Resumen de algoritmos implementados y configuración de recompensas**
+
+| Algoritmo | Función de recompensa utilizada | Objetivo del modelo |
+|-----------|--------------------------------|---------------------|
+| Agente Random | Recompensa original del entorno | Establecer una línea base (*baseline*) sin aprendizaje |
+| Q-Learning con Reward Shaping | Reward shaping personalizado | Analizar el impacto de una recompensa más informativa sobre el aprendizaje |
+| Q-Learning con Reward Clipping | Reward clipping | Evaluar la estabilidad del aprendizaje con recompensas normalizadas |
+| Deep Q-Network (DQN) sin wrapper de recompensa | Recompensa original del entorno | Comparar el desempeño sin modificación de la señal de recompensa |
+| Deep Q-Network (DQN) con Reward Clipping | Reward clipping | Analizar el efecto del clipping en el aprendizaje con redes neuronales |
+| Proximal Policy Optimization (PPO) con Reward Clipping | Reward clipping | Garantizar un entrenamiento estable del agente PPO |
+
+</div>
+
 A continuación se especificarán los hiperparámetros utilizados para los modelos cuyos resultados se encuentran expuestos en la siguiente sección:
 
 - Q-learning con Reward Shaping personalizado:
